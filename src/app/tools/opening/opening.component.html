@@ -1,0 +1,35 @@
+<div class="container opening-container">
+    <div class="opening-container" *ngIf="eco">
+        <h2>{{eco.name}}</h2>
+        <div class="row">
+            <div class="move-detail-box">
+                <ul>
+                    <li><strong>Played by :</strong> {{playedBy}}</li>
+                    <li><strong>Moves:</strong> {{eco.moves}}</li>
+                    <li>
+                        <strong>Starting Position:</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <app-chess-board [mini]="true" [fen]="eco.fen" boardId="__chessboard__" boardWidth="150px" [showAudioControl]="false" style="margin-left: 25px;"></app-chess-board>
+        </div>
+        <div class="row" style="margin-top: 15px;">
+            <h2> Explore {{eco.name}}</h2>
+            
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="clear"></div>
+                <app-opening-explorer [eco]="eco.eco" [openingName]="eco.name"></app-opening-explorer>
+            </div>
+            
+        </div>
+        
+        <div class="article" *ngIf="eco && eco.slug">
+
+            <app-page-section [pageSlug]="eco.slug"></app-page-section>
+        </div>
+    </div>
+</div>

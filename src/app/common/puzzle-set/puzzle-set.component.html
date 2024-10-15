@@ -1,0 +1,12 @@
+
+<div class="puzzle-wrapper" *ngIf="currentPuzzle; else loadingPuzzle">
+    <div *ngIf="!completed; else showCompleted">
+        <app-puzzle [puzzle]="currentPuzzle" (onComplete)="onComplete()"></app-puzzle>
+    </div>
+    <ng-template #showCompleted>
+        <h1 style="text-align: center;">Puzzles Completed</h1>
+    </ng-template>
+</div>
+<ng-template #loadingPuzzle>
+    <app-loader></app-loader>
+</ng-template>

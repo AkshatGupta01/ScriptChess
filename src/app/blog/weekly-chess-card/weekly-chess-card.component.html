@@ -1,0 +1,28 @@
+<div *ngIf="weeklyChess" class="post-container pop">
+    <div class="row">
+        <div class="col-12">
+            <mat-card-content *ngIf="weeklyChess.media">
+                <a routerLink="/articles/weekly-chesses/{{weeklyChess.slug}}"><img src="{{weeklyChess.media.url|cdnImage}}" class="post-image" /></a>
+            </mat-card-content>
+        </div>
+    </div>
+    <div class="col-12">
+        <mat-card-title>
+            <h3 class="post-title">
+                <a routerLink="/articles/weekly-chesses/{{weeklyChess.slug}}">{{weeklyChess.title}}</a>
+            </h3>
+            <div class="post-date">
+                Published on: {{weeklyChess.published_at | date}}
+            </div>
+        </mat-card-title>
+        <mat-card-content *ngIf="weeklyChess.seo">
+            <a routerLink="/articles/weekly-chesses/{{weeklyChess.slug}}">
+                <p style="text-align: justify;">
+                {{weeklyChess.seo.metaDescription}}
+                </p>
+            </a>
+          </mat-card-content>
+    </div>
+        
+        
+</div>

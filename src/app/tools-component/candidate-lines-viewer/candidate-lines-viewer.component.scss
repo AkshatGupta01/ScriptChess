@@ -1,0 +1,26 @@
+.score-span {
+    display: inline-block;
+    margin: 5px;
+    background-color: #eeeeee;
+    border-radius: 2px;
+    padding: 2px;
+    color: #111;
+    font-weight: 500;
+}
+*::-webkit-scrollbar {
+    height: 4px;
+}
+
+.moves-span {
+    display: inline;    
+}
+
+.move {
+    display: inline;
+    margin:5px;
+}
+.line-container {
+    border-bottom: thin ridge #aaa;
+    overflow-x: scroll;
+    white-space: nowrap;
+}

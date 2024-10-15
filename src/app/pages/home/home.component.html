@@ -1,0 +1,187 @@
+
+<app-banner-slider></app-banner-slider>
+<div class="power-menu intro">
+    <div class="row">
+        <div class="col-12 col-md-6" style="text-align: center;">
+            <img src="/assets/images/power-menu-hero.png" style="max-height: 600px; max-width:100%" alt="Chess-coach" title="Scriptchess as personal Chess coach" />
+        </div>
+
+        <div class="col-12 col-md-6" style="margin-top: 50px;">
+            <div class="row">
+                <div class="col-12">
+                    <div class="big-button-no-hover active-big-button big-button-text pop">
+                        <a routerLink="/tools/free-chess-engine">Analyze Any Position</a>
+                    </div>
+                </div>
+                <div class="col-12" style="margin-top: 10px;">
+                    <div class="big-button big-button-text pop">
+                        <a routerLink="/tools/play-against-chess-bots">Play Against Epic Bots</a>
+                    </div>
+                </div>
+                <div class="col-12"  style="margin-top: 10px;">
+                    <div class="big-button big-button-text pop">
+                        <a routerLink="/tools/free-chess-explorer">Try Game Explorer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6" style="margin-top: 50px;">
+          <app-banner-ads></app-banner-ads>
+        </div>
+    </div>
+</div>
+<div class="puzzle-intro intro">
+    <div class="puzzle-wrapper" style="position: relative;">
+        <h2>Solve Puzzle Of The Day</h2>
+        <div class="puzzle-wrapper" *ngIf="puzzleOfTheDay;else loadingPuzzle">
+            <app-puzzle (onComplete)="onPuzzleComplete()" height="420px" [puzzle]="puzzleOfTheDay"></app-puzzle>
+        </div>
+        <ng-template #loadingPuzzle>
+            <app-loader></app-loader>
+        </ng-template>
+        <div class="puzzle-overlay" style="position: absolute; top:0;left:0; width: 100%; height: 100%;  background-color: #8d7361a1" *ngIf="puzzleCompleted">
+            <div class="view-more-puzzle-anchor" style="top: 40%; width: 100%; text-align: center; position: absolute; font-size: 60px;">
+                <a routerLink="/tools/chess-puzzles">View More puzzles</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="intro" class="intro">
+
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6" style="text-align: center;">
+
+            <img src="/assets/images/coach.png" style="max-height: 600px; max-width:100%" alt="Chess-coach" title="Scriptchess as personal Chess coach" />
+        </div>
+        <div class="col-sm-12 col-md-6" style="position: relative;">
+            <div class="feature-content">
+                <h1>Welcome To Script Chess</h1>
+                <span>Your personal Chess Coach. Scriptchess brings you many features and all for free</span>
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-md-6 col-sm-12" style="align-items: center;">
+                        <ul class="feature-list">
+                            <li>Master's Game database</li>
+                            <li>Free Game analyzer</li>
+                            <li>Weekly Game Analysis</li>
+                            <li>Free Chess Engine</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <ul class="feature-list">
+                            <li>Varity of Game collection</li>
+                            <li>Opening Explainers</li>
+                            <li>Tournament Updates</li>
+                            <li>Unlimited Game analysis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div style=" margin: 50px auto !important; display: block; width:80%">
+
+    <div class="home-menu">
+        <h2> For Beginners </h2>
+        <div id="beginners-tool-descriptions">
+            <p class="tools-content">
+                These resources will help you get started with chess. If you do not know how to play chess or if you have been playing chess following
+                Indian chess rules, I suggest you to use these resources to understand how to play chess following standard chess rules.
+                These resources will tell you about how to play chess, how to find resources, how to find Tournaments, books etc.
+            </p>
+        </div>
+        <div class="row collections-menu">
+            <div class="col-0 col-md-4" style="position: relative;">
+
+                <app-blob-effect-image imageAddress="/assets/images/learn-chess.png"></app-blob-effect-image>
+            </div>
+            <div class="col-12 col-md-8">
+                <div class="row">
+                    <div class="col-6 col-md-4 " *ngFor="let item of beginnersMenu">
+                        <app-menu-card [menu]="item"></app-menu-card>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="home-menu">
+        <h2> Utility Apps </h2>
+        <div id="utility-tool-descriptions">
+            <p class="tools-content">
+                If you are already playing chess following standard chess rules and want to improve your skills then these tools will give you all
+                neccessary resources to improve your chess skills.
+            </p>
+        </div>
+        <div class="row collections-menu">
+            <div class="col-0 col-md-4" style="position: relative;">
+
+                <app-blob-effect-image imageAddress="/assets/images/chess-apps.png"></app-blob-effect-image>
+            </div>
+            <div class="col-12 col-md-8">
+                <div class="row">
+                    <div class="col-6 col-md-4" *ngFor="let item of playersTournamentMenu">
+                        <app-menu-card [menu]="item"></app-menu-card>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="home-menu">
+        <h2> Explore our versatile Database </h2>
+        <div id="database-tool-descriptions">
+            <p class="tools-content">
+                These tools uses our database to curate the best games for you to improve your chess skills. Choose games based your favorite theme and learn from them.
+                These all games are played by famous Grand masters and is huge source of learning for all kind of players.
+            </p>
+        </div>
+        <div class="row collections-menu">
+            <div class="col-0 col-md-4" style="position: relative;">
+
+                <app-blob-effect-image imageAddress="/assets/images/chess-games.png"></app-blob-effect-image>
+            </div>
+            <div class="col-12 col-md-8">
+                <div class="row">
+                    <div class="col-6 col-md-4" *ngFor="let item of specialMenuItems">
+                        <app-menu-card [menu]="item"></app-menu-card>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="blog-posts-container " style="margin-top: 50px;margin-bottom: 25px;" *ngIf="posts; else loadPosts">
+        <h2> Blogs </h2>
+        <app-banner-ads></app-banner-ads>
+        <div class="row collections-menu" *ngIf="posts.length > 0;else noPosts">
+            <div class="posts col-sm-12" *ngFor="let item of posts">
+                <app-post-card-long [post]="item"></app-post-card-long>
+            </div>
+        </div>
+        <ng-template  #noPosts>
+            <span>No Posts available at this moment</span>
+        </ng-template>
+
+    </div>
+    <ng-template #loadPosts>
+        <div style="width:250px; display:block; margin: 0 auto; padding-top:50px;">
+            <app-loader></app-loader>
+        </div>
+    </ng-template>
+
+    <h2 *ngIf="studies"> Chess Studies </h2>
+    <div class="row collections-menu">
+        <div class="col-sm-6 col-md-4" *ngFor="let item of studies">
+            <app-menu-card [menu]="item"></app-menu-card>
+        </div>
+    </div>
+</div>

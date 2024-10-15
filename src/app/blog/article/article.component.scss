@@ -1,0 +1,40 @@
+.hero-image {
+    max-width: 50%;
+    display:block;
+    margin: 0 auto;
+}
+.blog-container {
+    width: 85%;
+    margin: 0 auto;
+    display: block;    
+}
+.author-name, .article-date {
+    color:#aaa;
+}
+.author-name::before {
+    font-family: "Material Symbols Outlined";
+    content: "\e853";
+    margin-right: 3px;
+}
+
+.article-date::before {
+    font-family: "Material Symbols Outlined";
+    content: "\ebcc";
+    margin-right: 3px;
+}
+.clear {
+    clear: both;
+    height:25px;
+}
+@media(max-width:767px) {
+    .hero-image {
+        max-width: 95%;
+        display:block;
+        margin: 0 auto;
+    }
+    .blog-container {
+        width: 90%;
+        margin: 0 auto;
+        display: block;    
+    }
+}

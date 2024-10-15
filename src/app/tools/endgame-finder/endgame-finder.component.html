@@ -1,0 +1,76 @@
+<div class="container">
+  <app-banner-ads></app-banner-ads>
+  <h1>Endgame Trainer</h1>
+  <div class="clear"></div>
+  <div class="clear"></div>
+  <div class="row">
+    <div class="col-md-4 col-sm-12">
+      <mat-form-field class="form-field" appearance="fill" style="width: 98%; margin: 0 auto; display: block;">
+        <mat-label>Player name</mat-label>
+        <input matInput type="text" [(ngModel)]="player">
+      </mat-form-field>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="row">
+        <div class="col-2">
+          <mat-checkbox class="example-margin" [(ngModel)]="pawnChecked">
+            <img src="/assets/pieces/alpha/wP.svg" style="width: 32px;" alt="Pawn">
+          </mat-checkbox>
+        </div>
+        <div class="col-2">
+          <mat-checkbox class="example-margin" [(ngModel)]="rookChecked">
+            <img src="/assets/pieces/alpha/wR.svg" style="width: 32px;" alt="Rook">
+          </mat-checkbox>
+        </div>
+        <div class="col-2">
+          <mat-checkbox class="example-margin" [(ngModel)]="knightChecked">
+            <img src="/assets/pieces/alpha/wN.svg" style="width: 32px;" alt="Knight">
+          </mat-checkbox>
+        </div>
+        <div class="col-2">
+          <mat-checkbox class="example-margin" [(ngModel)]="bishopChecked">
+            <img src="/assets/pieces/alpha/wB.svg" style="width: 32px;" alt="Bishop">
+          </mat-checkbox>
+        </div>
+        <div class="col-2">
+          <mat-checkbox class="example-margin" [(ngModel)]="queenChecked">
+            <img src="/assets/pieces/alpha/wQ.svg" style="width: 32px;" alt="Queen">
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="small-button pop" (click)="search()"> Search </div>
+    </div>
+
+
+  </div>
+  <div class="clear"></div>
+    <div class="clear"></div>
+    <div class="endgame-list" *ngIf="endgames && endgames.length > 0" style="width: 100%;">
+      <div class="container">
+        <div class="row" #row>
+          <div class="endgame-position-container d-none d-md-block col-md-4 pop" style="padding: 0" *ngFor="let item of endgames">
+            <app-endgame-component-box [endgame]="item" [boardWidth]="((row.offsetWidth / 3) - 15) + 'px'"></app-endgame-component-box>
+          </div>
+        </div>
+        <div class="row" #mRow>
+          <div class="endgame-position-container d-block d-sm-none pop" style="padding: 0; margin-top: 15px;" *ngFor="let item of endgames">
+            <app-endgame-component-box [endgame]="item" [mobile]="true" [boardWidth]="((mRow.offsetWidth) - 15) + 'px'" ></app-endgame-component-box>
+          </div>
+        </div>
+      </div>
+      <div class="next-button" (click)="next()" *ngIf="!noMore">
+        <span>Next</span>
+      </div>
+    </div>
+  <div class="loader" *ngIf="fetchingEndgames">
+    <app-loader></app-loader>
+  </div>
+  <div class="clear"></div>
+  <div class="clear"></div>
+  <hr />
+  <div class="clear"></div>
+  <div class="clear"></div>
+  <app-page-section pageSlug="endgame-trainer"></app-page-section>
+</div>

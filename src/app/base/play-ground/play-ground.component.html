@@ -1,0 +1,21 @@
+
+<div class="container">
+  <app-chess-board boardWidth="250px" #board></app-chess-board>
+
+    <div class="row">
+        <input type="text" #fen placeholder="fen"/>
+    </div>
+    <div class="row">
+        <button (click)="loadFen(fen, board)"> Load fen </button>
+    </div>
+    <div class="row">
+        <input #square placeholder="square name" type="text" />
+    </div>
+    <div class="row">
+        <button (click)="loadAnalysis(board)"> Search Moves</button>
+    </div>
+    <div class="row">
+        <textarea placeholder="moves" name="moves" id="moves" cols="30" rows="10">{{problems}}</textarea>
+    </div>
+
+</div>

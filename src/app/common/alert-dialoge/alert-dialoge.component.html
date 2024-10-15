@@ -1,0 +1,15 @@
+<div class="container warning-container">
+  <div class="row">
+    {{message}}
+  </div>
+  <div class="clear"></div>
+  <div class="clear"></div>
+  <div class="row">
+    <div class="col">
+      <div class="small-button pop" style="text-align: center;" (click)="option1()">{{option1Str}}</div>
+    </div>
+    <div class="col" *ngIf="option2Str">
+      <div class="small-button pop" style="text-align: center;" (click)="option2()">{{option2Str}}</div>
+    </div>
+  </div>
+</div>

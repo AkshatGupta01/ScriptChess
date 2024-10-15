@@ -1,0 +1,248 @@
+<div class="row" *ngIf="engineDepth > 1;else chooseOpponent">
+    <div class="col-md-7 col-sm-12" id="chess-board-container">
+        <app-chess-board [allowPlay]="true" [engineThinking]="engineThinking" [whiteOrientated]="whiteOrientated" [autoQueenPromotion]="true" [boardId]="boardId" white="{{whitePlayer}}" black="{{blackPlayer}} ({{botElo}})" #board (onMoveEx)="onMove($event, board)"></app-chess-board>
+    </div>
+    <div class="col-md-5 col-sm-12">
+        <div class="move-holder pop" style="position: relative;">
+            <div class="pop">
+                <div class="row" style="width: 98%; padding:10px" *ngIf="engineRegistered;else showEngineLoading">
+                    <div class="col-2">
+                        <img src="/assets/images/{{selectedBot.image}}" style="width: 70px; max-width: 100%;" alt="{{botName}} Chess Bot">
+                    </div>
+                    <div class="col-10 commentBox" style="padding:5px" *ngIf="comment">
+                        {{comment}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" style="padding: 10px 25px;">
+                        {{opening}}
+                    </div>
+                </div>
+                <ng-template #showEngineLoading>
+                    <img src="/assets/images/eval-running.gif" style="width: 24px;" alt="Bot loading">
+                </ng-template>
+            </div>
+            <div class="moves-container" style="margin-bottom: 50px;">
+                <div class="moves-items" style="max-height: 400px;overflow-y: scroll;">
+                    <div class="move-summary odd" [ngClass]="{'even': i % 2 == 0}" *ngFor="let item of movePairs;let i = index">
+                        <div class="move-label row" >
+                            <div class="col-2">
+                                {{i+1}}
+                            </div>
+                            <div class="col-3 row" [ngClass]="{activeMove: (contMoveIndex == (i * 2) + 1)&& contMoveIndex > 0 }">
+                                <div class="move-white"  *ngIf="item.white; else noMove">
+                                    {{item.white.move}}
+                                </div>
+                                <ng-template #noMove>
+                                    <div class="move-white">
+                                    </div>
+                                </ng-template>
+                            </div>
+                            <div class="col-3 row" [ngClass]="{activeMove: ((contMoveIndex) == (i * 2) + 2)&& contMoveIndex > 0}" *ngIf="item.black">
+                                <div class="move-black">
+                                    {{item.black.move}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="reisgn-button-holder" style="width: 95%;">
+                <div class="row">
+                    <div class="col-1">
+                        <div class="pop fab" title="Resign" (click)="resign()">
+                            <mat-icon color="accent">sports_score</mat-icon>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="pop fab" title="New Game" (click)="newGame()">
+                            <mat-icon color="accent">add</mat-icon>
+                        </div>
+                    </div>
+
+                    <div class="col-1" *ngIf="gameId > 0">
+                        <div class="pop fab" title="Analyze Game" (click)="analyzeLastGame()">
+                            <mat-icon color="accent">tune</mat-icon>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<ng-template #chooseOpponent>
+    <mat-tab-group class="startGameBox pop">
+        <mat-tab>
+            <ng-template mat-tab-label class="pop">Bots</ng-template>
+            <div class="opponents-container">
+                <h2>Choose your opponent</h2>
+                <hr />
+                <div class="bots-container" *ngIf="!trainingMode; else showTrainingBots">
+                  <h3>Beginners Bots</h3>
+                  <div class="row opponent-list">
+                      <div class="col-12 col-md-4" *ngFor="let bot of beginnersBots">
+                          <mat-card class="example-card pop" #card>
+                              <mat-card-header>
+                                  <mat-card-title>{{bot.name}}</mat-card-title>
+                                  <mat-card-subtitle>{{bot.designation}}</mat-card-subtitle>
+                                </mat-card-header>
+                              <img mat-card-image src="/assets/images/{{bot.image}}" alt="{{bot.name}} Chess Bot">
+                              <mat-card-content>
+                                  <p style="height: 150px; overflow-y: scroll;">
+                                      {{bot.description}}
+                                  </p>
+                                  <ul style="padding:5px">
+                                      <li><strong>Strength:</strong> {{bot.strength}}</li>
+                                      <li><strong>ELO:</strong>{{bot.elo}}</li>
+                                  </ul>
+                              </mat-card-content>
+                              <mat-card-actions>
+                                  <button mat-button class="small-button pop" style="display:inline-block; width: 80px; margin-right:10px;" (click)="setBot( bot, 'black')" *ngIf="!playerColor || playerColor == 'b'" >
+                                      <img src="/assets/pieces/alpha/bK.svg" style="max-width: 50px;" />
+                                  </button>
+                                  <button mat-button class="small-button pop" style="display:inline-block; width: 80px" (click)="setBot( bot, 'white')"  *ngIf="!playerColor || playerColor == 'w'" >
+                                      <img src="/assets/pieces/alpha/wK.svg" style="max-width: 50px;" />
+                                  </button>
+                              </mat-card-actions>
+                          </mat-card>
+                      </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="clear"></div>
+                  <hr />
+                  <div class="clear"></div>
+                  <div class="clear"></div>
+                  <h3>Epic Bots</h3>
+                  <div class="row opponent-list">
+
+
+                      <div class="col-12 col-md-4" *ngFor="let bot of epicBots">
+                          <mat-card class="example-card pop" #card>
+                              <mat-card-header>
+                                  <mat-card-title>{{bot.name}}</mat-card-title>
+                                  <mat-card-subtitle>{{bot.designation}}</mat-card-subtitle>
+                                </mat-card-header>
+                              <img mat-card-image src="/assets/images/{{bot.image}}" alt="{{bot.name}} Chess Bot">
+                              <mat-card-content>
+                                  <p style="height: 150px; overflow-y: scroll;">
+                                      {{bot.description}}
+                                  </p>
+                                  <ul style="padding:5px">
+                                      <li><strong>Strength:</strong> {{bot.strength}}</li>
+                                      <li><strong>ELO:</strong>{{bot.elo}}</li>
+                                  </ul>
+                              </mat-card-content>
+                              <mat-card-actions>
+                                  <button mat-button class="small-button pop" style="display:inline-block; width: 80px; margin-right:10px;" (click)="setBot( bot, 'black')" *ngIf="!playerColor || playerColor == 'b'" >
+                                      <img src="/assets/pieces/alpha/bK.svg" style="max-width: 50px;" />
+                                  </button>
+                                  <button mat-button class="small-button pop" style="display:inline-block; width: 80px" (click)="setBot( bot, 'white')"  *ngIf="!playerColor || playerColor == 'w'" >
+                                      <img src="/assets/pieces/alpha/wK.svg" style="max-width: 50px;" />
+                                  </button>
+                              </mat-card-actions>
+                          </mat-card>
+                      </div>
+
+                  </div>
+                </div>
+                <ng-template #showTrainingBots>
+                  <div class="row opponent-list">
+
+
+                    <div class="col-12 col-md-4" *ngFor="let bot of botsForTraining">
+                        <mat-card class="example-card pop" #card>
+                            <mat-card-header>
+                                <mat-card-title>{{bot.name}}</mat-card-title>
+                                <mat-card-subtitle>{{bot.designation}}</mat-card-subtitle>
+                              </mat-card-header>
+                            <img mat-card-image src="/assets/images/{{bot.image}}" alt="{{bot.name}} Chess Bot">
+                            <mat-card-content>
+                                <p style="height: 150px; overflow-y: scroll;">
+                                    {{bot.description}}
+                                </p>
+                                <ul style="padding:5px">
+                                    <li><strong>Strength:</strong> {{bot.strength}}</li>
+                                    <li><strong>ELO:</strong>{{bot.elo}}</li>
+                                </ul>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button class="small-button pop" style="display:inline-block; width: 80px; margin-right:10px;" (click)="setBot( bot, 'black')" *ngIf="!playerColor || playerColor == 'b'" >
+                                    <img src="/assets/pieces/alpha/bK.svg" style="max-width: 50px;" />
+                                </button>
+                                <button mat-button class="small-button pop" style="display:inline-block; width: 80px" (click)="setBot( bot, 'white')"  *ngIf="!playerColor || playerColor == 'w'" >
+                                    <img src="/assets/pieces/alpha/wK.svg" style="max-width: 50px;" />
+                                </button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+
+                </div>
+                </ng-template>
+
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label class="pop">Saved Games</ng-template>
+            <div class="saved-games-box" *ngIf="savedGames;else showGameLoading">
+                <div class="no-game" *ngIf="savedGames.length == 0; else showGames">
+                    You haven't saved any game
+                </div>
+                <ng-template #showGames>
+                    <div class="row"  style="font-weight: 500; border: thin ridge gray; overflow-x: scroll;">
+                        <div class="col-2 d-none d-sm-block" >
+                            Date
+                        </div>
+                        <div class="col-6"  >
+                            Eco
+                        </div>
+                        <div class="col-1" >
+                            result
+                        </div>
+                        <div class="col-1" >
+                            #
+                        </div>
+                        <div class="col-1" >
+
+                        </div>
+                        <div class="col-1" >
+
+                        </div>
+                    </div>
+                    <div class="row"  style="border: thin ridge gray; overflow-x: scroll;" *ngFor="let item of savedGames">
+                        <div class="col-2 d-none d-sm-block" >
+                            {{item.date}}
+                        </div>
+                        <div class="col-6"  >
+                            {{item.eco}}
+                        </div>
+                        <div class="col-1" >
+                            {{item.result}}
+                        </div>
+                        <div class="col-2 col-md-1" >
+                            {{item.moveCount}}
+                        </div>
+                        <div class="col-1" >
+                            <span class="material-symbols-outlined" style="cursor: pointer;" title="Delete this Game" (click)="deleteGame(item)">
+                                delete
+                            </span>
+                        </div>
+                        <div class="col-1" >
+                            <span class="material-symbols-outlined" style="cursor: pointer;" title="Analyze this game" (click)="analyzeGame(item)">
+                                tune
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+
+
+            </div>
+            <ng-template #showGameLoading>
+                <app-loader></app-loader>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+
+
+</ng-template>

@@ -1,0 +1,75 @@
+@media only screen and (min-width: 992px) {
+    .navbar .navbar-nav .nav-item .nav-link {
+        padding: 0 0.5em;
+    }
+
+    .top-menu-item {
+        min-width: 100px;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .dropdown-item {
+        min-width: 100px;
+        height: 35px;
+        line-height: 35px;
+        font-weight: 500;
+    }
+    .top-menu-item:hover {
+        -webkit-box-shadow: 0px -4px 5px 0 rgb(122 119 119 / 30%), 0px 10px 5px 0 rgb(0 0 0 / 25%) !important;
+        -moz-box-shadow: 0px -4px 5px 0 rgb(122 119 119 / 30%), 0px 10px 5px 0 rgb(0 0 0 / 25%) !important;
+        box-shadow: 0px -4px 5px 0 rgb(122 119 119 / 30%), 0px 10px 5px 0 rgb(0 0 0 / 25%) !important
+    }
+
+}
+
+.navbar .navbar-nav .nav-link {
+    color: #fff;
+    font-size: 1.1em;
+    -webkit-app-region: no-drag;
+
+}
+.navbar-toggler  {
+    -webkit-app-region: no-drag;
+}
+.navbar-brand {
+    -webkit-app-region: no-drag;
+}
+.navbar .navbar-nav .nav-link:hover{
+    color: #FC7343;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #FC7343;
+    text-decoration: none;
+    background-color: #2B2F35;
+}
+.dropdown-item {
+
+}
+.bg-dark .dropdown-menu {
+    background-color: #2B2F35 !important;
+}
+
+.navbar {
+    -webkit-app-region: drag;
+}
+.window-control-container {
+    position: fixed;
+    right:0;
+    top:0;
+}
+a {
+    font-weight: 400 !important;
+    font-size: 1em !important;
+}
+@media only screen and (max-width: 720px) {
+  .menu-with-height {
+    max-height: 450px;
+    overflow-y: scroll;
+  }
+}
+

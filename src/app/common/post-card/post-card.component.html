@@ -1,0 +1,21 @@
+<div *ngIf="post" class="post-container pop">
+    <div class="row">
+        <div class="col-12">
+            <mat-card-content *ngIf="post.image">
+                <a routerLink="/articles/{{post.slug}}"><img src="{{post.image.url|cdnImage}}" class="post-image" /></a>
+            </mat-card-content>
+        </div>
+    </div>
+    <div class="col-12">
+        <mat-card-title>
+            <h3 class="post-title">
+                <a routerLink="/articles/{{post.slug}}">{{post.title}}</a>
+            </h3>
+            <div class="post-date">
+                Published on: {{post.published_at | date}}
+            </div>
+        </mat-card-title>
+    </div>
+        
+        
+</div>

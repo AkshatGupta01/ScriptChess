@@ -1,0 +1,127 @@
+<div class="player-container" *ngIf="!isLoading; else loading">
+    <h1>{{player.name}} - Games and Career</h1>
+    <div class="clear"></div>
+    <div class="player-details">
+        <div class="row" *ngIf="player.elo && player.elo > 0">
+            <div class="col-3">
+                ELO
+            </div>
+            <div class="col-9">
+                {{player.elo}}
+            </div>
+        </div>
+        <div class="row" *ngIf="player.fideId">
+            <div class="col-3">
+                FIDE ID
+            </div>
+            <div class="col-9">
+                {{player.fideId}}
+            </div>
+        </div>
+        <div class="row" *ngIf="player.dob">
+            <div class="col-3">
+                Date Of Birth
+            </div>
+            <div class="col-9">
+                {{player.dob}}
+            </div>
+        </div>
+        <div class="row" *ngIf="player.federation">
+            <div class="col-3">
+                Federation
+            </div>
+            <div class="col-9">
+                {{player.federation}}
+            </div>
+        </div>
+        <div class="row" *ngIf="player.website">
+            <div class="col-3">
+                Website
+            </div>
+            <div class="col-9">
+                {{player.website}}
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <app-banner-ads>
+    </app-banner-ads>
+    <div class="clear"></div>
+    <div class="games-container" *ngIf="!gamesLoading; else loadingGames">
+        <h2>Games of {{player.name}} as White</h2>
+        <hr />
+        <table mat-table [dataSource]="games" class="mat-elevation-z8 player-grid">
+
+            <ng-container matColumnDef="whitePlayer">
+              <th mat-header-cell *matHeaderCellDef> White Player. </th>
+              <td mat-cell *matCellDef="let element"> {{element.whitePlayer}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="blackPlayer">
+              <th mat-header-cell *matHeaderCellDef> Black Player </th>
+              <td mat-cell *matCellDef="let element"> {{element.blackPlayer}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="eco">
+              <th mat-header-cell *matHeaderCellDef> ECO </th>
+              <td mat-cell *matCellDef="let element"> {{element.eco}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="result">
+              <th mat-header-cell *matHeaderCellDef> Result </th>
+              <td mat-cell *matCellDef="let element"> {{element.result}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="year">
+                <th mat-header-cell *matHeaderCellDef> Year </th>
+                <td mat-cell *matCellDef="let element"> {{element.date|dateYear}} </td>
+              </ng-container>
+
+            <ng-container matColumnDef="moveCount">
+                <th mat-header-cell *matHeaderCellDef> Move Count </th>
+                <td mat-cell *matCellDef="let element"> {{element.moveCount | moveCount}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tournament">
+                <th mat-header-cell *matHeaderCellDef> Tournament </th>
+                <td mat-cell *matCellDef="let element"> {{element.tournament}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="categories">
+                <th mat-header-cell *matHeaderCellDef> Categories </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element.categories">
+                        <div *ngFor="let item of element.categories">
+                            {{item | formatGameType}}
+                        </div>
+                    </div>
+
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="sacrifices">
+                <th mat-header-cell *matHeaderCellDef> Sacrificed Pieces </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element.sacrifices">
+                        <span *ngFor="let item of element.sacrifices">
+                            {{item.piece | capitalize}} Sac
+                        </span>
+                    </div>
+
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="gameLink">
+                <th mat-header-cell *matHeaderCellDef> Check Game </th>
+                <td mat-cell *matCellDef="let element"> <a routerLink="/tools/games/{{element.gameId}}/{{element.whitePlayer}}_vs_{{element.blackPlayer}}" (click)="recordGameClick(element)">Check Games </a> </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <ng-template #loadingGames>
+        <app-loader></app-loader>
+    </ng-template>
+</div>
+<ng-template #loading>
+    <app-loader></app-loader>
+</ng-template>

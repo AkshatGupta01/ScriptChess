@@ -1,0 +1,71 @@
+.player-name {
+    margin : 15px;
+}
+.chess-board-container {
+    padding: 5px;
+    border-radius: 5px;
+
+}
+@media(max-width:767px) {
+    .chess-board-container {
+        padding: 2px;
+        border-radius: 5px;
+    }
+    .board-controls {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+@media(min-width:768px) {
+  .chess-board-container {
+    margin: 0 auto;
+  }
+  .fit-width {
+    width:min-content;
+  }
+}
+.active-fab {
+    color: #FC7343;
+}
+
+.disable-fab {
+    color: #999;
+}
+.showAnnotations {
+    z-index: 10;
+}
+
+.annotationsHidden {
+    display: none;
+}
+
+.hideAnnotations {
+    display: none;
+}
+.blackUp {
+    transform: scaleY(-1);
+}
+#board_wrapper {
+    position: relative;
+}
+.chess-piece {
+    width: 200%;
+}
+.mat-menu-panel {
+    max-width: 30% !important;
+}
+@media(max-width:767px) {
+    .mat-menu-panel {
+        max-width: 70% !important;
+    }
+}
+::ng-deep .boardMenu {
+    box-shadow: none !important;
+    background: none !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+.board-menu-item {
+    margin:7px;
+}

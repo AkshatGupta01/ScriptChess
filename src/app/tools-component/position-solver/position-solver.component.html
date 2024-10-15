@@ -1,0 +1,138 @@
+<div class="puzzle-container">
+  <div class="row" *ngIf="puzzle">
+    <div class="board col-sm-12 col-md-6" *ngIf="!blindFold; else showBlindFold">
+      <div class="board-wrapper" style="width: 100%;" *ngIf="height;else noHeight">
+          <app-chess-board #board [studyMode]="true" [fen]="currentFen" [boardId]="boardId" [allowPlay]="allowPlay" [boardWidth]="height" (onMoveEx)="onMove($event)"></app-chess-board>
+      </div>
+      <ng-template #noHeight>
+          <div class="board-wrapper" style="width: 100%;">
+              <app-chess-board [studyMode]="true"  #board [fen]="currentFen" [boardId]="boardId" [allowPlay]="allowPlay" (onMoveEx)="onMove($event)"></app-chess-board>
+          </div>
+      </ng-template>
+    </div>
+    <ng-template #showBlindFold>
+      <div class="board col-sm-12 col-md-6" *ngIf="blindFoldPosition">
+        <div class="empty-board" id="empty-board" *ngIf="attempt > 3">
+          <strong> Use this empty board as reference</strong>
+          <app-chess-board [empty]="true" boardWidth="250px"></app-chess-board>
+          <div class="clear"></div>
+          <div class="clear"></div>
+        </div>
+        <h3>Position: </h3>
+        <div class="white-position">
+          <strong>White:</strong>
+          <div class="peieces-position white-peieces" *ngFor="let item of blindFoldPosition['w']['pieces']" >
+            <img src="/assets/pieces/alpha/w{{item.piece}}.webp" class="piece-icon" alt="{{item.piece}}"> {{item.square}}
+          </div>
+        </div>
+        <div class="black-position">
+          <strong>Black:</strong>
+          <div class="peieces-position white-peieces" *ngFor="let item of blindFoldPosition['b']['pieces']" >
+            <img src="/assets/pieces/alpha/b{{item.piece}}.webp" class="piece-icon" alt="{{item.piece}}"> {{item.square}}
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="clear"></div>
+        <h6>{{playDaialog}}</h6>
+        <h6>Write in your Solution in Standard Notation. <a [routerLink]="['/pages/understanding-chess-notations-a-complete-biginner-s-guide']" style="font-style: italic;"> Learn Chess notation</a></h6>
+        <textarea [(ngModel)]="blindFoldMovesStr" (ngModelChange)="solutionWritten($event)" name="" id="" cols="300" rows="10" class="solution-by-user"></textarea>
+
+      </div>
+    </ng-template>
+    <div class="board col-sm-12 col-md-6">
+      <div class="row control-box">
+        <div class="col-2 col-md-1">
+          <div class="pop fab" title="Blindfold View" (click)="toggleBlindFold()" *ngIf="!blindFold; else showBlindFoldIcon">
+              <!-- <mat-icon color="accent"> visibility_off </mat-icon> -->
+              <div class="mat-icon">
+                <img src="/assets/images/blindfold.png" style="width: 20px; margin-top: 10px;" alt="Blindfold chess">
+              </div>
+          </div>
+          <ng-template #showBlindFoldIcon>
+            <div class="pop fab" title="Board View" (click)="toggleBlindFold()">
+              <mat-icon color="accent"> visibility </mat-icon>
+            </div>
+          </ng-template>
+        </div>
+        <div class="col-2 col-md-1">
+          <div class="pop fab" title="Analyze this position" (click)="startEngine()">
+              <mat-icon color="accent">tune</mat-icon>
+          </div>
+        </div>
+        <div class="col-2 col-md-1">
+            <div class="pop fab" title="Play Solution" (click)="playSolution()">
+                <mat-icon color="accent">emoji_objects</mat-icon>
+            </div>
+        </div>
+        <div class="col-2 col-md-1">
+          <div class="pop fab" title="Resart" (click)="checkContinuation()" *ngIf="showReset">
+              <mat-icon color="accent">check_circle</mat-icon>
+          </div>
+        </div>
+        <div class="col-2 col-md-1">
+            <div class="pop fab" title="Next Position" (click)="onNext()" *ngIf="showNext">
+                <mat-icon color="accent">skip_next</mat-icon>
+            </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-5">
+          <img src="/assets/images/coach-f.webp" alt="chess-coach" style="width: 50%; display: block; margin: 0 auto;">
+        </div>
+        <div class="col-sm-12 col-md-7" style="margin-top: 10px;">
+          <div class="dialog-box" *ngIf="currentDialog">
+            <p>{{currentDialog}}</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="row"  *ngIf="playedMoves && playedMoves.length > 0">
+        <div class="col">
+          <strong>Played Moves</strong>
+        </div>
+        <div class="col">
+          <div class="pop fab float-right" title="Restart" (click)="reset()" *ngIf="showReset">
+            <mat-icon color="accent">restart_alt</mat-icon>
+          </div>
+        </div>
+      </div>
+      <div class="played-moves" *ngIf="playedMoves && playedMoves.length > 0">
+
+        <div class="played-move" *ngFor="let item of playedMoves;let i = index" [ngClass]="{'with-side-move': item.sideMovesArray && item.sideMovesArray.length > 0}">
+          <img *ngIf="item.moveCat" src="/assets/images/{{item.moveCat|movecat}}" style="width:18px; display:inline-block; margin-right: 5px;  margin-left: 5px;" alt="{{item.moveCat}}" />
+          <span style="display: inline-block;" *ngIf="item.playedBy == 1; else ByBlack" (click)="setPosition(item)" (contextmenu)="onContextClick($event, item)" >{{item.moveNumber}}. {{item.move}}</span>
+          <ng-template #ByBlack>
+            <span (click)="setPosition(item)" (contextmenu)="onContextClick($event, item)">{{item.moveNumber}}.. {{item.move}}</span>
+          </ng-template>
+          <div class="side-moves" *ngIf="item.sideMovesArray">
+
+            <div *ngFor="let sideMoves of item.sideMovesArray">
+                <div class="played-move" [ngClass]="{'with-side-move': sideMove.sideMovesArray && sideMove.sideMovesArray.length > 0}" *ngFor="let sideMove of sideMoves;let j = index">
+                    <app-moves-with-side-move (onMoveClick)="onMoveClick($event)" (onRightClick)="onSideMoveContextClick($event)"  [move]="sideMove" [index]="j+i"></app-moves-with-side-move>
+                </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <!--Content Menu starts-->
+      <div style="visibility: hidden; position: fixed;"
+          [style.left]="menuTopLeftPosition.x"
+          [style.top]="menuTopLeftPosition.y"
+          [matMenuTriggerFor]="rightMenu">
+      </div>
+
+      <!-- standard material menu -->
+      <mat-menu #rightMenu="matMenu">
+      <ng-template matMenuContent let-item="item">
+          <button mat-menu-item (click)="deleteFrom(item)"><img src="/assets/images/delete.png" alt="delete move" />Delete Move From This</button>
+          <button mat-menu-item (click)="deleteAfter(item)"><img src="/assets/images/delete.png" alt="delete move" />Delete Move After This</button>
+      </ng-template>
+      </mat-menu>
+      <!--Content menu ends-->
+    </div>
+  </div>
+</div>

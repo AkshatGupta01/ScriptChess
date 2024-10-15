@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row" *ngIf="openingName != currentName && currentName && currentName.trim().length > 0">
+        <span>Variation: {{currentName}}</span>
+    </div>
+    <div class="row" style="margin-top: 15px;">
+        <div class="col-md-7 col-sm-12">
+            <app-chess-board [allowPlay]="true" [boardId]="boardId"  #board (onMove)="onMove($event, board)"></app-chess-board>
+            <div class="row">
+                <mat-form-field class="moves-played-text" *ngIf="moveOrder">
+                    <mat-label>Moves Played</mat-label>
+                    <textarea matInput readonly>{{moveOrder}}</textarea>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field class="moves-played-text" *ngIf="currentFen">
+                    <mat-label>Current Fen</mat-label>
+                    <input matInput readonly value="{{currentFen}}">
+                  </mat-form-field>
+            </div>
+        </div>
+        <div class="col-md-5 col-sm-12">
+            <div *ngIf="!movesLoaded; else loaded">
+                <app-loader></app-loader>
+            </div>
+            <ng-template #loaded>
+                <div class="moves pop" *ngIf="!noMoveAvailable; else checkMoreMoves">
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col"></div>
+                        <div class="col-2">
+                            <div class="pop fab"  style="float: right;"  (click)="undo(board)">
+                                <mat-icon>undo</mat-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                    <app-move-label-list-box [moveDetailList]="currentMoves" [showGameCounts]="false" [currentMoveIndex]="currentMoveIndex" (onMoveSelect)="onMoveSelect($event, board)"></app-move-label-list-box>
+                </div>
+                <ng-template #checkMoreMoves>
+                    <div class="big-button big-row-button pop" (click)="goGameExplorer()"> See More in Game explorer </div>
+                </ng-template>
+            </ng-template>
+            <app-square-ads></app-square-ads>
+        </div>
+    </div>
+</div>

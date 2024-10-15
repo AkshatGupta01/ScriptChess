@@ -1,0 +1,27 @@
+<div class="collections-container">
+    <h1>{{title}}</h1>
+    <div class="sub-title">
+    <p>
+        {{description}}
+    </p>
+    </div>
+    <div class="clear"></div>
+    <app-banner-ads>
+
+    </app-banner-ads>
+    <div class="clear"></div>
+    <div class="spacer"></div>
+
+    <h2>Collections</h2>
+    <hr />
+    <div class="collections-holder row" *ngIf="!loading; else showLoading">
+        <div class="collection-box col-md-3 col-sm-12" *ngFor="let collection of collections">
+            <app-mini-collection-box [collection]="collection" ></app-mini-collection-box>
+        </div>
+
+    </div>
+    <ng-template #showLoading>
+        <app-loader></app-loader>
+    </ng-template>
+
+</div>

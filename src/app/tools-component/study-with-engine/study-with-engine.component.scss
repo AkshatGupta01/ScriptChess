@@ -1,0 +1,166 @@
+.even {
+    background-color: #2C313F !important;
+}
+
+.odd {
+    background-color: #40475A;
+}
+.move-label {
+    height: 56px;
+    margin-top: 5px;
+    line-height: 56px;
+    padding-left:20px;
+    font-weight: 600;
+    max-width: 100%;
+}
+.moves-played-text {
+    width:98%;
+    margin: 0 auto;
+    margin-top:15px;
+}
+
+.move-white, .move-black {
+    display: inline-block;
+    cursor: pointer;
+}
+.move-cat {
+    display: inline-block;
+    width: 24px;
+    margin-right:5px;
+}
+
+.move-cat img {
+    width: 100%;
+}
+
+.white-comment, .black-comment {
+    padding: 10px;
+}
+.comment {
+    display: inline-block; margin-left: 5px; cursor:pointer; line-height: 56px;
+}
+.activeMove {
+    color : #FC7343;
+}
+.game-meta {
+    padding-top: 50px;
+}
+.game-container {
+    max-width: 90%;
+    display: block;
+    margin: 0 auto;
+    margin-top:100px;
+}
+
+.active-tab {
+    background-color: #FC7343;    
+}
+.game-mode-button {
+    height: 45px;
+    font-size: large;
+    line-height: 45px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 600;
+    
+}
+
+.game-details {
+    background-color: #2b2f35;
+    padding: 0px;
+    border-radius: 10px;
+}
+.control-box {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.move-control {
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 3px;
+    height: 35px;
+    padding-top: 10px;
+    cursor: pointer;
+    margin-top:15px;
+}
+.board-section {
+    position:relative;
+}
+
+.move-control:hover {
+    -webkit-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+    -moz-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+    box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+}
+
+.move-control img {
+    width: 15px;
+    display: block;
+    margin: 0 auto;
+}
+
+.pgn-text-area {
+    height : 250px;
+    border: thin ridge #333;
+}
+.big-row-button {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 80px;
+    transform: rotate(-0.34deg);
+    margin: 0 auto;
+    margin-top: 50px;
+    text-align: center;
+}
+.move-cat-lbl {
+    display: inline-block;
+}
+
+.game-statistic {
+    padding: 15px;
+    margin-top: 50px;
+    margin-left: 15px;
+    border-radius: 10px;
+}
+.analysis-content li {
+    height: 30px;
+}
+.example-margin {
+    margin: 8px;
+    display: block;
+}
+.example-value-label {
+    font-weight: 600;
+}
+.textbox {    
+    padding: 10px;
+    border: none;
+//   box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+//     inset -5px -5px 12px rgba(255, 255, 255, 0.5);
+    box-shadow: inset 6px 6px 10px 0 rgb(0 0 0 / 20%), inset -6px -6px 5px 0 rgb(131 131 131 / 50%);
+    outline: none;
+    border-radius: 10px;
+}
+.game-analysis-info-tab-group {
+    border-radius: 10px;
+}
+.played-moves {
+    width: 100%;
+    padding:15px;
+}
+.analysis-view {
+    width: 100%;
+    padding:15px;
+}
+.move-row {
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    font-size: larger;
+    border-bottom: thin ridge #777;
+}
+.with-side-move {
+    display: block !important;
+}

@@ -1,0 +1,109 @@
+<div class="container game-container">
+  <div class="row">
+    <div class="board col-sm-12 col-md-1"></div>
+    <div class="board col-sm-12 col-md-6">
+      <div class="board-wrapper" style="width: 100%;">
+        <app-chess-board #board [fen]="fen" [boardId]="boardId" [studyMode]="true"></app-chess-board>
+      </div>
+    </div>
+    <div class="board game-details col-sm-12 d-block d-md-none pop">
+      <div class="move-row">
+        <strong style="color: #FC7343" *ngIf="moves && moveIndex > 0">{{moves[moveIndex - 1].move}}</strong>
+        <div class="control-box">
+          <div class="row">
+            <div class="col-6">
+              <div class="move-control" (click)="movePrev(board)">
+                <img src="/assets/images/left.png" />
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="move-control" (click)="moveNext(board)">
+                <img src="/assets/images/right.png" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="move-comment" *ngIf="moves && moveIndex > 0">
+          {{moves[moveIndex - 1].comment}}
+        </div>
+      </div>
+      <hr style="background-color:#ccc" />
+      <div class="container" style="padding: 25px !important;">
+        <div class="row">
+          <h3>Line : {{studyName}}</h3>
+        </div>
+        <div class="row">
+          <h4 *ngIf="author">By : {{author}}</h4>
+        </div>
+      </div>
+
+    </div>
+    <div class="board game-details d-none d-md-block col-lg-4 pop">
+      <div class="container" style="padding: 25px !important;" *ngIf="studyName">
+        <div class="row">
+          <h5>Line : {{studyName}}</h5>
+        </div>
+        <div class="row">
+          <h6 *ngIf="author">By : {{author}}</h6>
+        </div>
+      </div>
+      <div class="moves-container ">
+        <div class="control-box">
+          <div class="row">
+            <div class="col-6">
+              <div class="move-control pop" (click)="movePrev(board)">
+                <img src="/assets/images/left.png" />
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="move-control pop" (click)="moveNext(board)">
+                <img src="/assets/images/right.png" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="moves-items" style="max-height: 520px;overflow-y: scroll;">
+          <div class="move-summary odd" [ngClass]="{'even': i % 2 == 0}" *ngFor="let item of movePairs;let i = index">
+            <div class="move-label row">
+              <div class="col-2" *ngIf="item.white;else blankWhiteCol2">
+                {{item.white.moveNumber}}
+              </div>
+              <ng-template #blankWhiteCol2>
+                <div class="col-2">
+                  {{item.black.moveNumber}}
+                </div>
+              </ng-template>
+              <div class="col-5 row" *ngIf="item.white;else blankWhiteCol5" [ngClass]="{activeMove: (moveIndex == (item.white.moveNumber * 2) - 1)&& moveIndex > 0 }">
+                <div class="move-white" (click)="makeMove(item.white, true, board, i)">
+                  {{item.white.move}}
+                </div>
+                <span class="material-symbols-outlined comment" (click)="showWhiteComment(item.white)" *ngIf="item.white.comment && item.white.comment.trim().length > 0"> mark_chat_unread </span>
+              </div>
+              <ng-template #blankWhiteCol5>
+                <div class="col-5"></div>
+              </ng-template>
+              <div class="col-5 row" [ngClass]="{activeMove: ((moveIndex) == (item.black.moveNumber * 2))&& moveIndex > 0}" *ngIf="item.black">
+                <div class="move-black" (click)="makeMove(item.black, false, board, i)">
+                  {{item.black.move}}
+                </div>
+                <span class="material-symbols-outlined comment" (click)="showBlackComment(item.black)" *ngIf="item.black.comment && item.black.comment.trim().length > 0"> mark_chat_unread </span>
+              </div>
+            </div>
+            <div class="white-comment" *ngIf="item.white && item.white.comment && showWhiteCommentIndex == item.white.moveNumber">
+              <p>
+                {{item.white.comment | moveComment}}
+              </p>
+            </div>
+            <div class="black-comment" *ngIf="item.black && (item.black.comment && showBlackCommentIndex == item.black.moveNumber)">
+              <p>
+                {{item.black.comment | moveComment}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="board col-sm-12 col-md-1"></div>
+  </div>
+</div>

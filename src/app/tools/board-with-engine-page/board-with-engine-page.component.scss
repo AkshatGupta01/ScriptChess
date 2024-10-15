@@ -1,0 +1,12 @@
+
+.free-engine-container {
+    width:90%;
+    max-width: unset;
+}
+
+@media(max-width:767px) {
+    .free-engine-container {
+        width:99%;
+        max-width: unset;
+    }   
+}

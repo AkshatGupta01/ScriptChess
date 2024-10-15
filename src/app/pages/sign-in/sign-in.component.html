@@ -1,0 +1,44 @@
+<div class="container login-container">
+  <div class="row">
+    <h1>Login Into Scriptchess</h1>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-3">
+      <img src="/assets/images/lock.jpg" alt="Login into Scriptchess" style="max-width: 98%; margin: 0 auto;">
+    </div>
+    <div class="col-sm-12 col-md-9">
+      <div class="row">
+        <mat-form-field class="form-field" appearance="fill" style="width: 98%; margin: 0 auto; display: block;">
+          <mat-label>Your Username</mat-label>
+          <input matInput type="text" [(ngModel)]="username" >
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="form-field" appearance="fill" style="width: 98%; margin: 0 auto; display: block;">
+          <mat-label>Your Password</mat-label>
+          <input matInput type="password" [(ngModel)]="password" >
+        </mat-form-field>
+      </div>
+      <div class="row" *ngIf="!processing; else showLoader">
+        <div class="col">
+          <div class="small-button pop" (click)="login()" >
+            Login
+          </div>
+        </div>
+
+      </div>
+      <ng-template #showLoader>
+        <app-loader></app-loader>
+      </ng-template>
+      <div class="clear"></div>
+      <div class="row">
+        <div class="gray-link" >
+          <a routerLink="reset-password">  Forgot Password?</a>
+        </div>
+      </div>
+      <div class="row error" *ngIf="error">
+        Invalid Credentials
+      </div>
+    </div>
+  </div>
+</div>

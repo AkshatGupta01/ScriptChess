@@ -1,0 +1,160 @@
+
+<mat-tab-group class="tournament-table pop">
+  <mat-tab>
+    <ng-template mat-tab-label  class="pop">On-Going Tournaments ({{onGoingTournaments.length}})</ng-template>
+    
+    <div class="tournament-grid">            
+
+        <table mat-table [dataSource]="onGoingTournaments" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name. </th>
+              <td mat-cell *matCellDef="let element"> <a routerLink="/search/tournaments/{{element.id}}/{{element.name}}/{{element.year}}" (click)="recordTournamentClick(element)">{{element.name}} </a></td>
+            </ng-container>
+          
+            <ng-container matColumnDef="site">
+              <th mat-header-cell *matHeaderCellDef> Site </th>
+              <td mat-cell *matCellDef="let element"> <a href="{{element.site}}" target="_blank">{{element.site | hostname}}</a> </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="year">
+              <th mat-header-cell *matHeaderCellDef> Year </th>
+              <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="endDate">
+              <th mat-header-cell *matHeaderCellDef> End Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.endDate}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="source">
+                <th mat-header-cell *matHeaderCellDef> Source </th>
+                <td mat-cell *matCellDef="let element" >  <a href="{{element.source}}" target="_blank">{{element.source | hostname}}</a> </td>
+              </ng-container>
+              <ng-container matColumnDef="hasGames">
+                <th mat-header-cell *matHeaderCellDef> Games Available </th>
+                <td mat-cell *matCellDef="let element"> {{element.havingGames | yesNo}} </td>
+              </ng-container>
+              <ng-container matColumnDef="checkGames">
+                <th mat-header-cell *matHeaderCellDef> Check Games </th>
+                <td mat-cell *matCellDef="let element"> 
+                  <span *ngIf="element.havingGames; else noGame">
+                    <a routerLink="/search/tournaments/{{element.id}}/{{element.name}}/{{element.year}}" (click)="recordTournamentClick(element)"> Check Games </a>
+                  </span>
+                  <ng-template #noGame>
+                    <span>No Games</span>
+                  </ng-template>
+                </td>
+              </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+    </div>
+</mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label class="pop">Upcoming Tournaments ({{upcomingTournaments.length}})</ng-template>
+        
+        <div class="tournament-grid">            
+
+            <table mat-table class="pop" [dataSource]="upcomingTournaments" class="mat-elevation-z8">
+
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef> Name. </th>
+                  <td mat-cell *matCellDef="let element" ><a routerLink="/search/tournaments/{{element.id}}/{{element.name|urlSanitizer}}/{{element.year}}" (click)="recordTournamentClick(element)"> {{element.name}} </a></td>
+                </ng-container>
+              
+                <ng-container matColumnDef="site">
+                  <th mat-header-cell *matHeaderCellDef> Site </th>
+                  <td mat-cell *matCellDef="let element"> <a href="{{element.site}}" target="_blank">{{element.site | hostname}}</a> </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="year">
+                  <th mat-header-cell *matHeaderCellDef> Year </th>
+                  <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="endDate">
+                  <th mat-header-cell *matHeaderCellDef> End Date </th>
+                  <td mat-cell *matCellDef="let element"> {{element.endDate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="source">
+                    <th mat-header-cell *matHeaderCellDef> Source </th>
+                    <td mat-cell *matCellDef="let element" >  <a href="{{element.source}}" target="_blank">{{element.source | hostname}}</a> </td>
+                </ng-container>
+                <ng-container matColumnDef="hasGames">
+                  <th mat-header-cell *matHeaderCellDef> Games Available </th>
+                  <td mat-cell *matCellDef="let element"> {{element.havingGames | yesNo}} </td>
+                </ng-container>
+                <ng-container matColumnDef="checkGames">
+                  <th mat-header-cell *matHeaderCellDef> Check Games </th>
+                  <td mat-cell *matCellDef="let element"> 
+                    <span *ngIf="element.havingGames; else noGame">
+                      <a routerLink="/tournaments/{{element.id}}/{{element.name}}/{{element.year}}" (click)="recordTournamentClick(element)"> Check Games </a>
+                    </span>
+                    <ng-template #noGame>
+                      <span>No Games</span>
+                    </ng-template>
+                  </td>
+                </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+        </div>
+    </mat-tab>
+
+    
+
+    <mat-tab>
+        <ng-template mat-tab-label  class="pop">Concluded Tournaments ({{concludedTournaments.length}})</ng-template>
+        
+        <div class="tournament-grid">            
+
+            <table mat-table [dataSource]="concludedTournaments" class="mat-elevation-z8 pop">
+
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef> Name. </th>
+                  <td mat-cell *matCellDef="let element"> <a routerLink="/search/tournaments/{{element.id}}/{{element.name}}/{{element.year}}" (click)="recordTournamentClick(element)">{{element.name}} </a></td>
+                </ng-container>
+              
+                <ng-container matColumnDef="site">
+                  <th mat-header-cell *matHeaderCellDef> Site </th>
+                  <td mat-cell *matCellDef="let element"> <a href="{{element.site}}" target="_blank">{{element.site | hostname}}</a> </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="year">
+                  <th mat-header-cell *matHeaderCellDef> Year </th>
+                  <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="endDate">
+                  <th mat-header-cell *matHeaderCellDef> End Date </th>
+                  <td mat-cell *matCellDef="let element"> {{element.endDate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="source">
+                    <th mat-header-cell *matHeaderCellDef> Source </th>
+                    <td mat-cell *matCellDef="let element" >  <a href="{{element.source}}" target="_blank">{{element.source | hostname}}</a> </td>
+                  </ng-container>
+                  <ng-container matColumnDef="hasGames">
+                    <th mat-header-cell *matHeaderCellDef> Games Available </th>
+                    <td mat-cell *matCellDef="let element"> {{element.havingGames | yesNo}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="checkGames">
+                    <th mat-header-cell *matHeaderCellDef> Check Games </th>
+                    <td mat-cell *matCellDef="let element"> 
+                      <span *ngIf="element.havingGames; else noGame">
+                        <a routerLink="/search/tournaments/{{element.id}}/{{element.name}}/{{element.year}}" (click)="recordTournamentClick(element)"> Check Games </a>
+                      </span>
+                      <ng-template #noGame>
+                        <span>No Games</span>
+                      </ng-template>
+                    </td>
+                  </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+        </div>
+    </mat-tab>
+  </mat-tab-group>

@@ -1,0 +1,23 @@
+<div class="move-label-container">
+    <div *ngIf="moveDetailList && moveDetailList.length > 0;else noMove">
+        <div *ngFor="let item of moveDetailList;" [ngClass]="{'odd': sameBackground}">
+            <app-move-label [move]="item.move"
+                [index]="currentMoveIndex"
+                [count]="item.count"
+                [whiteWonCount] = "item.whiteWins"
+                [blackWonCount] = "item.blackWins"
+                [drawCount] = "item.draws"
+                (onClick)="moveClicked($event)"
+                [showGameCounts]="showGameCounts"
+                [novalty] = "item.novalty"
+                >
+            </app-move-label>
+        </div>
+    </div>
+
+    <ng-template #noMove>
+        <div class="no-move">
+            <p>No More moves available</p>
+        </div>
+    </ng-template>
+</div>

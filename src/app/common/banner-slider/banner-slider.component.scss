@@ -1,0 +1,94 @@
+
+.banner-img {
+  object-fit: scale-down;
+}
+@media(max-width:767px) {
+	.slider-img {
+        background-size: cover;
+        height: 243px;
+    }
+    .slider-section {
+      min-height: 250px;
+      padding: 10px !important;
+    }
+    .button-row {
+        margin-bottom: 10px;
+    }
+  }
+
+  .banner {
+    height : 550px;
+    background-color: #20232F;
+}
+.banner-loading {
+    width: 100%;
+    height: 527px;
+}
+.banner-title {
+    font-size: 45px !important;
+    line-height: 80px;
+    display: block;
+    margin: 0 auto;
+}
+
+.a-little-low {
+    padding-top: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    .banner-title {
+        font-size: 45px !important;
+        line-height: 50px;
+        display: block;
+        margin: 0 auto;
+    }
+    .a-little-low {
+        padding-top: 10px;
+    }
+    .big-button-text {
+        font-weight: 700;
+        font-size: 25px;
+        line-height: 50px;
+        transform: rotate(-0.34deg);
+        margin: 0 auto;
+        margin-top: 50px;
+        width: 230px;
+        height: 50px;
+    }
+    .banner {
+        height : auto;
+        padding-bottom: 15px;
+    }
+}
+.slider-section { padding:50px 70px; background-repeat: no-repeat; background-size: cover; background-position: center;
+    margin: 0 auto;
+    width: 95%;
+    margin-top: 25px;
+    border-radius: 15px;
+}
+.slider-img { position:relative; max-height:400px; }
+.slider-img-right{height:400px;}
+.slider-img-right img{object-fit:cover; height:100%}
+
+.slider-content h6 { text-transform: uppercase; font-size: 14px; color: #fff; margin: 0 0 20px 0; }
+.slider-content h1 { color: #ffffff; font-size: 45px; font-family: 'Raleway', sans-serif; font-weight: 700; }
+.slider-content p { color: #eeeeee; margin: 10px 0 0; }
+.slider-content h1.green-color { color: #7bb433; }
+
+.background-image {
+    height: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.hero-title {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+

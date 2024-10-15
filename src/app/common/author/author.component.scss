@@ -1,0 +1,16 @@
+.author {
+    padding : 5px;
+    max-width : 500px;
+}
+.author-image {
+    max-height: 120px;
+    max-width: 98%;
+}
+.social-icon {
+    width : 32px;
+}
+@media(max-width:767px) {
+    .author {
+      width : 100%;
+    }
+}

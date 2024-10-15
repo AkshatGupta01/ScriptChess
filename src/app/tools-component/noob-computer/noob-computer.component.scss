@@ -1,0 +1,128 @@
+.even {
+    background-color: #2C313F !important;
+}
+
+.odd {
+    background-color: #40475A;
+}
+.move-label {
+    height: 56px;
+    margin-top: 5px;
+    line-height: 56px;
+    padding-left:20px;
+    font-weight: 600;
+    max-width: 100%;
+}
+.moves-played-text {
+    width:98%;
+    margin: 0 auto;
+    margin-top:15px;
+}
+
+.move-white, .move-black {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.white-comment, .black-comment {
+    padding: 10px;
+}
+.comment {
+    display: inline-block; margin-left: 5px; cursor:pointer; line-height: 56px;
+}
+.activeMove {
+    color : #FC7343;
+}
+.game-meta {
+    padding-top: 50px;
+}
+.game-container {
+    max-width: 90%;
+    display: block;
+    margin: 0 auto;
+}
+
+.active-tab {
+    background-color: #FC7343;    
+}
+.game-mode-button {
+    height: 45px;
+    font-size: large;
+    font-family: 'constantine';
+    line-height: 45px;
+    text-align: center;
+    cursor: pointer;
+    
+}
+
+.game-details {
+    background-color: #2C313F;
+    padding: 0px;
+    border-radius: 10px;
+}
+.control-box {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.move-control {
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 3px;
+    background-color: #40475A;
+    height: 35px;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+.move-control img {
+    width: 15px;
+    display: block;
+    margin: 0 auto;
+}
+
+.move-holder {
+    border-radius: 5px;
+    min-height: 595px;
+}
+.move-holder .title {
+    font-size: large;
+    font-weight: 600;
+    max-width:150px;
+    height : 35px;
+    line-height: 35px;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+@media(max-width:767px) { 
+    .move-holder {
+        margin-top: 25px;
+    }
+}
+mat-slider {
+    width: 300px;
+}
+
+
+.example-card {
+    max-width: 400px;
+    margin:15px;
+}
+mat-card-actions {
+    text-align: right;
+}
+.reisgn-button-holder {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+}
+.startGameBox {
+    width: 98%;
+    display: block;
+    margin: 0 auto;
+}
+.saved-games-box, .opponents-container {
+    padding: 10px 25px;
+}

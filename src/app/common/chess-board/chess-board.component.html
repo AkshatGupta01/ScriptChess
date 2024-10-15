@@ -1,0 +1,188 @@
+<div class="chess-board-container pop" [ngClass]="{fitWidth: fitWidth}"  id="chess-board-container" *ngIf="!mini;else showMiniBoard">
+    <div class="row board-controls" style="margin-bottom: 5px; margin-right: 10px;" >
+        <div class="col-8  col-md-10">
+            <div class="row" *ngIf="whiteOrientated;else showWhitePlayer">
+                <div class="col-12">
+                    <div class="player-name" >
+                        <strong>{{black}} <span *ngIf="blackElo && blackElo > 0"> ({{blackElo}})</span></strong>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="bImbObj['imbArr']">
+                    <img src="/assets/pieces/{{pieceTheme}}/w{{item.piece}}.webp" style="display: inline-block; width: 25px;" *ngFor="let item of bImbObj['imbArr']" />
+                    <span *ngIf="bImbObj['total'] && bImbObj['total'] > 0" style="font-size: 12px; color: #aaa;"> +{{bImbObj['total']}}</span>
+                </div>
+            </div>
+            <ng-template #showWhitePlayer>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="player-name">
+                            <strong>{{white}}<span *ngIf="whiteElo && whiteElo > 0"> ({{whiteElo}})</span></strong>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="col-12" *ngIf="wImbObj['imbArr']">
+                            <img src="/assets/pieces/{{pieceTheme}}/b{{item.piece}}.webp" style="display: inline-block; width: 25px;" *ngFor="let item of wImbObj['imbArr']" />
+                            <span *ngIf="wImbObj['total'] && wImbObj['total'] > 0" style="font-size: 12px; color: #aaa;"> +{{wImbObj['total']}}</span>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="col-2  col-md-1">
+            <div class="pop fab" [matMenuTriggerFor]="rightMenu" title="Change Piece Theme">
+                <img src="/assets/pieces/{{pieceTheme}}/{{turn}}P.webp" style="max-height: 100%; display: block; margin: 0 auto; padding-bottom: 8px;" alt="Change Piece Theme">
+            </div>
+        </div>
+        <div class="col-2 col-md-1">
+            <div class="pop fab" [matMenuTriggerFor]="boardMenu" title="Board Menu" *ngIf="!noMenu">
+                <mat-icon color="accent">menu</mat-icon>
+            </div>
+        </div>
+
+    </div>
+    <div id="board_wrapper" [ngClass]="{blackUp: flipped}">
+        <canvas id="primary_canvas" *ngIf="allowAnnotations" [ngClass]="annotationEnabled"></canvas>
+        <canvas id="drawing_canvas" *ngIf="allowAnnotations" [ngClass]="annotationEnabled"></canvas>
+        <div id="{{boardId}}" style="width: {{boardWidth}}; height : {{boardHeight}}; margin :0 auto; max-width:98%"></div>
+        <div class="eval-running" style="position: absolute;width: 100%; height: 100%; top:0;background: rgba(50, 50, 50, 0.8);" *ngIf="engineThinking">
+            <div class="eval-message" style="position: absolute;top:35%; left:35%;text-align: center;">
+                <img src="/assets/images/eval-running.gif" style="display: inline-block; width: 120px;" /><br />
+                <span>Thinking ...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row  board-controls" style="margin-top: 5px;margin-bottom: 10px;" >
+        <div class="col-12">
+
+            <div class="row" *ngIf="whiteOrientated;else showBlackPlayer">
+                <div class="col-12">
+                    <div class="player-name">
+                        <strong>{{white}}<span *ngIf="whiteElo && whiteElo > 0"> ({{whiteElo}})</span></strong>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="col-12" *ngIf="wImbObj['imbArr']">
+                        <img src="/assets/pieces/{{pieceTheme}}/b{{item.piece}}.webp" style="display: inline-block; width: 25px;" *ngFor="let item of wImbObj['imbArr']" />
+                        <span *ngIf="wImbObj['total'] && wImbObj['total'] > 0" style="font-size: 12px; color: #aaa;" > +{{wImbObj['total']}}</span>
+                    </div>
+                </div>
+            </div>
+            <ng-template #showBlackPlayer>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="player-name">
+                            <strong>{{black}} <span *ngIf="blackElo && blackElo > 0"> ({{blackElo}})</span></strong>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="col-12" *ngIf="bImbObj['imbArr']">
+                            <img src="/assets/pieces/{{pieceTheme}}/w{{item.piece}}.webp" style="display: inline-block; width: 25px;" *ngFor="let item of bImbObj['imbArr']" />
+                            <span *ngIf="bImbObj['total'] && bImbObj['total'] > 0" style="font-size: 12px; color: #aaa;"> +{{bImbObj['total']}}</span>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+
+    </div>
+    <div class="row" *ngIf="showScore && showEval">
+        <div class="col-12">
+            <mat-progress-bar
+            color="accent"
+            mode="determinate"
+            [value]="scoreForBar"></mat-progress-bar>
+        </div>
+        <div class="col-12" style="text-align: center;">
+            <h4>{{score}}</h4>
+        </div>
+    </div>
+    <div style="visibility: hidden; position: fixed;"
+                [style.left]="menuTopLeftPosition.x"
+                [style.top]="menuTopLeftPosition.y"
+                [matMenuTriggerFor]="rightMenu">
+            </div>
+    <mat-menu #rightMenu="matMenu">
+        <ng-template matMenuContent let-item="item">
+            <div style="max-height: 300px; overflow-y: scroll;">
+                <button mat-menu-item (click)="setPieceTheme(theme)" *ngFor="let theme of pieceThemes">
+                    <div class="row">
+                        <div class="col-2">
+                            <img src="/assets/pieces/{{theme}}/wP.webp" class="chess-piece" alt="Pawn" title="Pawn" />
+                        </div>
+                        <div class="col-2">
+                            <img src="/assets/pieces/{{theme}}/wR.webp" class="chess-piece" alt="Rook" title="Rook"  />
+                        </div>
+                        <div class="col-2">
+                            <img src="/assets/pieces/{{theme}}/wN.webp" class="chess-piece" alt="Knight" title="Knight"  />
+                        </div>
+                        <div class="col-2">
+                            <img src="/assets/pieces/{{theme}}/wB.webp" class="chess-piece" alt="Bishop" title="Bishop"  />
+                        </div>
+                        <div class="col-2">
+                            <img src="/assets/pieces/{{theme}}/wQ.webp" class="chess-piece" alt="Queen" title="Queen"  />
+                        </div>
+                        <div class="col-2">
+                            <img src="/assets/pieces/{{theme}}/wK.webp" class="chess-piece" alt="King" title="King"  />
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </ng-template>
+    </mat-menu>
+    <!-- standard material menu -->
+    <div style="visibility: hidden; position: fixed;"
+                [style.left]="menuTopLeftPosition.x"
+                [style.top]="menuTopLeftPosition.y"
+                [matMenuTriggerFor]="boardMenu">
+            </div>
+    <mat-menu #boardMenu="matMenu" class="boardMenu">
+        <ng-template matMenuContent let-item="item">
+            <div class="pop fab board-menu-item" [ngClass]="fabClass" *ngIf="engineThinking">
+                <mat-icon color="accent">psychology</mat-icon>
+            </div>
+            <div class="pop fab board-menu-item" [ngClass]="fabClass" (click)="flipOrientation()">
+                <mat-icon color="accent" title="Flip Board">screen_rotation_alt</mat-icon>
+            </div>
+            <div class="pop fab board-menu-item" [ngClass]="fabClass" (click)="toggleAudio()">
+                <mat-icon *ngIf="!noAudio;else mute"  title="Toggle Sound" color="accent">volume_up</mat-icon>
+                <ng-template #mute>
+                    <mat-icon>volume_off</mat-icon>
+                </ng-template>
+            </div>
+            <div class="pop fab board-menu-item" (click)="toggleEval()" title="Toggle Eval">
+                <mat-icon color="{{showEval ? 'secondary' : 'primary'}}">bar_chart</mat-icon>
+            </div>
+            <div class="pop fab board-menu-item" (click)="removeAnnotations()" title="remove arrows">
+                <mat-icon color="accent">mobiledata_off</mat-icon>
+            </div>
+            <div class="pop fab board-menu-item" (click)="downloadSnapshot()" title="Download Snapshot of this position">
+                <mat-icon color="accent">crop_original</mat-icon>
+            </div>
+            <div class="pop fab board-menu-item" (click)="showSupportingSquares()" title="Shows White's and Black's Domination over board">
+                <img src="{{dominationPainted ? '/assets/images/support-on.png' : '/assets/images/support.png' }}" alt="show Supported squares" style="max-width: 16px; display: block;  margin: 0 auto; padding-top:12px">
+            </div>
+
+            <div class="pop fab board-menu-item" (click)="createWeb()" title="Shows support and attack on pieces by netting a web">
+              <img src="{{webPainted ? '/assets/images/web-on.png' : '/assets/images/web.png' }}" alt="create web of pieces"  style="max-width: 16px; display: block;  margin: 0 auto; padding-top:12px">
+          </div>
+          <div class="pop fab board-menu-item" (click)="customize()" title="Customize Chessboard">
+            <img src="/assets/images/custom.png" alt="create web of pieces"  style="max-width: 16px; display: block;  margin: 0 auto; padding-top:12px">
+          </div>
+        </ng-template>
+    </mat-menu>
+</div>
+<ng-template #showMiniBoard>
+    <div id="board_wrapper" [ngClass]="{blackUp: flipped}" style="margin: 5px;">
+        <canvas id="primary_canvas" *ngIf="allowAnnotations" [ngClass]="annotationEnabled"></canvas>
+        <canvas id="drawing_canvas" *ngIf="allowAnnotations" [ngClass]="annotationEnabled"></canvas>
+        <div id="{{boardId}}" style="width: {{boardWidth}}; height : {{boardHeight}}; margin :0 auto; max-width:98%"></div>
+        <div class="eval-running" style="position: absolute;width: 100%; height: 100%; top:0;background: rgba(50, 50, 50, 0.8);" *ngIf="engineThinking">
+            <div class="eval-message" style="position: absolute;top:35%; left:35%;text-align: center;">
+                <img src="/assets/images/eval-running.gif" style="display: inline-block; width: 120px;" /><br />
+                <span>Thinking ...</span>
+            </div>
+        </div>
+    </div>
+</ng-template>

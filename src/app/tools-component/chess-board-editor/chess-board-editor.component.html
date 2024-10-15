@@ -1,0 +1,81 @@
+<div class="chess-board-container pop">
+    <div class="row" style="padding: 10px;">
+        <div class="col"></div>
+        <div class="col-2" title="Flip Board">
+            <div class="row" style="margin-bottom: 5px; text-align: center;">Flip</div>
+            <div class="row">
+                <div class="pop fab" (click)="flipOrientation()">
+                    <mat-icon color="accent">flip</mat-icon>
+                </div>
+            </div>
+        </div>
+        <div class="col-2" title="Clear All Pieces">
+            <div class="row" style="margin-bottom: 5px; text-align: center">Clear</div>
+            <div class="row">
+                <div class="pop fab" (click)="clearAllPieces()">
+                    <mat-icon color="accent">clear_all</mat-icon>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-2"  title="Load the position">
+            <div class="row" style="margin-bottom: 5px; text-align: center">Load</div>
+            <div class="row">
+                <div class="pop fab" (click)="setupPositionCompleted()">
+                    <mat-icon color="accent">check_circle</mat-icon>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-4 ">
+            <div class="row" style="margin-bottom: 5px;  text-align: center; display: block;">To Play</div>
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center" title="Black To Play">
+                    <div class="pop fab" [ngClass]="{play: !whiteToPlay}" (click)="setPlayer('black')">
+                        <mat-icon color="accent"   style="color: black;">circle</mat-icon>
+                    </div>
+                </div>
+                <div class="col-6 d-flex justify-content-center" title="White To Play">
+                    <div class="pop fab"  [ngClass]="{play: whiteToPlay}"   (click)="setPlayer('white')"  >
+                        <mat-icon color="accent" style="color: #eee;">circle</mat-icon>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+    <div class="row"  style="text-align: center; font-weight: 500; padding: 10px; line-height: 30px;">
+        <div class="col-6">
+            Black: 
+            <div class="row">
+                <div class="col-6">
+                    <div [ngClass]="{play: blackShortCastle}" class="button pop" (click)="setCastle('black','short')">O-O</div>
+                </div>
+                <div class="col-6">
+                    <div [ngClass]="{play: blackLongCastle}" class="button pop" (click)="setCastle('black','long')" >O-O-O</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            White: 
+            <div class="row">
+                <div class="col-6">
+                    <div [ngClass]="{play: whiteShortCastle}" class="button pop"  (click)="setCastle('white','short')">O-O</div>
+                </div>
+                <div class="col-6">
+                    <div [ngClass]="{play: whiteLongCastle}" class="button pop"  (click)="setCastle('white','long')">O-O-O</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="board_wrapper" [ngClass]="{blackUp: flipped}">
+        <div id="{{boardId}}" style="width: {{boardWidth}}; height : {{boardHeight}}; margin :0 auto"></div>        
+    </div>
+    <div class="row" style="padding-left: 15px;">
+        <mat-form-field class="moves-played-text" *ngIf="currentFen">
+            <mat-label>Current Fen</mat-label>
+            <input matInput readonly value="{{currentFen}}">
+          </mat-form-field>
+    </div>
+</div>

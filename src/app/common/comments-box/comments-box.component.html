@@ -1,0 +1,9 @@
+<div class="comments-box-container">
+    <div class="comment-label" *ngIf="comments && comments.length > 0">
+        <h3> Comments ({{comments.length}})</h3>
+        <hr />
+    </div>
+    <div class="comment" *ngFor="let item of comments">
+        <app-comment [comment]="item"></app-comment>
+    </div>
+</div>

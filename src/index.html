@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ScriptChess</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="chess, chess games, chess tournaments, chess tournaments update, free chess analysis, chess against computer,
+  chess database, chess explorer, chess free online, chess online freee">
+  <meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large"/>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="/assets/css/owl.carousel.min.css" />
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1154421276196704"
+     crossorigin="anonymous"></script> -->
+
+</head>
+<body>
+  <app-root></app-root>
+
+</body>
+<!-- <script src="/assets/js/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+
+<script src="/assets/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="/assets/js/owl.carousel.min.js"></script>
+<script src="/assets/js/chess-arrows.js"></script>
+<script src="/assets/js/jquery-svg.js"></script>
+<script src="/assets/js/filesaver.js"></script>
+<script src="/assets/js/html2canvas.js"></script>
+<script src="/assets/js/div-to-image.js"></script>
+<script src="/assets/js/gif-pgn.js"></script>
+<script src="/assets/js/d3.v3.min.js"></script>
+<script>
+  if (!crossOriginIsolated) {
+    //console.log("Manipulating sharedBufferArray")
+    SharedArrayBuffer = ArrayBuffer;
+  }
+</script>
+<script type="text/javascript">
+  // (function(c,l,a,r,i,t,y){
+  //     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  //     t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  //     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  // })(window, document, "clarity", "script", "fdn1h0h3d6");
+  setTimeout(()=>{
+    ////console.log($('.navbar-nav>ul>li>a'))
+    $('.navbar-nav>li>a').on('click', function(e){
+      let classNames = e.target.getAttribute("class");
+      if(classNames && classNames.indexOf('dropdown-toggle') < 0 || classNames && classNames.indexOf('dropdown-item') > -1) {
+        $('.navbar-collapse').collapse('hide');
+      }
+    });
+    $('.navbar-nav>li>div>a').on('click', function(e){
+      let classNames = e.target.getAttribute("class");
+      $('.navbar-collapse').collapse('hide');
+    });
+  },1000)
+
+</script>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function(){
+
+el_autohide = document.querySelector('.autohide');
+
+// add padding-top to bady (if necessary)
+navbar_height = document.querySelector('.navbar').offsetHeight;
+document.body.style.paddingTop = navbar_height + 'px';
+
+if(el_autohide){
+  var last_scroll_top = 0;
+  window.addEventListener('scroll', function() {
+        let scroll_top = window.scrollY;
+       if(scroll_top < last_scroll_top) {
+            el_autohide.classList.remove('scrolled-down');
+            el_autohide.classList.add('scrolled-up');
+        }
+        else {
+            el_autohide.classList.remove('scrolled-up');
+            el_autohide.classList.add('scrolled-down');
+        }
+        last_scroll_top = scroll_top;
+  });
+  // window.addEventListener
+}
+// if
+
+});
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</html>

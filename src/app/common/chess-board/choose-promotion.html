@@ -1,0 +1,17 @@
+<div class="container">
+    <h3>Promote to :</h3>
+    <div class="row">
+        <div class="col-3" (click)="choose('b')">
+            <img src="/assets/pieces/alpha/{{data.turn}}B.svg" style="width: 50px; cursor: pointer;" alt="Bishop" title="Promote to Bishop" />
+        </div>
+        <div class="col-3" (click)="choose('n')">
+            <img src="/assets/pieces/alpha/{{data.turn}}N.svg" style="width: 50px; cursor: pointer"  alt="Knight" title="Promote to Knight" />
+        </div>
+        <div class="col-3" (click)="choose('r')">
+            <img src="/assets/pieces/alpha/{{data.turn}}R.svg" style="width: 50px; cursor: pointer"  alt="Rook" title="Promote to Rook" />
+        </div>
+        <div class="col-3" (click)="choose('q')">
+            <img src="/assets/pieces/alpha/{{data.turn}}Q.svg" style="width: 50px; cursor: pointer"  alt="Queen" title="Promote to Queen" />
+        </div>
+    </div>
+</div>

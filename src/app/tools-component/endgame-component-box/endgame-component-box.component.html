@@ -1,0 +1,35 @@
+<div class="container position-box" title="Click to play against Engine">
+  <div class="row">
+    <app-chess-board [mini]="true"  [boardWidth]="boardWidth" [fen]="endgame.fen" [allowPlay]="false" [boardId]="boardId"></app-chess-board>
+  </div>
+  <div class="row">
+      <span style="text-align: center; width: 100%;">{{endgame.whitePlayer.name}} vs {{endgame.blackPlayer.name}}</span>
+  </div>
+  <div class="row">
+    <div class="col-2">
+      <div class="pop fab" title="Play against Bot"  (click)="playAgainstEngine()">
+        <mat-icon color="accent">psychology</mat-icon>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="pop fab" title="Analyze using Engine"  (click)="analyzeFurther()">
+        <mat-icon color="accent">tune</mat-icon>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="pop fab" title="Check full game"  (click)="checkFullGame()">
+        <mat-icon color="accent">visibility</mat-icon>
+      </div>
+    </div>
+    <div class="col-2" *ngIf="turn == 'b'">
+      <div class="pop fab" title="Black to play">
+        <img src="/assets/pieces/chessnut/bP.webp" style="display: block; width: 25px; padding-top:5px; margin: 0 auto;"/>
+      </div>
+    </div>
+    <div class="col-2" *ngIf="turn == 'w'">
+      <div class="pop fab" title="White to play">
+        <img src="/assets/pieces/chessnut/wP.webp" style="display: block; width: 25px; padding-top:5px; margin: 0 auto;"/>
+      </div>
+    </div>
+  </div>
+</div>

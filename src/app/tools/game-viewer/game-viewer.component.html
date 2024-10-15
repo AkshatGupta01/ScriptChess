@@ -1,0 +1,12 @@
+<div class="game-explorer-container">
+    <div *ngIf="!isLoading && game;else load">
+        <h2 style="margin-bottom: 50px;" id="game-title">{{title}}</h2>
+        <app-game-summary-box [game] = "game"></app-game-summary-box>        
+    </div>
+    <ng-template #load>
+        <app-loader></app-loader>
+    </ng-template>
+</div>
+
+
+

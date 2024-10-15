@@ -1,0 +1,64 @@
+<div class="quize-container">
+    <div class="row">
+        <div class="col-md-7 col-xs-12">
+            <app-chess-board #board  [boardId]="boardId" [fen]="currentFen" ></app-chess-board>
+        </div>
+        <div class="col-md-5  col-xs-12 eval-option-container mobile-space">
+            <h3>Evaluate the position</h3>
+            <strong> Guide: </strong>
+            <ul>
+                <li>If Eval > 1 white is better </li>
+                <li>If Eval < -1 Black is better </li>
+                <li>If Eval is between 1 and -1 then consider equal </li>
+                <li><a href="/tools/position-quiz#how-to-analyze-any-position-in-chess-a-comprehensive-guide">Guide for Evaluating chess position</a></li>
+            </ul>
+            <Strong> Move: </Strong> {{turn}}
+            <div class="clear"></div>
+            <Strong> Fen: </Strong> {{currentFen}}
+            <div class="clear"></div>
+            <h3> Choose : </h3>
+            <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                (change)="checkEval($event)"
+                [disabled]="materialResult"
+                [(ngModel)]="material">
+                <mat-radio-button class="option-buttons" *ngFor="let option of options" [value]="option">
+                    {{option.label}}
+                </mat-radio-button>            
+            </mat-radio-group>
+            <div id="result" *ngIf="showCorrectResult">
+                <div class="row">
+                    <div class="col-1">
+                        <img class="result-img" alt="result" *ngIf="passed" src="/assets/images/ready.png" />
+                        <img class="result-img" alt="result" *ngIf="!passed" src="/assets/images/blunder.png" />
+                    </div>
+                    <div class="col-11">
+                        <div class="row">
+                            <div class="col">
+                                <strong>Eval</strong> : {{positionEval}} (depth: {{depth}})
+                            </div>
+                            <div class="col">
+                                <a [routerLink]="['/free-chess-engine']" [queryParams]="{fen:currentFen|base64}" >Dig Deeper</a> 
+                            </div>
+
+                        </div>    
+                        
+                    </div>
+
+                </div>
+                
+                <div class="clear"></div>
+                <div class="clear"></div>
+                <div class="small-button pop" (click)="showNext()">
+                    Next
+                </div>
+            </div>
+            <div id="result" *ngIf="engineChecking">
+                <h6> Engine Evaluating ... </h6>
+            </div>
+            <div id="load" *ngIf="fetching">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+</div>

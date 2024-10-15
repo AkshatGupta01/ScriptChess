@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="redirect" *ngIf="!notFound; else routeNotFound">
+        <app-loader></app-loader>
+    </div>
+    <ng-template #routeNotFound>
+        <div class="not-found" style="display: block; margin: 50px auto; width: 80%;">
+            <div class="row" style="text-align: center;">
+                <h1 style="width: 100%; text-align:center;">404 Not Found </h1>
+            </div>
+            <div class="row">
+                <img src="/assets/images/not-found.webp" style="max-width: 400px; display: block; margin: 10px auto;" alt="Not Found">
+            </div>
+            
+        </div>
+    </ng-template>
+</div>

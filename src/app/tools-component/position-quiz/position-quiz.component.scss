@@ -1,0 +1,25 @@
+.option-buttons {
+    margin-left: 15px;
+}
+.criteria-name {
+    font-weight: 500;
+}
+.result-img {
+    width: 24px;
+}
+.material-row {
+    border-bottom: thin ridge gray;
+    padding:10px;
+}
+.eval-option-container {
+    max-height: 600px;
+    overflow-y: scroll;
+}
+.show-result-container {
+    padding:15px;
+}
+@media(max-width:767px) {
+    .mobile-space {
+        margin-top: 25px
+    }
+}

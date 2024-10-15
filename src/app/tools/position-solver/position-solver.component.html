@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="search-form" style="margin-bottom: 15px;">
+    <h2 *ngIf="!trainingMode;else trainingModeTitle">Search Chess positions And puzzles</h2>
+    <ng-template #trainingModeTitle>
+      <h2>Search Chess positions And puzzles</h2>
+    </ng-template>
+    <div class="row">
+        <div class="col-sm-12 col-md-9">
+            <div class="row">
+                <div class="col-md-4 col-sm-12"  *ngIf="!blindfold">
+                    <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                        <mat-label>Opening</mat-label>
+                        <input matInput type="text" [(ngModel)]="opening">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4  col-sm-12"  *ngIf="!blindfold">
+                    <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                        <mat-label>Theme</mat-label>
+                        <input matInput type="text" [(ngModel)]="theme">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4 col-sm-12" *ngIf="!blindfold">
+                    <div class="row">
+                        <div class="col-2">
+                            <mat-checkbox class="example-margin" [(ngModel)]="pawnChecked"><img src="/assets/pieces/alpha/wP.svg" style="width: 32px;" alt="Pawn"></mat-checkbox>
+                        </div>
+                        <div class="col-2">
+                            <mat-checkbox class="example-margin" [(ngModel)]="rookChecked"><img src="/assets/pieces/alpha/wR.svg" style="width: 32px;" alt="Rook"></mat-checkbox>
+
+                        </div>
+                        <div class="col-2">
+                            <mat-checkbox class="example-margin" [(ngModel)]="knightChecked"><img src="/assets/pieces/alpha/wN.svg" style="width: 32px;" alt="Knight"></mat-checkbox>
+
+                        </div>
+                        <div class="col-2">
+                            <mat-checkbox class="example-margin" [(ngModel)]="bishopChecked"><img src="/assets/pieces/alpha/wB.svg" style="width: 32px;" alt="Bishop"></mat-checkbox>
+
+                        </div>
+                        <div class="col-2">
+                            <mat-checkbox class="example-margin" [(ngModel)]="queenChecked"><img src="/assets/pieces/alpha/wQ.svg" style="width: 32px;" alt="Queen"></mat-checkbox>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-9">
+                    <mat-slider
+                    class="rating-slider"
+                    thumbLabel
+                    step="100"
+                    min="500"
+                    max="3000"
+                    [(ngModel)]="rating"
+                    aria-label="units"></mat-slider>
+                </div>
+                <div class="col-3">
+                    Range : {{rating-100}} - {{rating+100}}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3  col-sm-12">
+            <div class="small-button pop" (click)="search()">
+                Search
+            </div>
+        </div>
+    </div>
+</div>
+<div class="position-container" *ngIf="puzzles; else showLoading">
+  <app-position-solver [puzzle] = "currentPuzzle" (onCompleteWithAttempt)="onComplete($event)" (onToggleBlindfold) = "onToggleBlindfold($event)" ></app-position-solver>
+</div>
+<ng-template #showLoading>
+  <app-loader></app-loader>
+</ng-template>
+<div class="clear"></div>
+<div class="clear"></div>
+<app-page-section pageSlug="solve-chess-puzzles"></app-page-section>
+</div>

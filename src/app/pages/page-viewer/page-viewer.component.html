@@ -1,0 +1,37 @@
+<div class="page-container">
+    <app-json-ld [schemaJson] = "schemaJson" *ngIf="schemaJson"></app-json-ld>        
+    <div class="page-inner-container" *ngIf="!isLoading && page; else showLoading">
+        <h1>{{page.title}}</h1>
+        <div class="row">
+            <div class="col-2 author-name">{{page.writer.name}}</div>
+            <div class="col-10 page-date" style="text-align: right;">{{page.published_at |date}}</div>
+        </div>        
+        <div class="clear">
+
+        </div>
+        <img class="hero-image" src="{{page.image.url|cdnImage}}" alt="{{page.title}}" title = "{{page.title}}"/>
+
+        <div class="clear">
+        </div>
+        <div class="blog-detailed-content ck-content" style="padding-left: 25px">
+            <article [innerHTML] = "pageBody" *ngIf="content">
+            </article>
+           <div *ngIf="page.faq && page.faq.length > 0">
+               <h2>Frequently Asked Questions</h2>
+               <div class="faq-collections ck-content">
+                   <app-faq-items [faq]="item" *ngFor="let item of page.faq"></app-faq-items>
+               </div>
+           </div>
+       </div>
+
+       <div class="tags-holder" *ngIf="page.tags && page.tags.length > 0">
+           <h3> Tags : </h3>
+        <ul class="tags">
+            <li><a href="#" class="tag" *ngFor="let item of page.tags">{{item.name}}</a></li>
+          </ul>
+       </div>
+    </div>
+    <ng-template #showLoading>
+        <app-loader></app-loader>
+    </ng-template>
+</div>

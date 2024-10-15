@@ -1,0 +1,11 @@
+<div class="container game-label" *ngIf="game" class="{{className}}">
+    <a routerLink="/tools/games/{{game.id}}/{{game.whitePlayer.name}} vs {{game.blackPlayer.name}}">
+        <div class="row">
+            <div class="player">{{index}}. </div> 
+            <div class="player">{{game.whitePlayer.name}}</div> 
+            <div class="player">vs</div>
+            <div class="player">{{game.blackPlayer.name}}</div> 
+            <div class="player">({{game.result}})</div> 
+        </div>
+    </a>
+</div>

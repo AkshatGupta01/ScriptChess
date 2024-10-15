@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>{{data.result}}</h1>
+<div mat-dialog-content>
+  <p>The Game is Over</p>
+  <div class="pgn-area" style="margin:10px;">
+    <textarea matInput #commentBox class="pgn-text-area textbox" style="width: 95%; height: 150px;" readonly>{{data.pgn}}</textarea>
+  </div>
+  
+  <strong>You want Another game?</strong>
+</div>
+<div class="clear"></div>
+<div mat-dialog-actions>
+    <div class="row">
+        <div class="col-6"><div class="small-button pop" (click)="onNoClick()">Nah!!</div></div>        
+        <div class="col-6"><div class="small-button pop" (click)="onYesClick()" cdkFocusInitial>Yes</div></div>
+    </div>
+  
+</div>

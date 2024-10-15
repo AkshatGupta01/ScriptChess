@@ -1,0 +1,63 @@
+<div class="download-games-container">
+    <h1>
+        Download Your <a href="https://chess.com" target="_blank">Chess.com</a> games
+    </h1>
+    <div class="row" style="margin-top : 50px">
+        <div class="col-xs-12 col-md-8">
+            <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                <mat-label>Enter Username</mat-label>
+                <input matInput type="text" [(ngModel)]="username" >
+            </mat-form-field>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="small-button pop" (click)="fetchGameMetadata()">
+                Search
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="error-box" style="color: #e18888; font-weight: 600;" *ngIf="error">
+        {{error}}
+    </div>
+    <div class="loader" *ngIf="downloadStarted">
+      <app-loader></app-loader>
+    </div>
+    <div class="games-metadata-box" *ngIf="metadata && metadata.length > 0">
+        <h2>Games Archive</h2>
+        <div class="row" style="background-color: #333; font-weight: 600; text-align: center; height: 35px; ;line-height: 35px; margin-bottom: 10px;">
+            <div class="col-4">
+                Month
+            </div>
+            <div class="col-4">
+                Portal
+            </div>
+            <div class="col-4">
+                Download
+            </div>
+        </div>
+        <div class="row-box" style="max-height : 650px; overflow-y : scroll">
+            <div class="row" *ngFor="let item of metadataMonths" style="margin : 15px;text-align: center;">
+                <div class="col-3">
+                    {{item.date}}
+                </div>
+                <div class="col-4">
+                  <a href="https://chess.com" target="_blank">Chess.com</a>
+                </div>
+                <div class="col-2">
+                  <div class="pop fab" title="Download PGN" (click)="downloadPgn(item.link, item.date)">
+                    <mat-icon color="accent">download</mat-icon>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="pop fab" title="Analyze All" (click)="analyzeGames(item.date)">
+                    <mat-icon color="accent">psychology</mat-icon>
+                  </div>
+              </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="clear"></div>
+    <div class="clear"></div>
+    <app-page-section pageSlug="download-games"></app-page-section>
+</div>

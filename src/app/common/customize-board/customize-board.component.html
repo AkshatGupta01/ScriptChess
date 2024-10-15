@@ -1,0 +1,175 @@
+<div class="container">
+  <h1>Customize Board style</h1>
+  <p>
+    Personalize your experience on Scriptchess with your preferred board style
+  </p>
+  <div class="row">
+    <div class="col-sm-12 col-md-6">
+        <h2>Select Board Theme</h2>
+        <div class="gray-board" *ngFor="let item of boardArray">
+          <h3>{{item | capitalize}}: </h3>
+          <table [ngClass]="{'selected': selected == item}">
+            <tr>
+              <td class="white">
+
+              </td>
+              <td class="{{item}}">
+
+              </td>
+              <td class="white">
+
+              </td>
+              <td class="{{item}}">
+
+              </td>
+
+            </tr>
+            <tr>
+              <td class="white">
+
+              </td>
+              <td class="{{item}}">
+
+              </td>
+              <td class="white">
+
+              </td>
+              <td class="{{item}}">
+
+              </td>
+            </tr>
+          </table>
+          <div class="clear"></div>
+          <div class="small-button pop" (click)="selectTheme(boardArrayMap[item])">
+            Select
+          </div>
+          <div class="clear"></div>
+          <div class="clear"></div>
+        </div>
+
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <h2>Select Pieces Theme</h2>
+      <div class="row" *ngFor="let theme of pieceThemes" (click)="setPieceTheme(theme)"  [ngClass]="{'selected-piece': selectedPieceTheme == theme}" style="border: thin ridge gray; cursor: pointer;">
+        <div class="col">
+          <img src="/assets/pieces/{{theme}}/wP.webp" class="chess-piece" alt="Pawn" title="Pawn" />
+        </div>
+        <div class="col">
+            <img src="/assets/pieces/{{theme}}/wR.webp" class="chess-piece" alt="Rook" title="Rook"  />
+        </div>
+        <div class="col">
+            <img src="/assets/pieces/{{theme}}/wN.webp" class="chess-piece" alt="Knight" title="Knight"  />
+        </div>
+        <div class="col">
+            <img src="/assets/pieces/{{theme}}/wB.webp" class="chess-piece" alt="Bishop" title="Bishop"  />
+        </div>
+        <div class="col">
+            <img src="/assets/pieces/{{theme}}/wQ.webp" class="chess-piece" alt="Queen" title="Queen"  />
+        </div>
+        <div class="col">
+            <img src="/assets/pieces/{{theme}}/wK.webp" class="chess-piece" alt="King" title="King"  />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+  <div class="clear"></div>
+  <h2>
+    Wanna Use Round Square?
+  </h2>
+  <div class="row">
+    <div class="col-sm-12 col-md-4" *ngFor="let item of radiusSet" [ngClass]="{'selected': squareRadius == item}">
+      <h3>{{radiusmap[item]}}</h3>
+      <table>
+        <tr>
+          <td class="white" style="border-radius: {{item}};">
+
+          </td>
+          <td class="{{selected}}" style="border-radius: {{item}};">
+
+          </td>
+          <td class="white" style="border-radius: {{item}};">
+
+          </td>
+          <td class="{{selected}}" style="border-radius: {{item}};">
+
+          </td>
+
+        </tr>
+        <tr>
+          <td class="white" style="border-radius: {{item}};">
+
+          </td>
+          <td class="{{selected}}" style="border-radius: {{item}};">
+
+          </td>
+          <td class="white">
+
+          </td>
+          <td class="{{selected}}" style="border-radius: {{item}};">
+
+          </td>
+        </tr>
+      </table>
+      <div class="clear"></div>
+      <div class="clear"></div>
+      <div class="small-button pop" (click)="selectRadius(item)">
+        Select
+      </div>
+      <div class="clear"></div>
+      <div class="clear"></div>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+  <div class="clear"></div>
+  <h2>
+    How would you like me to highlight legal moves?
+  </h2>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-4" *ngFor="let item of highlightTheme">
+      <h3>Theme: {{item}}</h3>
+      <table>
+        <tr>
+          <td class="white">
+            <img src="/assets/images/wR-with-cursor.webp" style="width: 100%;"/>
+          </td>
+          <td class="gray {{item}}">
+
+          </td>
+          <td class="white {{item}}">
+
+          </td>
+          <td class="gray {{item}}">
+
+          </td>
+
+        </tr>
+        <tr>
+          <td class="white">
+            <img src="/assets/pieces/alpha/wR.webp"  style="width: 100%;" />
+          </td>
+          <td class="gray {{selected}}">
+
+          </td>
+          <td class="white">
+
+          </td>
+          <td class="gray {{selected}}">
+
+          </td>
+        </tr>
+      </table>
+      <div class="clear"></div>
+      <div class="clear"></div>
+      <div class="small-button pop" (click)="selectHighlightSquares(item)">
+        Select
+      </div>
+      <div class="clear"></div>
+      <div class="clear"></div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,100 @@
+.move-label {
+    height: 56px;
+    line-height: 56px;
+    cursor: pointer;
+    max-width: 200%;
+    flex-wrap: nowrap;
+    margin : 5px
+}
+
+.move-str {
+    margin-right: 10px;
+    margin-left: 10px;
+    font-weight: 600;
+    width: fit-content;
+}
+.even {
+    background-color: #2C313F;
+}
+
+.odd {
+    background-color: #40475A;
+}
+
+.white-win {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.black-win {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #000;
+}
+
+.draw {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #777;
+}
+.vertical{
+    position: absolute;
+    top:50%;
+    transform: translate(-50%,-50%);
+}
+.per-val {
+    margin-left: 25px;
+}
+@media only screen and (max-width: 768px) {
+    .move-label {
+        height: 116px;
+    }
+    .per-val {
+        margin-left: 0;
+        text-align: center;
+        margin-top: 35px;;
+    }
+    .white-win {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: #fff;
+
+    }
+    .black-win {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: #000;
+    }
+    .vertical{
+        position: inherit;
+        top:50%;
+        transform: translate(-50%,-50%);
+        display: block;
+        margin: 0 auto;
+    }
+    .draw {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: #777;
+    }
+    .winVal{
+        padding: 0 !important;
+    }
+    .move-str {
+        margin-right: 2px;
+        margin-left: 2px;
+    }
+    .move-label  {
+        margin-left:0 !important;
+    }
+}
+.novalty {
+    background-color: aqua !important;
+}

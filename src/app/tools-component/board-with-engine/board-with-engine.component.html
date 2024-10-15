@@ -1,0 +1,345 @@
+<div class="board-with-engine-container">
+    <div class="row">
+        <div class="board col-md-auto col-xs-12">
+            <div class="primary-lines d-block d-sm-none" *ngIf="(candidateLines && candidateLines.lines.length > 0) && !gameAnalysisOn && showEngineLines">
+                Depth: {{candidateLines.depth}} <img src="/assets/images/eval-running.gif" style="width: 16px; display:inline" *ngIf="engineThinking" />
+
+                <app-candidate-lines-viewer [lines]="candidateLines.lines"></app-candidate-lines-viewer>
+            </div>
+            <div class="board-wrapper" style="width: 100%;" *ngIf="!allowSetPosition;else showBoardWithSparePieces" >
+                <app-chess-board #board *ngIf="!setupFen;else customFenBoard" [onlyAttacks]="onlyAttacks" [studyMode]="true" [allowPlay]="true" [engineThinking]="gameAnalysisOn" [whiteOrientated]="whiteOrientated" (onMoveEx)="onMove($event)" [showScore]="true" [fen]="initialPosition" [score]="score" [boardId]="boardId"></app-chess-board>
+                <ng-template #customFenBoard>
+                    <app-chess-board #board [allowPlay]="true" [engineThinking]="gameAnalysisOn" [onlyAttacks]="onlyAttacks" [studyMode]="true" (onMoveEx)="onMove($event)" [whiteOrientated]="whiteOrientated" [showScore]="true" [score]="score" [fen]="setupFen" [boardId]="boardId"></app-chess-board>
+                </ng-template>
+            </div>
+            <ng-template #showBoardWithSparePieces>
+                <app-chess-board-editor  [boardId]="sparePieceBoardId" (onPositionChange)="onPositionChange($event)" (onPositionSetComplete)="onPositionSetComplete($event)"></app-chess-board-editor>
+            </ng-template>
+        </div>
+        <div class="col col-xs-12" style="width:10%">
+
+            <div class="move-container pop" *ngIf="gameStarted; else showFenBox">
+                <mat-tab-group class="game-analysis-info-tab-group" [selectedIndex]="selectedTab.value" (selectedIndexChange)="onSelectionChange($event)">
+                    <mat-tab>
+                        <ng-template mat-tab-label>Game Info</ng-template>
+                        <div class="row" *ngIf="!gameAnalysisOn;else showAnalysisHeader" style="margin:0; margin-top: 15px;">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h3>Engine Lines</h3>
+                                </div>
+                            </div>
+
+                            <div class="row" style="width: 100%;">
+                                <div class="col-6" style="text-align: right; font-size: small;">
+                                    <mat-slide-toggle (change)="toggleShowBestMove($event)">Best Moves</mat-slide-toggle>
+                                </div>
+                                <div class="col-6" style="text-align: right; font-size: small">
+                                    <mat-slide-toggle [(ngModel)]="showEngineLines">Engine Lines</mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <ng-template #showAnalysisHeader>
+                            <h2>Analyzing Game</h2>
+                        </ng-template>
+                        <div class="book-move-section">
+                            <span>{{openingName}}</span>
+                        </div>
+                        <div class="primary-lines d-none d-sm-block" *ngIf="(candidateLines && candidateLines.lines.length > 0) && !gameAnalysisOn && showEngineLines">
+                            Depth: {{candidateLines.depth}}/{{engineDepth}} <img src="/assets/images/eval-running.gif" style="width: 16px; display:inline" *ngIf="engineThinking" /> &nbsp; &nbsp;
+                            <mat-form-field>
+                                <mat-label> Change Depth ({{engineDepth}})</mat-label>
+                                <mat-select [(ngModel)]="engineDepth" name="engineDepth">
+                                  <mat-option value="25">
+                                    25
+                                  </mat-option>
+                                  <mat-option value="35">
+                                    35
+                                  </mat-option>
+                                  <mat-option value="45">
+                                    45
+                                  </mat-option>
+                                  <mat-option value="99">
+                                    99
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            <app-candidate-lines-viewer [lines]="candidateLines.lines"></app-candidate-lines-viewer>
+                        </div>
+                        <div class="show-progress" *ngIf="gameAnalysisOn">
+                            <mat-progress-bar color="accent" mode="determinate" [value]="gameAnalysisProgess"></mat-progress-bar>
+                        </div>
+                        <div class="analysis-view">
+                            <div class="row">
+                                <div class="col-3">
+                                    <h3>Moves</h3>
+                                </div>
+                                <div class="col-9" style="text-align: right;">
+                                    <mat-slide-toggle *ngIf="!gameAnalysisOn && !analysisCompleted"  (click)="startEvaluation()">Start Analysis</mat-slide-toggle>
+                                </div>
+                            </div>
+                            <div class="played-moves">
+                                <div class="played-move" [ngClass]="{'with-side-move': item.sideMovesArray && item.sideMovesArray.length > 0}" *ngFor="let item of playedMoves;let i = index">
+                                    <img *ngIf="item.moveCat" src="/assets/images/{{item.moveCat|movecat}}" style="width:18px; display:inline-block; margin-right: 5px;  margin-left: 5px;" alt="{{item.moveCat}}" />
+                                    <span [ngClass]="{'selected-move': (item | matchMove: selectedMove: lastPlayedMove)}" *ngIf="item.playedBy == 1; else blackMove" (click)="setPosition(item, false)" (contextmenu)="onContextClick($event, item)" >{{item.moveNumber}}. {{item.move}}</span>
+                                    <ng-template #blackMove>
+                                        <span [ngClass]="{'selected-move': (item | matchMove: selectedMove: lastPlayedMove)}" class="move-san" (click)="setPosition(item, true)" (contextmenu)="onContextClick($event, item)">{{item.moveNumber}}.. {{item.move}}</span>
+                                    </ng-template>
+                                    <span class="material-symbols-outlined comment" (click)="showComment(item)"  *ngIf="item.comment && item.comment.trim().length > 0">
+                                        mark_chat_unread
+                                    </span>
+                                    <div class="side-moves" *ngIf="item.sideMovesArray">
+
+                                        <div *ngFor="let sideMoves of item.sideMovesArray">
+                                            <div class="played-move" [ngClass]="{'with-side-move': sideMove.sideMovesArray && sideMove.sideMovesArray.length > 0}" *ngFor="let sideMove of sideMoves;let j = index">
+                                                <app-moves-with-side-move (onMoveClick)="onMoveClick($event)" (onRightClick)="onSideMoveContextClick($event)"  (onCommentClick)="showComment($event)"  [move]="sideMove" [index]="j+i"></app-moves-with-side-move>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row" style="margin:10px;">
+                            <mat-form-field class="moves-played-text" *ngIf="currentFen">
+                                <mat-label>Current Fen</mat-label>
+                                <input matInput readonly value="{{currentFen}}" />
+                            </mat-form-field>
+                        </div>
+                        <div class="row" style="width: 95%;padding:10px;">
+                            <div class="col-2" *ngIf="playedMoves && playedMoves.length > 0">
+                                <div class="pop fab" title="Download PGN" (click)="showExportDialoge()">
+                                    <mat-icon color="accent">download</mat-icon>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="pop fab" title="Play Against Engine from this position" (click)="playAgainstEngine()">
+                                    <mat-icon color="accent">psychology</mat-icon>
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="pop fab" title="Save this analysis" (click)="saveAnalysis()">
+                                    <mat-icon color="accent" [ngClass]="{'highlight-button': eligibleForReviewCompletion == true}" >save</mat-icon>
+                                </div>
+                            </div>
+
+                            <div class="col-2" >
+                                <div class="pop fab" title="Move back"  (click)="moveBack()">
+                                    <mat-icon color="accent">arrow_back_ios</mat-icon>
+                                </div>
+                            </div>
+                            <div class="col-2" >
+                                <div class="pop fab" title="Move Next"  (click)="moveNext()">
+                                    <mat-icon color="accent">arrow_forward_ios</mat-icon>
+                                </div>
+                            </div>
+
+                            <div class="col-2" >
+                                <div class="pop fab" title="Play"  (click)="togglePlay()">
+                                    <mat-icon color="accent" *ngIf="!autoPlay; else pause">play_arrow</mat-icon>
+                                    <ng-template #pause>
+                                        <mat-icon color="accent">pause</mat-icon>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row" style="background-color: antiquewhite; color: #222;" *ngIf="showStoargeWarning" >
+                            <div class="col-11" >
+                                <span>We save the game analysis only in your browser cache. It will not be permanent</span>
+                            </div>
+                            <div class="col-1">
+                                <span class="material-symbols-outlined" style="cursor: pointer;" title="Save this analysis" (click)="hideStorageWarning()">
+                                    close
+                                </span>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>Position Analysis</ng-template>
+                        <div class="complete-eval-box">
+                            <div class="show-toggle">
+                                <mat-slide-toggle  [(ngModel)]="showFullAnalysis">Show Full Eval</mat-slide-toggle>
+                            </div>
+                            <div class="position-analysis" *ngIf="stockFishEval && showFullAnalysis;else showEvalBar">
+
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>White Middle Game</td>
+                                            <td>White Endgame</td>
+                                            <td>Black Middle game</td>
+                                            <td>Black Endgame</td>
+                                            <td>Total Middle game</td>
+                                            <td>Total Endgame</td>
+                                        </tr>
+                                    </thead>
+
+                                    <tr *ngFor="let item of (stockFishEval|getKeys)">
+                                        <td>{{stockFishEval[item]["name"]}}</td>
+                                        <td>{{stockFishEval[item]["whiteMG"]}}</td>
+                                        <td>{{stockFishEval[item]["whiteEG"]}}</td>
+                                        <td>{{stockFishEval[item]["blackMG"]}}</td>
+                                        <td>{{stockFishEval[item]["blackMG"]}}</td>
+                                        <td>{{stockFishEval[item]["totalMG"]}}</td>
+                                        <td>{{stockFishEval[item]["totalEG"]}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <ng-template #showEvalBar>
+                                <div class="position-analysis" *ngIf="stockFishEval">
+                                    <app-eval-bar-visualizer [stockfishEval]="stockFishEval" [phase]="phase"></app-eval-bar-visualizer>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>Move Explorer</ng-template>
+                        <div class="move-explorer" *ngIf="selectedTab.value ==2">
+                            <app-fen-db class="col-12" style="margin-top:50px; width: 98%;" [currentFen]="currentFen" [currentMoveIndex]="moveIndex+1"></app-fen-db>
+                        </div>
+
+                    </mat-tab>
+                    <mat-tab>
+                      <ng-template mat-tab-label *ngIf="!trainingMode;else showHighlight">Notes</ng-template>
+                      <ng-template #showHighlight>
+                        <ng-template mat-tab-label> <div class="highlightNotes">Review Notes</div> </ng-template>
+                      </ng-template>
+                      <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                        <mat-label>Game Notes</mat-label>
+                        <textarea matInput [(ngModel)]="gameNotes"  placeholder="Please write notes for the game like critical position and moves"></textarea>
+                      </mat-form-field>
+
+                  </mat-tab>
+                </mat-tab-group>
+
+
+            </div>
+            <ng-template #showFenBox>
+                <div class="fen-box pop">
+                    <div class="start-analysis-box"  *ngIf="!showSavedAnalysis; else savedAnalysisBox">
+                        <h3>Start With a position or make a move to start analysis</h3>
+                        <div class="clear"></div>
+                        <div class="row">
+                            <div class="col-lg-6 col-6">
+                                <div class="small-button pop" (click)="showSparePieces()">
+                                    Set Up Position
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-6">
+                                <div class="small-button pop" (click)="onShowSavedAnalysisClick(true)">
+                                    Saved Analysis
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clear"></div>
+                        <div class="clear"></div>
+                        <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                            <mat-label>Enter Fen</mat-label>
+                            <input matInput type="text" [(ngModel)]="setupFen" placeholder="eg: rnbqkbnr/ppp1pppp/8/3p4/3P4/5N2/PPP1PPPP/RNBQKB1R b KQkq d3 0 2"  (ngModelChange)="onFenEnter($event)" >
+                        </mat-form-field>
+                        <mat-form-field class="moves-played-text" style="margin-top:65px" >
+                            <mat-label style="padding-left:15px; padding-top:15px;">Enter PGN</mat-label>
+                            <textarea matInput [ngModel]="gamePgnStr" class="pgn-text-area textbox" (ngModelChange)="onPgnEnter($event)"></textarea>
+                        </mat-form-field>
+                        <app-loader *ngIf="parsingPgn"></app-loader>
+                    </div>
+                    <ng-template #savedAnalysisBox>
+                        <div class="saved-analysis-box" style="padding: 10px;">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="col-1" style="float: right; margin: 10px;">
+                                        <div class="pop fab"  title="Save this analysis" (click)="onShowSavedAnalysisClick(false)">
+                                            <mat-icon color="accent">close</mat-icon>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="saved-analysis-box">
+                                <div class="row"  style="font-weight: 500; border: thin ridge gray;">
+                                    <div class="col-2 d-none d-sm-block" >
+                                        Date
+                                    </div>
+                                    <div class="col-7"  >
+                                        Name
+                                    </div>
+                                    <div class="col-1" >
+                                        #
+                                    </div>
+                                    <div class="col-1" >
+
+                                    </div>
+                                    <div class="col-1" >
+
+                                    </div>
+                                </div>
+                                <div class="saved-analysis-list" *ngIf="savedAnalysis">
+                                    <div class="no-analysis" *ngIf="savedAnalysis.length == 0">
+                                        you haven't saved any analysis
+                                    </div>
+                                </div>
+                                <div class="row" *ngFor="let item of savedAnalysis" style="border: thin ridge gray;">
+                                    <div class="col-2 d-none d-sm-block" >
+                                        {{item.date}}
+                                    </div>
+                                    <div class="col-7" >
+                                        {{item.name}}
+                                    </div>
+                                    <div class="col-1" >
+                                        {{item.moves.length}}
+                                    </div>
+                                    <div class="col-1" >
+                                        <span class="material-symbols-outlined" style="cursor: pointer;" title="Delete this analysis" (click)="deleteAnalysis(item)">
+                                            delete
+                                        </span>
+                                    </div>
+                                    <div class="col-1" >
+                                        <span (click)="loadAnalysis(item)"  style="cursor: pointer;" title="Load this analysis" >
+                                            <span class="material-icons">
+                                                add
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ng-template>
+                </div>
+
+            </ng-template>
+            <!--Content Menu starts-->
+            <div style="visibility: hidden; position: fixed;"
+                [style.left]="menuTopLeftPosition.x"
+                [style.top]="menuTopLeftPosition.y"
+                [matMenuTriggerFor]="rightMenu">
+            </div>
+
+            <!-- standard material menu -->
+            <mat-menu #rightMenu="matMenu">
+            <ng-template matMenuContent let-item="item">
+                <button mat-menu-item (click)="setMoveCategory(item, 'book')"><img src="/assets/images/book.png" alt="Book move" />Book Move</button>
+                <button mat-menu-item (click)="setMoveCategory(item, 'brilliant')"><img src="/assets/images/brilliant.png" alt="brilliant move" />Brilliant Move</button>
+                <button mat-menu-item (click)="setMoveCategory(item, 'best')"><img src="/assets/images/best.png" alt="best move" />Best Move</button>
+                <button mat-menu-item (click)="setMoveCategory(item, 'good')"><img src="/assets/images/good.png" alt="good move" />Good Move</button>
+                <button mat-menu-item (click)="setMoveCategory(item, 'dubious')"><img src="/assets/images/dubious.png" alt="dubious move" />Dubious Move</button>
+                <button mat-menu-item (click)="setMoveCategory(item, 'mistake')"><img src="/assets/images/mistake.png" alt="mistake move" />Mistake Move</button>
+                <button mat-menu-item (click)="setMoveCategory(item, 'blunder')"><img src="/assets/images/blunder.png" alt="bulnder move" />Blunder Move</button>
+                <button mat-menu-item (click)="addMoveComment(item)"><img src="/assets/images/comment.png" alt="bulnder move" />Add Comment</button>
+                <button mat-menu-item (click)="deleteMove(item)"><img src="/assets/images/delete.png" alt="delete move" />Delete Move</button>
+            </ng-template>
+            </mat-menu>
+            <!--Content menu ends-->
+
+
+
+        </div>
+    </div>
+</div>

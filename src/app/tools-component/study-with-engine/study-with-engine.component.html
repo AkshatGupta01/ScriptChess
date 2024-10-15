@@ -1,0 +1,71 @@
+<div class="study-container container">
+    <div class="row">
+        <div class="col-6 col-sm-12 col-md-6">
+            <div class="board-wrapper" style="width: 100%;" >
+                <div class="board-section">
+                    <app-chess-board #board [engineThinking] = "engineThinking" [allowPlay]="(engineRegisteredForUser) && (!evaluationRunning && !engineThinking)" [fen]="currentFen" (onMoveEx)="onMove($event, board)" [showScore]="true" [score]="score" [allowAnnotations]="true"
+                    [boardId]="boardId" ></app-chess-board>
+                    <div class="row">
+                        <mat-form-field class="moves-played-text" *ngIf="currentFen">
+                            <mat-label>Current Fen</mat-label>
+                            <input matInput readonly value="{{currentFen}}">
+                          </mat-form-field>
+                    </div>
+                    <div class="eval-running" style="position: absolute;width: 100%; height: 100%; top:0;background: rgba(50, 50, 50, 0.8);" *ngIf="evaluationRunning">
+                        <div class="eval-message" style="position: absolute;top:35%; left:35%;text-align: center;"> 
+                            <img src="/assets/images/eval-running.gif" style="display: inline-block; width: 120px;" /><br />
+                            <span>Evaluating position for you</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12" style="margin-top: 50px;">
+                        <div class="title">
+                            <h3>Engine Setting</h3>
+                        </div>
+                        <li>
+                            Engine Depth : {{engineDepth}}
+                        </li>
+                        <li>
+                            Avg Engine ELO: {{engineElo}}
+                        </li>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class="col-6 col-sm-12 col-md-6">
+            Engine Status : {{engineRegisteredForUser ? "Online":"Starting"}}
+
+            <div class="move-container pop">
+                <div class="moves-items" style="max-height: 400px;overflow-y: scroll;">
+                    <div class="move-summary odd" [ngClass]="{'even': i % 2 == 0}" *ngFor="let item of movePairs;let i = index">
+                        <div class="move-label row" >
+                            <div class="col-2">
+                                {{i+1}}
+                            </div>
+                            <div class="col-4 row" [ngClass]="{activeMove: (moveIndex == (i * 2) + 1)&& moveIndex > 0 }">
+                                <div class="move-cat" *ngIf="item.white.moveCat">
+                                    <img src="/assets/images/{{item.white.moveCat|movecat}}" alt="{{item.white.moveCat}}" />
+                                </div>
+                                <div class="move-white"  (click)="makeMove(item.white, true, board)">
+                                    {{item.white.move}}
+                                </div>
+                            </div>
+                            <div class="col-4 row" [ngClass]="{activeMove: ((moveIndex) == (i * 2) + 2)&& moveIndex > 0}" *ngIf="item.black">
+                                <div class="move-cat" *ngIf="item.black.moveCat">
+                                    <img src="/assets/images/{{item.black.moveCat|movecat}}" alt="{{item.black.moveCat}}" />
+                                </div>
+                                <div class="move-black" (click)="makeMove(item.black, false, board)" >
+                                    {{item.black.move}}                 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

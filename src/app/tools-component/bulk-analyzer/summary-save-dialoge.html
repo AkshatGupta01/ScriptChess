@@ -1,0 +1,18 @@
+<div class="container">
+  <h2>Save this Insight</h2>
+  <div class="row">
+    <div class="col-12">
+      <input matInput type="text" style="width: 98%; margin: 15px;" #nameTextBox placeholder="Name of the Insight">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <input matInput type="text" style="width: 98%; margin: 15px;" #commentTextBox placeholder="Any comment">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" style="text-align: -webkit-right">
+      <div class="small-button pop"  (click)="saveAnalysis(nameTextBox, commentTextBox)" > Save Analysis </div>
+    </div>
+  </div>
+</div>

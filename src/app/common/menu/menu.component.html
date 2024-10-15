@@ -1,0 +1,68 @@
+
+<nav class="autohide navbar fixed-top navbar-expand-lg navbar-dark bg-dark pop">
+
+<a class="navbar-brand" href="/">
+    <img src="/assets/images/logo-x.png" (click)="recordLogoClicked()" class="logo" alt="Script chess Logo" title="Script Chess" />
+</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse menu-with-height" id="navbarNav">
+  <ul class="navbar-nav ml-auto">
+      <li class="nav-item top-menu-item" data-toggle="collapse">
+        <a class="nav-link" routerLink="/articles/weekly-chesses" (click)="recordMenuClicked('Game of the week')">Game of the week</a>
+      </li>
+      <li class="nav-item top-menu-item" data-toggle="collapse">
+        <a class="nav-link" routerLink="/search/tournaments" (click)="recordMenuClicked('Tournaments')">Tournaments</a>
+      </li>
+      <li class="nav-item top-menu-item">
+        <a class="nav-link" routerLink="/search/players" (click)="recordMenuClicked('Players')">Players</a>
+      </li>
+      <li class="nav-item top-menu-item">
+          <a class="nav-link" routerLink="/articles" (click)="recordMenuClicked('Blogs')">Blogs</a>
+      </li>
+      <li class="nav-item top-menu-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Tools & Collections
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/tools/play-against-chess-bots"  (click)="recordMenuClicked('play against bots')" >Play Against Bots</a>
+          <a class="dropdown-item" href="/tools/free-chess-explorer"  (click)="recordMenuClicked('game explorer')" >Game Explorer</a>
+          <a class="dropdown-item" routerLink="/search/games"  (click)="recordMenuClicked('Search Games')">Search Games</a>
+          <a class="dropdown-item" routerLink="/tools/pgn-player"  (click)="recordMenuClicked('PGN Player')">PGN Player</a>
+          <a class="dropdown-item" routerLink="/tools/fen-visualizer"  (click)="recordMenuClicked('FEN Visualizer')">FEN Visualizer</a>
+          <a class="dropdown-item" href="/tools/free-chess-engine"  (click)="recordMenuClicked('Free Chess Engine')">Free Chess Engine</a>
+          <a class="dropdown-item" href="/tools/multiple-chess-games-analyzer"  (click)="recordMenuClicked('Multiple Game Analyzer')">Multiple Game Analyzer</a>
+          <a class="dropdown-item" routerLink="/tools/openings"  (click)="recordMenuClicked('penings Explorer')">Openings Explorer</a>
+          <a class="dropdown-item" routerLink="/tools/chess-puzzles"  (click)="recordMenuClicked('Solve Puzzle')">Solve Puzzles</a>
+          <a class="dropdown-item" routerLink="/tools/solve-chess-puzzles-and-chess-positions"  (click)="recordMenuClicked('Solve Chess Positions')">Solve Chess Positions</a>
+          <a class="dropdown-item" href="/tools/novelty-finder"  (click)="recordMenuClicked('Novelty Finder')">Novelty Finder</a>
+          <a class="dropdown-item" href="/tools/position-quiz"  (click)="recordMenuClicked('Postion Analysis Quiz')">Postion Analysis Quiz</a>
+          <a class="dropdown-item" routerLink="/tools/endgame-trainer"  (click)="recordMenuClicked('Endgame Trainer')">Endgame Trainer</a>
+          <a class="dropdown-item" routerLink="/tools/training"  (click)="recordMenuClicked('Training Program')">Training Program</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/search/collections/romantic"  (click)="recordMenuClicked('Attaching Game Collection')">Best Attacking Games</a>
+          <a class="dropdown-item" routerLink="/search/collections/endgames"  (click)="recordMenuClicked('Endgame Collection')">Endgame Masterpieces</a>
+          <a class="dropdown-item" routerLink="/search/collections/openings"  (click)="recordMenuClicked('Opening game collection')">Best Games By Openings</a>
+          <a class="dropdown-item" routerLink="/search/collections/player_specials"  (click)="recordMenuClicked('Player special collections')">Players Specials</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/tools/download-games"  (click)="recordMenuClicked('Download Chess.com games')">Download Chess.com games</a>
+        </div>
+    </li>
+      <li class="nav-item top-menu-item">
+          <a class="nav-link" routerLink="/pages/about-scripchess" (click)="recordMenuClicked('About Us')">About Us</a>
+      </li>
+      <li class="nav-item top-menu-item">
+          <a class="nav-link" routerLink="/pages/contact-us" (click)="recordMenuClicked('Contact Us')">Contact Us</a>
+      </li>
+      <li class="nav-item top-menu-item" *ngIf="loggedIn;else showSignIn ">
+        <a class="nav-link" (click)="signOut()">Log Out</a>
+      </li>
+      <ng-template #showSignIn>
+        <li class="nav-item top-menu-item">
+          <a class="nav-link" routerLink="/account">Sign In / Register</a>
+        </li>
+      </ng-template>
+  </ul>
+</div>
+</nav>

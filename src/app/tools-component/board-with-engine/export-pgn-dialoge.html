@@ -1,0 +1,22 @@
+<style>
+    .textbox {    
+        padding: 10px;
+        border: none;
+        box-shadow: inset 6px 6px 10px 0 rgb(0 0 0 / 20%), inset -6px -6px 5px 0 rgb(131 131 131 / 50%);
+        outline: none;
+        border-radius: 10px;
+    }
+    .pgn-text-area {
+        height : 250px;
+        width: 95%;
+        border: thin ridge #333;
+    }
+</style>
+<div class="container">
+    <h3>PGN</h3>
+    <div class="row" style="margin:10px;">
+        <div class="col-12">
+            <textarea matInput #commentBox class="pgn-text-area textbox" readonly>{{data.pgn}}</textarea>
+        </div>
+    </div>
+</div>

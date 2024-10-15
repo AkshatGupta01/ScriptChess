@@ -1,0 +1,13 @@
+.square-width {
+  min-width: 250px;
+}
+
+
+@media(max-width:767px) {
+  .square-width {
+    min-width: 95%;
+    display: block;
+    margin: 0 auto;
+    padding: 10px !important;
+  }
+}

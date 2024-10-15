@@ -1,0 +1,33 @@
+<div class="game-list-container" *ngIf="title && games && games.length > 0">
+    <h2>{{title}}</h2>
+    <div class="container game-container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <app-chess-board  #board></app-chess-board>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="game-mode-button {{gamesModeClass}}" (click)="setMode('games')">
+                            Games
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="game-mode-button {{movesModeClass}}" (click)="setMode('moves')">
+                            Moves Tree
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="games-list" *ngIf="currentMode=='games'" style="max-height: 450px;;overflow-y: scroll;">
+                    <app-game-label-list-box [games]="games"></app-game-label-list-box>
+                </div>
+                <div class="games-list" *ngIf="currentMode=='moves'" style="max-height: 450px;;overflow-y: scroll;">
+                    <app-move-label-list-box [moveDetailList] = "currentMovesArray" (onMoveSelect)="onMoveSelect($event, board)"></app-move-label-list-box>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

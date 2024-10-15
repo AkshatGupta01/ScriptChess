@@ -1,0 +1,97 @@
+
+<div class="no-move-num" *ngIf="move.moveNumber > 0 && move.playedBy; else noMoveNum ">
+  <div class="move-button" [ngClass]="{'selected-move': selectedMove && selectedMove == move}" *ngIf="!move.isSideMove; else sideMove" (contextmenu)="onContextClick($event, move)" (click)="moveClicked()">
+    <img *ngIf="move.moveCat"  src="/assets/images/{{move.moveCat|movecat}}" style="width:18px; display:inline-block; margin-right: 5px;  margin-left: 5px;" alt="{{move.moveCat}}" />
+    <p style="display: inline-block;">
+      {{move.moveNumber}} {{move.playedBy == chessColors.black ? ".." : "."}} {{move.move}}
+    </p>
+    </div>
+    <ng-template #sideMove>
+        <div class="move-button"  [ngClass]="{'selected-move': selectedMove && selectedMove == move}" (contextmenu)="onContextClick($event, move)"    (click)="moveClicked()">
+          <img *ngIf="move.moveCat"  src="/assets/images/{{move.moveCat|movecat}}" style="width:18px; display:inline-block; margin-right: 5px;  margin-left: 5px;" alt="{{move.moveCat}}" />
+          <p style="display: inline-block;" >
+            {{move.moveNumber}} {{move.playedBy == chessColors.black ? ".." : "."}} {{move.move}}
+          </p>
+        </div>
+    </ng-template>
+    <div class="move-comment" *ngIf="move.comment">
+        <span class="material-symbols-outlined comment" (click)="onCommentPressed(move)"  *ngIf="move.comment && move.comment.trim().length > 0">
+            mark_chat_unread
+        </span>
+    </div>
+
+    <div class="side-moves" *ngIf="move.sideMovesArray">
+        <div *ngFor="let sideMoves of move.sideMovesArray">
+            (
+            <div style="display: inline-block;" *ngFor="let sideMove of sideMoves;let j = index" (onRightClick)="onInnerRightClick($event)">
+                <app-moves-with-side-move (onMoveClick)="innerMoveClicked($event)" (onRightClick)="onInnerRightClick($event)" (onCommentClick)="onCommentPressed($event)" [move]="sideMove" [index]="j+index"></app-moves-with-side-move>
+            </div>
+            )
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ng-template #noMoveNum>
+  <div class="move-button" [ngClass]="{'selected-move': selectedMove && selectedMove == move}" *ngIf="!move.isSideMove; else sideMove" (contextmenu)="onContextClick($event, move)" (click)="moveClicked()">
+    <img *ngIf="move.moveCat"  src="/assets/images/{{move.moveCat|movecat}}" style="width:18px; display:inline-block; margin-right: 5px;  margin-left: 5px;" alt="{{move.moveCat}}" />
+    <p style="display: inline-block;" *ngIf="move.playedBy && move.playedBy === chessColors.black; else whiteMove" >
+      {{move.moveCat}}.. {{(index+1) | moveIndexMoveNumber}} {{move.move}}
+    </p>
+    <ng-template #whiteMove>
+      <p style="display: inline-block;">
+        {{move.moveCat}}. {{(index+1) | moveIndexMoveNumber}} {{move.move}}
+      </p>
+    </ng-template>
+</div>
+<ng-template #sideMove>
+    <div class="move-button"  [ngClass]="{'selected-move': selectedMove && selectedMove == move}" (contextmenu)="onContextClick($event, move)"    (click)="moveClicked()">
+      <img *ngIf="move.moveCat"  src="/assets/images/{{move.moveCat|movecat}}" style="width:18px; display:inline-block; margin-right: 5px;  margin-left: 5px;" alt="{{move.moveCat}}" />
+      <p style="display: inline-block;" *ngIf="move.playedBy && move.playedBy === chessColors.black; else whiteMove" >
+        {{(index+1) | moveIndexMoveNumber}} {{move.move}}
+      </p>
+      <ng-template #whiteMove>
+        <p style="display: inline-block;">
+          {{move.moveCat}}. {{(index+1) | moveIndexMoveNumber}} {{move.move}}
+        </p>
+      </ng-template>
+    </div>
+</ng-template>
+<div class="move-comment" *ngIf="move.comment">
+    <span class="material-symbols-outlined comment" (click)="onCommentPressed(move)"  *ngIf="move.comment && move.comment.trim().length > 0">
+        mark_chat_unread
+    </span>
+</div>
+
+<div class="side-moves" *ngIf="move.sideMovesArray">
+    <div *ngFor="let sideMoves of move.sideMovesArray">
+        (
+        <div style="display: inline-block;" *ngFor="let sideMove of sideMoves;let j = index" (onRightClick)="onInnerRightClick($event)">
+            <app-moves-with-side-move (onMoveClick)="innerMoveClicked($event)" (onRightClick)="onInnerRightClick($event)" (onCommentClick)="onCommentPressed($event)" [move]="sideMove" [index]="j+index"></app-moves-with-side-move>
+        </div>
+        )
+    </div>
+</div>
+</ng-template>
+

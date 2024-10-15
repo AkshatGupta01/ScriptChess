@@ -1,0 +1,1 @@
+export const MOVE_FETCH_ERROR = "MOVE_FETCH_ERROR"

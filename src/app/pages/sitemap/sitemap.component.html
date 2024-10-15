@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div class="col" *ngIf="dynamicCollectionCreatedCount != dynamicCollectionCount;else showCompleted">
+          Dynamic Collection Created : {{dynamicCollectionCreatedCount}}/{{dynamicCollectionCount}}
+        </div>
+        <ng-template #showCompleted>
+          <div class="col">
+            Dynamic Collection <img src="/assets/images/ready.webp"  style="width: 32px;" alt="Completed">
+          </div>
+        </ng-template>
+
+      </div>
+
+    </div>
+    <div class="col" >
+      <div class="row">
+        <div class="col" *ngIf="staticCollectionCreatedCount != staticCollectionCount;else showStaticCompleted">
+          Static Collection Created : {{staticCollectionCreatedCount}}/{{staticCollectionCount}}
+        </div>
+        <ng-template #showStaticCompleted>
+          <div class="col">
+            Static Collection :<img src="/assets/images/ready.webp" style="width: 32px;" alt="Completed">
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="schema-box" >
+      <textarea name="schema" id="" style="overflow-y: scroll; width: 95%; height: 350px;"  [(ngModel)]="providedSchema">
+
+      </textarea>
+
+    </div>
+  </div>
+  <div class="row">
+    <button (click)="startGeneration()"> Genearte</button>
+  </div>
+  <div class="row">
+    <div class="schema-box" >
+      <textarea name="schema" id="" style="overflow-y: scroll; width: 95%; height: 350px;" [(ngModel)]="sitemap">
+
+      </textarea>
+    </div>
+  </div>
+
+
+</div>

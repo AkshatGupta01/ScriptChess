@@ -1,0 +1,108 @@
+<div class="container game-explorer-container">
+   <!-- <div *ngIf="!(isLoading | async);else loading">
+       <div class="game-explorer" *ngIf="exploreModeOn">
+           <h2>Explore Games</h2>
+           <app-game-finder (onSelectTournament)="onTournamentSelect($event)" (onSelectPlayer)="onPlayerSelect($event)"></app-game-finder>
+       </div>
+
+       <div class="game-explorer" *ngIf="!exploreModeOn">
+           <app-game-list-box [title]="title" [games]="games | async"></app-game-list-box>
+       </div>
+   </div>
+   <ng-template #loading>
+       <app-loader></app-loader>
+   </ng-template> -->
+
+   <h2>Novelty Finder</h2>
+   <div class="container">
+       <div class="row">
+           <div class="col-md-6 col-sm-12">
+               <app-chess-board [allowPlay]="true" [fen]="currentFen" [score]="score" [showScore]="true" [allowAnnotations]="true" #board (onMoveEx)="onMoveEx($event, board)"></app-chess-board>
+               <div class="row">
+                   <mat-form-field class="moves-played-text" *ngIf="moveOrder">
+                       <mat-label>Moves Played</mat-label>
+                       <textarea matInput readonly>{{moveOrder}}</textarea>
+                   </mat-form-field>
+               </div>
+               <div class="row">
+                   <mat-form-field class="moves-played-text" *ngIf="currentFen">
+                       <mat-label>Current Fen</mat-label>
+                       <input matInput readonly value="{{currentFen}}">
+                     </mat-form-field>
+               </div>
+           </div>
+           <div class="col-md-6 col-sm-12">
+               <div *ngIf="isLoading| async; else loaded">
+                   <app-loader></app-loader>
+               </div>
+               <ng-template #loaded>
+                   <div class="moves-holder pop">
+                       <mat-tab-group class="game-analysis-info-tab-group" [selectedIndex]="selectedTab.value" (selectedIndexChange)="selectedTab.setValue($event)">
+                           <mat-tab>
+                               <ng-template mat-tab-label>Moves</ng-template>
+                                 <div class="moves-container">
+                                   <div class="row" style="margin-bottom: 5px;">
+                                       <div class="col">
+                                          <span style="font-weight : 600; margin: 15px;">Games: {{gameCountStr}}</span>
+                                       </div>
+                                       <div class="col-2" *ngIf="showAllGamesLabel">
+                                             <a [routerLink]="['/search/games']" [queryParams]="{fen:currentFen}" style="margin-top: 13px;color: #ffffff;font-weight: 500;" >
+                                                   <div class="pop fab"  style="float: right;">
+                                                      <mat-icon>search</mat-icon>
+                                                   </div>
+                                             </a>
+                                       </div>
+                                       <div class="col-2">
+                                             <div class="pop fab" (click)="undo(board)" style="float: right;margin-right: 10px;">
+                                                <mat-icon>undo</mat-icon>
+                                             </div>
+                                       </div>
+                                    </div>
+                                    <div class="col" *ngIf="opening">
+                                       Opening: {{opening}}
+                                    </div>
+                                    <div class="moves-label-list">
+                                       <app-move-label-list-box [moveDetailList]="moves" [currentMoveIndex]="currentMoveIndex" *ngIf="moves" (onMoveSelect)="onMoveSelect($event, board)"></app-move-label-list-box>
+                                    </div>
+                                    <div class="legend-box" style="margin-left:15px; margin-top:5px;">
+                                       <div class="legend-box-cointainer" style="position: relative;">
+                                          <div class="legend novelty" style="width: 15px; height: 15px; border-radius:50%;display: inline-block;"></div>
+                                          <div class="legend-label" style="display: inline-block;margin-left: 10px; position: absolute">Novelty</div>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                           </mat-tab>
+                           <mat-tab>
+                              <ng-template mat-tab-label>DB Moves</ng-template>
+                                <div class="moves-container">
+                                   <div class="moves-label-list">
+                                       <app-move-label-list-box [moveDetailList]="dbMoves" [currentMoveIndex]="currentMoveIndex" *ngIf="dbMoves"></app-move-label-list-box>
+                                   </div>
+                                </div>
+
+                          </mat-tab>
+                           <mat-tab >
+                               <ng-template mat-tab-label>Position Analysis</ng-template>
+                               <div class="stock-fish-eval" *ngIf="stockfishEval">
+                                   <app-eval-bar-visualizer [stockfishEval]="stockfishEval" [phase]="phase"></app-eval-bar-visualizer>
+                               </div>
+
+                           </mat-tab>
+                       </mat-tab-group>
+                   </div>
+
+               </ng-template>
+
+           </div>
+       </div>
+       <div class="clear"></div>
+       <div class="clear"></div>
+       <app-page-section pageSlug="weekly-games"></app-page-section>
+   </div>
+
+
+
+
+</div>
+

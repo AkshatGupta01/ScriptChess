@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row">
+        <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+            <mat-label>Enter Fen</mat-label>
+            <input matInput type="text" [(ngModel)]="fen" placeholder="eg: rnbqkbnr/ppp1pppp/8/3p4/3P4/5N2/PPP1PPPP/RNBQKB1R b KQkq d3 0 2"  (ngModelChange)="onFenEnter($event)" >
+        </mat-form-field>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-0">
+          <app-square-ads></app-square-ads>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <app-chess-board [fen]="currentFen" #board [boardId]="boardId" [showAudioControl]="false"></app-chess-board>
+        </div>
+        <div class="col-md-3  col-sm-0">
+          <app-square-ads></app-square-ads>
+        </div>
+    </div>
+    <div class="row">
+        <div class="big-button big-row-button pop" (click)="searchFen()"> Check Games </div>
+    </div>
+</div>

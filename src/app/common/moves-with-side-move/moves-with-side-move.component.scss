@@ -1,0 +1,21 @@
+.move-button {
+    display: inline-block;
+    margin: 2px;
+    padding: 2px;
+    background: #ababab;
+    border-radius: 3px;
+    color: #333;
+    font-weight: 500;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.move-comment {
+    display: inline-block;
+    margin-left: 15px;
+}
+.selected-move {
+    color:cornflowerblue;
+}
+.with-side-move {
+    display: block !important;
+}

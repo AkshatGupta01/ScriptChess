@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <app-chess-board [fen]="puzzle.fen" [boardId]="boardId" [boardWidth]="height" ></app-chess-board>
+    </div>
+  </div>
+  <div class="row" *ngIf="puzzle.solved; else showFailed" style="color: #45a040;">
+    <strong style="color:#eee">Status: </strong> Solved
+  </div>
+  <ng-template #showFailed>
+    <div class="row" style="color: rgb(160, 64, 64); margin-left: 0px;">
+      <strong style="color:#eee">Status: </strong> &nbsp; Failed
+    </div>
+  </ng-template>
+  <div class="row">
+    <div class="row" style="margin-left: 15px;">
+      <strong>Attempts : </strong> {{puzzle.attempt ? 0 : puzzle.attempt}}
+    </div>
+  </div>
+</div>

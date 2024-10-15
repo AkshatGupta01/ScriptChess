@@ -1,0 +1,64 @@
+<div class="container players-container">
+    <h2>Players's List</h2>
+    <div *ngIf="isLoading;else loaded">
+      <app-loader></app-loader>
+    </div>
+    <ng-template #loaded>
+      <div *ngIf="players&& players.length > 0">
+        <div class="search-box">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                <mat-label>Enter Name</mat-label>
+                <input matInput type="text" [(ngModel)]="searchedName">
+              </mat-form-field>
+            </div>
+            <div class="col-12  col-md-6">
+              <div class="small-button pop"(click)="search()"> Search </div>
+            </div>
+          </div>
+
+
+        </div>
+        <app-banner-ads></app-banner-ads>
+        <div class="table-container"  style="overflow-x: scroll; max-height: 620px;">
+          <table mat-table [dataSource]="players" class="mat-elevation-z8 player-grid">
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name. </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dob">
+              <th mat-header-cell *matHeaderCellDef> D.O.B </th>
+              <td mat-cell *matCellDef="let element"> {{element.dob}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="elo">
+              <th mat-header-cell *matHeaderCellDef> ELO </th>
+              <td mat-cell *matCellDef="let element"> {{element.elo == 0? "N/A" : element.elo}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="federation">
+              <th mat-header-cell *matHeaderCellDef> Federation </th>
+              <td mat-cell *matCellDef="let element"> {{element.federation}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fideId">
+                <th mat-header-cell *matHeaderCellDef> Fide Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.fideId}} </td>
+            </ng-container>
+            <ng-container matColumnDef="games">
+                <th mat-header-cell *matHeaderCellDef> Games </th>
+                <td mat-cell *matCellDef="let element"> <a routerLink="/search/players/{{element.playerId}}/{{element.name}}" (click)="recordPlayerClicked(element)">Check Games </a> </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
+      </div>
+    </ng-template>
+
+</div>

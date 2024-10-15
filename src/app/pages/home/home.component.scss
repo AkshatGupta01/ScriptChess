@@ -1,0 +1,68 @@
+.collections-menu{
+    margin-top:10px;
+    margin-bottom:10px;
+}
+.home-menu {
+    margin-top: 50px;
+}
+.feature-list {
+    list-style-image: url('/assets/images/crown.png');
+}
+.feature-list li {
+    list-style: inherit;
+    font-weight: 600;
+    line-height: 40px;
+}
+.intro {
+    padding: 25px;
+    background-color:hsla(216,10%,18%,1);
+    background-image:
+    radial-gradient(at 51% 9%, hsla(240,12%,21%,1) 0px, transparent 50%),
+    radial-gradient(at 70% 48%, hsla(0,19%,26%,1) 0px, transparent 50%),
+    radial-gradient(at 32% 46%, hsla(134,5%,33%,1) 0px, transparent 50%),
+    radial-gradient(at 51% 86%, hsla(240,12%,21%,1) 0px, transparent 50%);
+    animation: gradient 15s ease infinite;
+}
+.puzzle-wrapper {
+    width: 90%;
+    margin: 0 auto;
+}
+@media(max-width:767px) {
+    .puzzle-wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+  }
+.tools-content {
+    font-size: 15px !important;
+    margin: 15px;
+}
+
+.big-button-text {
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 80px;
+    transform: rotate(-0.34deg);
+    margin: 0 auto;
+    margin-top: 10px;    
+    text-align: center;
+}
+.big-menu {
+    margin-top: 45px;
+}
+
+.active-big-button {
+    background-color: #FC7343;
+}

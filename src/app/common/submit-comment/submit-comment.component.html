@@ -1,0 +1,27 @@
+<div class="comment-container">
+    <h3>Leave a Comment:</h3>
+    <div class="row">
+        <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" placeholder="Your Name" [(ngModel)]="name">  
+        </mat-form-field>
+    </div>
+
+    <div class="row">
+        <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" [(ngModel)]="email" placeholder="Your email">  
+        </mat-form-field>
+    </div>
+    <div class="row">
+        <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+            <mat-label>Comment</mat-label>
+            <textarea matInput [(ngModel)]="comment"  placeholder="Please write your comment"></textarea>
+        </mat-form-field>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+        <div class="small-button pop" (click)="submitComment()">
+            Submit
+        </div>
+    </div>
+</div>

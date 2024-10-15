@@ -1,0 +1,42 @@
+.menu-title {
+    font-size: large;
+    margin-top: 15px;
+}
+
+.menu-image {
+    width:100px;
+    border-radius: 10px;
+}
+.menu-container {
+    margin : 15px auto;
+    align-items: center;
+    text-align: center;
+    // background-color: #1C1E29;
+    background-color: #2B2F35;
+    padding:25px;
+    vertical-align: middle;
+    display: grid;
+    cursor: pointer;
+    border-radius: 15px;
+    max-width:350px;
+}
+
+@media(max-width:767px) {
+    .menu-container {
+        padding:10px;
+    }
+  }
+
+.menu-container:hover{
+    -webkit-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+    -moz-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+    box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+    // box-shadow: inset 6px 6px 10px 0 rgb(0 0 0 / 25%),
+    // inset -6px -6px 10px 0 rgb(122 119 119 / 30%);
+}
+
+
+a {
+    color : #fff;
+}
+

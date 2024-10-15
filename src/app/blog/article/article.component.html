@@ -1,0 +1,56 @@
+<div class="blog-container">
+    <div class="container" *ngIf="isLoading || !article; else loaded">
+        <app-loader></app-loader>
+    </div>
+    <ng-template #loaded>
+        <app-json-ld [schemaJson] = "schemaJson" *ngIf="schemaJson"></app-json-ld>
+        <h1>{{article.title}}</h1>
+        <div class="row">
+            <div class="col-2 author-name">{{article.author.name}}</div>
+            <div class="col-10 article-date" style="text-align: right;">{{article.published_at |date}}</div>
+        </div>
+        <div class="clear">
+
+        </div>
+        <img class="hero-image" src="{{article.image.url|cdnImage}}" alt="{{article.title}}" title = "{{article.title}}"/>
+
+        <div class="clear">
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-9">
+                <div class="blog-detailed-content ck-content">
+                    <article [innerHTML] = "pageBody" *ngIf="article.content">
+                    </article>
+                   <div *ngIf="article.faq && article.faq.length > 0">
+                       <h2> Frequently Asked Questions</h2>
+                       <div class="faq-collections ck-content">
+                           <app-faq-items [faq]="item" *ngFor="let item of article.faq"></app-faq-items>
+                       </div>
+                   </div>
+               </div>
+            </div>
+            <div class="col-3">
+              <app-square-ads></app-square-ads>
+            </div>
+        </div>
+        <div class="tags-holder" *ngIf="article.tags && article.tags.length > 0">
+            <h3> Tags : </h3>
+            <ul class="tags">
+                <li><div class="tag" *ngFor="let item of article.tags">{{item.name}}</div></li>
+           </ul>
+        </div>
+        <div class="author">
+            <app-author [author]="article.author"></app-author>
+        </div>
+        <div *ngIf="slug" style="margin-top: 20px;">
+            <app-submit-comment type="article" [slug] = "slug"></app-submit-comment>
+            <div style="margin-top: 20px;">
+                <app-comments-box  type="article" [slug] = "slug"></app-comments-box>
+            </div>
+
+        </div>
+
+    </ng-template>
+
+</div>

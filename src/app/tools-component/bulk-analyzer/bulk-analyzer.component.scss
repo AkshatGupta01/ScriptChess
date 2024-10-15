@@ -1,0 +1,18 @@
+.analyze-botton {
+  text-align: right;
+}
+.option-buttons {
+  margin: 10px;;
+}
+.rating-slider {
+  width : 90%
+}
+@media only screen and (max-width: 768px) {
+  .big-button-text {
+    font-size: 25px;
+  }
+}
+
+.summary-container, .saved-analysis-container {
+  padding: 10px;;
+}

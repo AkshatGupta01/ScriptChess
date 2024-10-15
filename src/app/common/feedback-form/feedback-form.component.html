@@ -1,0 +1,48 @@
+<div class="container feedback-form">
+    <app-loader *ngIf="loading"></app-loader>
+    <div class="row" *ngIf="!feedbackSubmitted && !loading; else showSubmitted">
+        <div class="col-12 col-sm-4">
+            <img src="/assets/images/feedback-form-image.png" style="max-height: 250px; max-width: 100%" alt="feedback form">
+        </div>
+        <div class="col-12 col-sm-8">
+            <div class="row">
+                <h3>Please tell us about your experience</h3>
+            </div>
+            <div class="row">
+                <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" [(ngModel)]="name" placeholder="Your Name" />  
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                    <mat-label>Feedback</mat-label>
+                    <textarea matInput [(ngModel)]="feedback"  placeholder="Please write your feedback"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <app-rating-form (ratingClicked)="ratingClicked($event)"></app-rating-form>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="small-button pop" (click)="submitFeedback()">
+                    Submit
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #showSubmitted>
+        <div class="container" *ngIf="!loading">
+            <div class="row" style="max-width: 100px; margin:  10px auto; margin-bottom: 50px;">
+                <img src="/assets/images/completed.png" style="max-width: 100px" alt="feedback-submitted" />
+            </div>
+            <div style="text-align: center;">
+                Thank you for your feedback. We really need and appriciate your feedback.
+            </div>
+            <div class="row">
+                <div class="small-button pop" (click)="close()" style="display: block; margin: 10px auto;">
+                    Close
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

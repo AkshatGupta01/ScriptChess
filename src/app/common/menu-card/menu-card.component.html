@@ -1,0 +1,14 @@
+<!-- <a routerLink="{{menu.link}}" (click)="recordMenuCardClicked()" >       -->
+    <div *ngIf="menu" class="menu-container pop">
+        <a routerLink="{{menu.link}}" (click)="recordMenuCardClicked()" >        
+            <mat-card-content>
+                <img src="{{menu.imagePath}}" class="menu-image" />
+            </mat-card-content>
+            <mat-card-title>
+                <p class="menu-title">
+                    {{menu.title}}
+                </p>
+            </mat-card-title>
+        </a>
+    </div>
+<!-- </a> -->

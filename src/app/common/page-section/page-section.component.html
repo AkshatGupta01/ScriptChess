@@ -1,0 +1,37 @@
+<div class="content">
+    <div class="page" *ngIf="page">
+        <div class="page-container">
+            <app-json-ld [schemaJson] = "schemaJson" *ngIf="schemaJson"></app-json-ld>        
+            <div class="page-inner-container">
+                <h1 id="{{page.title | slugify}}">{{page.title}}</h1>
+                <div class="clear">
+        
+                </div>                
+        
+                <div class="clear">
+                </div>
+                <div class="blog-detailed-content ck-content" style="padding-left: 25px">
+                    <article [innerHTML] = "pageBody" *ngIf="pageBody">
+                    </article>
+                   <div *ngIf="page.faq && page.faq.length > 0">
+                       <h2>Frequently Asked Questions</h2>
+                       <div class="faq-collections ck-content">
+                           <app-faq-items [faq]="item" *ngFor="let item of page.faq"></app-faq-items>
+                       </div>
+                   </div>
+               </div>
+        
+               <div class="tags-holder" *ngIf="page.tags && page.tags.length > 0">
+                   <h3> Tags : </h3>
+                <ul class="tags">
+                    <li><a href="#" class="tag" *ngFor="let item of page.tags">{{item.name}}</a></li>
+                  </ul>
+               </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="loading" *ngIf="isLoading">
+        <app-loader></app-loader>
+    </div>
+</div>

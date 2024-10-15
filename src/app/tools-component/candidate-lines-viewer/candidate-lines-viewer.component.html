@@ -1,0 +1,13 @@
+<div class="candidate-lines-container" *ngIf="lines">
+    <div class="line-container" *ngFor="let item of lines">
+        <div class="score-span">
+            <span>{{item.score}} ({{item.depth}})</span>
+        </div>
+        <div class="moves-span">
+            <div class="move" *ngFor="let move of item.moves">
+                <span>{{move}}</span>
+            </div>
+        </div>
+    </div>
+
+</div>

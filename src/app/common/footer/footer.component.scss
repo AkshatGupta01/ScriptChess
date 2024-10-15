@@ -1,0 +1,45 @@
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    border-top: thin ridge #40475A;
+    margin-top:50px;
+}
+.footer-container {
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+a {
+    color: #fff;
+    font-weight: 500;
+}
+strong {
+    font-family: 'constantine';
+    font-size: large;
+    margin-bottom: 15px;
+}
+li {
+    min-height: 25px;
+    list-style: none !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .foter-column {
+        padding: 0;
+    }
+}
+
+// ul li::before {
+//     content: "\2022";
+//     color: #eee;
+//     font-weight: bold;
+//     display: inline-block; 
+//     width: 1em;
+//     margin-left: -1em;
+// }
+.social-logo {
+    width: 32px;
+}

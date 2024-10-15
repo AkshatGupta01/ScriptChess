@@ -1,0 +1,41 @@
+<div class="container study-container" *ngIf="study; else loader">
+    <div class="title">
+        <h2>{{study.name}}</h2>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-9 study-desc">
+            <div class="detail-icon">
+                <span class="material-symbols-outlined">
+                    account_circle
+                </span>
+            </div>
+
+            <div class="detail-value">
+                <span>{{study.author.name}}</span>
+            </div>
+
+            
+        </div>
+
+        <div class="col-sm-12 col-md-3 study-desc date-desc">
+            <div class="detail-icon">
+                <span class="material-symbols-outlined">
+                    calendar_month
+                </span>
+            </div>
+
+            <div class="detail-value">
+                <span>{{study.published_at | date}}</span>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="study-content" *ngIf="studyBody">
+        <div [innerHTML] = "studyBody" >
+        </div>
+    </div>
+</div>
+<ng-template #loader>
+    <app-loader></app-loader>
+</ng-template>

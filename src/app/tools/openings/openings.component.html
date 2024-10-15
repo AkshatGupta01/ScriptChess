@@ -1,0 +1,57 @@
+<div class="container opening-container">
+    <app-banner-ads></app-banner-ads>
+    <h2> Explore Openings </h2>
+
+    <div *ngIf="!isLoading; else loading">
+        <div class="row">
+          <div class="col-12">
+            <mat-form-field class="form-field" appearance="fill">
+              <mat-label>Filter</mat-label>
+              <input matInput (keyup)="applyFilter($event)" placeholder="London System" #input>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="eco-tableContainer opening-table"  *ngIf="ecos && ecos.length> 0; else notFound">
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 player-grid" matSort>
+
+            <ng-container matColumnDef="eco">
+              <th mat-header-cell *matHeaderCellDef  mat-sort-header> Eco </th>
+              <td mat-cell *matCellDef="let element"><a routerLink="/tools/openings/{{element.eco}}/{{element.ecoModel.slug}}/{{element.ecoModel.id}}"> {{element.eco}} </a></td>
+            </ng-container>
+
+            <ng-container matColumnDef="count">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header >Games count </th>
+                <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header > Name </th>
+                <td mat-cell *matCellDef="let element"> <a routerLink="/tools/openings/{{element.eco}}/{{element.ecoModel.slug}}/{{element.ecoModel.id}}">{{element.ecoModel.name}} </a></td>
+              </ng-container>
+
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef> Position </th>
+                <td mat-cell *matCellDef="let element">
+                    <a routerLink="/tools/openings/{{element.eco}}/{{element.ecoModel.slug}}/{{element.ecoModel.id}}">
+                        <app-chess-board [mini]="true" [fen] = "element.ecoModel.fen" [boardId]="element.eco | boardId" boardWidth="150px" [showAudioControl]="false"></app-chess-board>
+                        <!-- {{element.ecoModel.fen}} -->
+                    </a>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="checkGames">
+              <th mat-header-cell *matHeaderCellDef>Check Games</th>
+              <td mat-cell *matCellDef="let element"> <a routerLink="/search/games/" [queryParams]="{eco:element.eco}" > Check Games </a></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator (page)="handlePageEvent($event)" [length]="totalData" [pageSizeOptions]="[20, 30, 40]" aria-label="Select page of openings"></mat-paginator>
+        </div>
+
+        <ng-template #notFound>
+          Could not find any openings
+        </ng-template>
+    </div>
+    <ng-template #loading>
+        <app-loader></app-loader>
+    </ng-template>
+</div>

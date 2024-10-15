@@ -1,0 +1,13 @@
+<div class="posts-container" *ngIf="!isLoading;else loading">
+    <h1>ScriptChess Blogs</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4 col-sm-12" *ngFor="let item of weeklyChesses">
+            <app-weekly-chess-card [weeklyChess]="item"></app-weekly-chess-card>
+        </div>
+
+    </div>
+</div>
+<ng-template #loading>
+    <app-loader></app-loader>
+</ng-template>

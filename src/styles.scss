@@ -1,0 +1,671 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '~@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+/* For use in src/lib/core/theming/_palette.scss */
+$md-primary: (
+    50 : #e6e6e8,
+    100 : #c0c1c5,
+    200 : #96989f,
+    300 : #6b6f79,
+    400 : #4c505c,
+    500 : #2c313f,
+    600 : #272c39,
+    700 : #212531,
+    800 : #1b1f29,
+    900 : #10131b,
+    A100 : #5f87ff,
+    A200 : #2c61ff,
+    A400 : #003ef8,
+    A700 : #0038df,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+/* For use in src/lib/core/theming/_palette.scss */
+$md-secondary: (
+    50 : #ffeee8,
+    100 : #fed5c7,
+    200 : #feb9a1,
+    300 : #fd9d7b,
+    400 : #fc885f,
+    500 : #fc7343,
+    600 : #fc6b3d,
+    700 : #fb6034,
+    800 : #fb562c,
+    900 : #fa431e,
+    A100 : #ffffff,
+    A200 : #fffcfc,
+    A400 : #ffd1c9,
+    A700 : #ffbbaf,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+:root {
+  --darkSquareColorGray : #8CA2AD;
+  --darkSquareColorSky : #018795;
+  --darkSquareColorOrange : #BB5746;
+  --darkSquareColor : var(--darkSquareColorGray);
+  --squareRadius : 0px;
+}
+
+$darkSquareColor : var(--darkSquareColor);
+
+$squareRadius : var(--squareRadius);
+//Color  for chess board
+.white-1e1d7 {
+  // background-color: #8c7243 !important;
+  background-color: #d5d5d5 !important;
+  color: #222 !important;
+  font-weight: 600;
+  border-radius: $squareRadius;
+}
+
+.black-3c85d {
+  background-color: $darkSquareColor !important;
+  color: #eee !important;
+  font-weight: 600;
+  border-radius: $squareRadius;
+}
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$script-chess-primary: mat.define-palette($md-secondary);
+$script-chess-secondary: mat.define-palette($md-secondary);
+$script-chess-accent: mat.define-palette($md-secondary, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$script-chess-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$script-chess-theme: mat.define-dark-theme((
+  color: (
+    primary: $script-chess-primary,
+    secondary: $script-chess-secondary,
+    accent: $script-chess-accent,
+    warn: $script-chess-warn
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($script-chess-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+  //background-color: #13141D;
+  background-color: #2B2F35;
+  color: #ffffff;
+  scroll-behavior: smooth;
+}
+body { margin: 0; font-family: Poppins, "Helvetica Neue", sans-serif; line-height: 1.7;}
+
+.top-menu-item {
+  font-weight: 400;
+}
+
+.top-menu-item a {
+  text-decoration: none;
+  color: #fff;
+}
+.logo {
+  max-width: 150px;
+}
+.bg-dark {
+  background-color: #40475A;
+}
+.arrow-forward {
+  width: 38.72px;
+  height: 28.68px;
+  background: #FC7343;
+  transform: matrix(-0.01, -1, -1, 0.01, 0, 0);
+}
+
+.arrow-backward {
+  width: 38.72px;
+  height: 28.68px;
+  background: #FC7343;
+  transform: matrix(0.01, -1, 1, 0.01, 0, 0);
+}
+
+.move-even {
+  width: 577px;
+  height: 56px;
+  background: #40475A;
+  color: #FFFFFF;
+}
+
+.move-odd {
+  width: 577px;
+  height: 56px;
+  background: #2C313F;
+  color: #FFFFFF;
+}
+
+.big-button {
+  width: 340px;
+  min-height: 80px;
+  background: #2B2F35;
+  border-radius: 15px;
+  transform: rotate(-0.34deg);
+  color: #FFFFFF;
+  font-family: 'GildaDisplay-Regular';
+  cursor: pointer;
+  max-width: 98%;
+  max-height: fit-content;
+  text-wrap: balance;
+}
+.big-button-no-hover {
+  width: 340px;
+  height: 80px;
+  background: #2B2F35;
+  border-radius: 15px;
+  transform: rotate(-0.34deg);
+  color: #FFFFFF;
+  font-family: 'GildaDisplay-Regular';
+  cursor: pointer;
+}
+
+.big-button:hover {
+  -webkit-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+  -moz-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+  box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+}
+
+
+.white-win-circle {
+  width: 37px;
+  height: 37px;
+  background: #FFFFFF;
+}
+
+.black-win-circle {
+  width: 37px;
+  height: 37px;
+  background: #000000;
+}
+
+.draw-circle {
+  width: 37px;
+  height: 37px;
+  background: #7E7E7E;
+}
+
+.small-button {
+  width: 150px;
+  height: 52px;
+  border-radius: 15px;
+  cursor: pointer;
+  line-height: 52px;
+  text-align: center;
+  font-weight: 600;
+  font-size: medium;
+  font-family: 'GildaDisplay-Regular';
+}
+.small-button a, .big-button-no-hover a, .active-big-button a, .big-button a {
+  color: #fff;
+}
+
+.small-button:hover {
+  -webkit-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343 !important;
+  -moz-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343 !important;
+  box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343 !important;
+}
+
+.centralize {
+  text-align: center;
+}
+.right-align {
+  text-align: end;
+  align-items: flex-end;
+}
+
+@font-face {
+  font-family: 'GildaDisplay-Regular';
+  src: url('/assets/fonts/GildaDisplay-Regular.ttf');
+}
+.banner-title {
+  font-family: 'GildaDisplay-Regular';
+  font-size: xx-large;
+}
+h1, h2, h3 {
+  font-family: 'GildaDisplay-Regular' !important;
+}
+
+h1 {
+  font-size: 60px !important;
+  line-height: 70px !important;
+  font-weight: 600;
+}
+h2 {
+  font-size: 45px !important;
+  line-height: 55px !important;
+  font-weight: 600;
+}
+h3 {
+  font-size: 25px !important;
+  font-weight: 600;
+}
+h4 {
+  font-size: 22px !important;
+  font-weight: 600;
+}
+h5 {
+  font-size: 18px !important;
+  font-weight: 600;
+}
+h6 {
+  font-size: 15px !important;
+  font-weight: 600;
+}
+@media(max-width:767px) {
+  h2 {
+    line-height: 32px !important;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-size: 45px !important;
+    line-height: 45px !important;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 15px !important;
+    font-weight: 600;
+  }
+  h4 {
+    font-size: 12px !important;
+    font-weight: 600;
+  }
+  h5 {
+    font-size: 10px !important;
+    font-weight: 600;
+  }
+  h6 {
+    font-size: 10px !important;
+    font-weight: 600;
+  }
+}
+
+@media(max-width:767px) {
+  figure {
+      width:95% !important;
+  }
+}
+@media only screen and (max-width: 768px) {
+  h1 {
+    font-size: 30px !important;
+  }
+  h2 {
+    font-size: 25px !important;
+  }
+
+  h3 {
+    font-size: 20px !important;
+  }
+}
+
+
+*::-webkit-scrollbar-thumb {
+  background-color: #FC7343;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid #FC7343;  /* creates padding around scroll thumb */
+}
+*::-webkit-scrollbar {
+  height: 5px !important;               /* width of the entire scrollbar */
+  width : 5px !important;               /* width of the entire scrollbar */
+}
+.mat-ink-bar {
+  background-color: #FC7343 !important;
+}
+
+a:hover{
+  text-decoration: none;
+  color:#fff;
+}
+a{
+  text-decoration: none;
+  color:#FC7343;
+}
+
+.black-square {
+  background-color:#018795 !important;
+}
+
+.gray-square {
+  background-color:#7a7d7e !important;
+}
+
+.white-square {
+  background-color:#eee !important;
+}
+
+input {
+  caret-color:#fff !important;
+}
+.clear {
+  clear: both;
+  height:25px;
+}
+.highlight-white {
+  box-shadow: inset 0 0 3px 3px yellow;
+}
+.highlight-black {
+  box-shadow: inset 0 0 3px 3px blue;
+}
+.tags {
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.tags li {
+  float: left;
+}
+
+.tag {
+  background: #eee;
+  border-radius: 3px 0 0 3px;
+  color: #333;
+  display: inline-block;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 20px 0 23px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+  cursor: pointer;
+}
+
+.tag::before {
+  border-radius: 10px;
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+  content: '';
+  height: 6px;
+  left: 10px;
+  position: absolute;
+  width: 6px;
+  top: 10px;
+  background-color: #10131b;
+}
+
+.tag::after {
+  border-bottom: 13px solid transparent;
+  border-left: 10px solid #eee;
+  border-top: 13px solid transparent;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.tag:hover {
+  background-color: #FC7343;
+  color: white;
+}
+
+.tag:hover::after {
+   border-left-color: #FC7343;
+}
+.overflow{overflow:hidden;}
+
+.pop {
+  -webkit-box-shadow: 0px -4px 5px 0 rgb(122 119 119 / 30%), 0px 10px 5px 0 rgb(0 0 0 / 25%) !important;
+  -moz-box-shadow: 0px -4px 5px 0 rgb(122 119 119 / 30%), 0px 10px 5px 0 rgb(0 0 0 / 25%) !important;
+  box-shadow: 0px -4px 5px 0 rgb(122 119 119 / 30%), 0px 10px 5px 0 rgb(0 0 0 / 25%) !important;
+}
+.pop-button {
+  -webkit-box-shadow: 0px -4px 5px 0 rgba(235, 130, 69, 0.3), 0px 10px 5px 0 rgba(83, 44, 11, 0.25);
+  -moz-box-shadow: 0px -4px 5px 0 rgba(235, 130, 69, 0.3), 0px 10px 5px 0 rgba(83, 44, 11, 0.25);
+  box-shadow: 0px -4px 5px 0 rgba(235, 130, 69, 0.3), 0px 10px 5px 0 rgba(83, 44, 11, 0.25);
+}
+.post-title {
+  font-size: large;
+  margin-top: 15px;
+  display: grid;
+  vertical-align: middle;
+}
+
+.post-image {
+  width:90%;
+  display: block;
+  margin: 0 auto;
+}
+.post-container {
+  margin : 15px;
+  align-items: center;
+  text-align: center;
+  background-color: #2B2F35;
+  min-height: 250px;
+  vertical-align: middle;
+  display: grid;
+  border-radius: 5px;
+  padding: 15px;
+}
+.post-container:hover {
+  -webkit-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+-moz-box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+box-shadow: 0px 5px 5px 0px #FC7343, 0px 2px 5px 0 #FC7343  !important;
+}
+a {
+  font-weight: 600;
+}
+.post-date {
+  font-size: small;
+  color: #7E7E7E;
+}
+.fab {
+  background-color: #2b2f35;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+.fab mat-icon {
+  display: block;
+  margin: 0 auto;
+  line-height: 40px;
+}
+
+.fab:hover {
+  color: #FC7343 !important;
+}
+.push {
+  box-shadow: inset 6px 6px 10px 0 rgba(0, 0, 0, 0.2),
+    inset -6px -6px 10px 0 rgba(255, 255, 255, 0.5);
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  display: none;
+}
+.svg-arrow {
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #FC7343 !important;;
+}
+
+.vertical-center-image {
+  width: 300px;
+}
+@media only screen and (max-width: 768px) {
+  .vertical-center-image {
+      display: block;
+      margin: 0 auto;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .vertical-center-image {
+      display: block;
+      margin: 0 auto;
+      position: absolute;
+      top: 50%;
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%) translateX(50%);
+  }
+}
+
+.feature-image {
+  background: rgb(46,49,64);
+background: radial-gradient(circle, rgba(46,49,64,1) 0%, rgba(61,55,40,0.639093137254902) 40%, rgba(106,49,116,0.6923144257703081) 62%, rgba(43,47,53,0.7567401960784313) 100%);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+      background-position: 0% 50%;
+  }
+  25% {
+      background-position: 10% 50%;
+  }
+  50% {
+    background-position: 20% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
+
+.selectedSquare {
+  background-color: #c0bd07 !important;
+}
+th {
+  min-width: 100px;
+}
+td {
+  min-width:100px;
+  max-width: 200px;
+}
+.move-class-annotation {
+  width: 35%;
+  z-index: 1000;
+  position: absolute;
+}
+
+.scrolled-down{
+  transform:translateY(-100%); transition: all 0.3s ease-in-out;
+}
+.scrolled-up{
+  transform:translateY(0); transition: all 0.3s ease-in-out;
+}
+
+.black-3c85d>.piece-417db {
+  color: #e00;
+}
+
+.navigation-table {
+  line-height: 30px;
+}
+.navigation-table ul {
+  border: thin ridge gray;
+  border-radius: 5px;
+  width: fit-content;
+  padding: 30px;
+}
+.navigation-table ul li {
+  list-style-type: disc !important;
+}
+.header-row {
+  background-color: #7a7d7e;
+  font-weight: 600;
+}
+.border-row {
+  border: thin ridge #7a7d7e;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #444;
+}
+
+.separator:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+  margin-left: .25em;
+}
+
+.big-button-text {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 80px;
+  transform: rotate(-0.34deg);
+  margin: 0 auto;
+  margin-top: 10px;
+}
+.youtube-video {
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  height:100%
+}
+.ad-container {
+  min-height: 250px;
+}
+.para {
+  padding: 10px;
+}
+
+.rating-slider {
+  width: 95%;
+}

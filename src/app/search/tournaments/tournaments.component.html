@@ -1,0 +1,28 @@
+<div class="container players-container" style="min-height: 720px;">
+    <h2>Tournament's List</h2>
+    <div class="form-container">
+        <div class="row">
+            <div class="col-sm-12 col-md-8">
+                <mat-form-field class="form-field" appearance="fill">
+                    <mat-label>Enter Name</mat-label>
+                    <input matInput type="text" [(ngModel)]="searchedName" >
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-4">
+              <div class="small-button pop" (click)="searchTournament()"> Filter</div>
+            </div>
+        </div>
+    </div>
+    <app-banner-ads></app-banner-ads>
+    <div *ngIf="!isLoading; else loading">
+        <div *ngIf="tournaments && tournaments.length > 0;else noTournament">
+            <app-tournament-finder [allTournaments]="tournaments"></app-tournament-finder>
+        </div>
+        <ng-template #noTournament>
+            <span>No tournaments has been registered so far</span>
+        </ng-template>
+    </div>
+    <ng-template #loading>
+        <app-loader></app-loader>
+    </ng-template>
+</div>

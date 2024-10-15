@@ -1,0 +1,57 @@
+.gray {
+  background-color: #8CA2AD
+}
+
+.orange {
+  background-color: #BB5746;
+}
+
+.sky {
+  background-color: #018795;
+}
+.white {
+  background-color: #d5d5d5;
+}
+td {
+  width: 90px;
+  height : 90px;
+  border: thin ridge gray;
+  min-width: unset;
+  min-height: unset;
+}
+
+
+@media(max-width:767px) {
+  td {
+    width: 60px;
+    height : 60px;
+    border: thin ridge gray;
+    min-width: unset;
+    min-height: unset;
+  }
+}
+.selected {
+  border: solid;
+  border-color: darkslateblue;
+  border-width: thick;
+}
+.chess-piece {
+  width: 64px;
+}
+.container {
+  width:90%;
+  max-width: unset;
+}
+.selected-piece {
+  background-color: darkslateblue;
+}
+
+.subtle {
+  opacity: 0.4;
+}
+.light {
+  opacity: 0.8;
+}
+.super-dark {
+  background-color: #FC7343;
+}

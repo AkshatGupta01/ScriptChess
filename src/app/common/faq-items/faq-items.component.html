@@ -1,0 +1,6 @@
+<div class="faq-item" id="faq-question-{{faq.id}}" style="margin:5px; margin-top:30px;">
+    <h3 id="{{faq.question|slugify}}">{{faq.question}}</h3>
+    <div class="faq-answer"  [innerHTML] = "sanitizer.bypassSecurityTrustHtml(tmpFaq.answer)">
+
+    </div>
+</div>

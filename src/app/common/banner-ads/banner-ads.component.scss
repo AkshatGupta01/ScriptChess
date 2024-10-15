@@ -1,0 +1,13 @@
+.slider-section { padding:50px 70px; background-repeat: no-repeat; background-size: cover; background-position: center;
+  margin: 0 auto;
+  width: 95%;
+  margin-top: 25px;
+  border-radius: 15px;
+}
+
+@media(max-width:767px) {
+    .slider-section {
+      min-height: 250px;
+      padding: 10px !important;
+    }
+  }

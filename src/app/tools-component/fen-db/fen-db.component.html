@@ -1,0 +1,27 @@
+<div class="moves-holder">
+    <h3>Moves played in this position</h3>
+    <div class="moves-container" *ngIf="!gameIsNew; else newGame">
+        <div class="row" style="margin:0;margin-bottom: 5px;">
+            <div class="col">
+                <span style="font-weight : 600;">Games: {{gameCountStr}}</span>
+            </div>
+            <div class="col-2" *ngIf="showAllGamesLabel">
+                <a [routerLink]="['/search/games']" [queryParams]="{fen:currentFen}" style="
+                margin-top: 13px;
+                color: #ffffff;
+                font-weight: 500;" >
+                    <div class="pop fab"  style="float: right;">
+                        <mat-icon>search</mat-icon>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="moves-label-list">
+            <app-move-label-list-box [moveDetailList]="moves" [currentMoveIndex]="currentMoveIndex" *ngIf="moves"></app-move-label-list-box>
+        </div>
+    </div>
+    <ng-template #newGame>
+        <span>This position is not availablee in our database</span>
+    </ng-template>
+    
+</div>

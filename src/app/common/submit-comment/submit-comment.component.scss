@@ -1,0 +1,9 @@
+.comment-container {
+    max-width: 450px;
+}
+
+@media(max-width:767px) {
+    .comment-container {
+        max-width: 100%;
+    }   
+}

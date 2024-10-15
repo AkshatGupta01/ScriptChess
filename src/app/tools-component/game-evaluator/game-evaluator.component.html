@@ -1,0 +1,498 @@
+<div class="game-container" *ngIf="game; else enterPgn">
+    <h1>Game analysis</h1>
+    <div class="row" >
+        <div class="board col-sm-12 col-md-1">
+            <!-- <div class="best-move" *ngIf="isSideMove">
+                <li *ngIf="fenAnalysisMap[lastFen] && fenAnalysisMap[lastFen] && fenAnalysisMap[lastFen].bestEval; else bestMoveWithoutEval">
+                    <div class="move-cat">
+                        <img src="/assets/images/best-move.png" alt="Best move" title="Best move in position" />                                
+                    </div>
+                    <div class="move-cat-lbl">
+                        {{fenAnalysisMap[lastFen].bestMove}} ({{fenAnalysisMap[lastFen].bestEval}})
+                    </div>
+                </li>
+                <ng-template #bestMoveWithoutEval>
+                    <li *ngIf="fenAnalysisMap[lastFen];">
+                        <div class="move-cat">
+                            <img src="/assets/images/best-move.png" alt="Best move" title="Best move in position" />                                
+                        </div>
+                        <div class="move-cat-lbl">
+                            {{fenAnalysisMap[lastFen].bestMove}}
+                        </div>
+                    </li>
+                </ng-template>
+
+                <li *ngIf="fenAnalysisMap[lastFen] && fenAnalysisMap[lastFen]&& fenAnalysisMap[lastFen].bestMove != sideMove && fenAnalysisMap[engineFen].eval; else playedMoveWithoutEval">
+                    <div class="move-cat">
+                        <img src="/assets/images/{{fenAnalysisMap[engineFen].moveCat|movecat}}" alt="{{fenAnalysisMap[engineFen].moveCat}}" />
+                        Move Played: 
+                    </div>
+                    <div class="move-cat-lbl">
+                       {{sideMove}} ({{fenAnalysisMap[engineFen].eval}})
+                    </div>
+                </li>
+                <ng-template #playedMoveWithoutEval>
+                    <li *ngIf="fenAnalysisMap[lastFen] && fenAnalysisMap[lastFen] && fenAnalysisMap[lastFen].bestMove != sideMove">
+                        <div class="move-cat">
+                            <img src="/assets/images/{{fenAnalysisMap[engineFen].moveCat|movecat}}" alt="{{fenAnalysisMap[engineFen].moveCat}}" />
+                            Move Played: 
+                        </div>
+                        <div class="move-cat-lbl">
+                            {{sideMove}}
+                        </div>
+                    </li>                    
+                </ng-template>
+            </div> -->
+        </div>
+        <div class="board col-sm-12 col-md-5">
+            <div class="board-wrapper" style="width: 100%;" >
+                <app-chess-board #board [white]="game.whitePlayer.name" [allowPlay]="true" (onMoveEx)="onMove($event, board)" [showScore]="true" [score]="score" [black]="game.blackPlayer.name" [allowAnnotations]="true" [whiteElo]="game.whitePlayer.elo"
+                [blackElo]="game.blackPlayer.elo" [boardId]="boardId"
+                ></app-chess-board>
+                <div class="row">
+                    <mat-form-field class="moves-played-text" *ngIf="currentFen">
+                        <mat-label>Current Fen</mat-label>
+                        <input matInput readonly value="{{currentFen}}">
+                      </mat-form-field>
+                </div>
+                <div class="row">
+                    <div class="col-12" style="margin-top: 50px;">
+                        <div class="title">
+                            <h3>Engine Setting</h3>
+                        </div>
+                        <li>
+                            Engine Depth : {{engineDepth}}
+                        </li>
+                        <li>
+                            Avg Time Taken: {{avgTimePerDepth}}
+                        </li>
+                        <li>
+                            Avg Engine ELO: {{engineElo}}
+                        </li>
+                        <mat-slider
+                        class="example-margin example-value-label"
+                        thumbLabel
+                        step="1"
+                        min="1"
+                        max="20"
+                        [(ngModel)]="engineDepth"
+                        (ngModelChange)="chanegEnginDepth($event)"
+                        aria-label="units"></mat-slider>
+                    </div>
+                    <div class="col-12">
+                        <div class="small-button pop" (click)="reRunAnalysis()" > Re-run Analysis</div>
+                    </div>
+                </div>
+            </div>            
+            
+        </div>
+        <div class="board col-sm-12 col-md-5">
+
+            <mat-tab-group class="game-analysis-info-tab-group pop" [selectedIndex]="selectedTab.value" (selectedIndexChange)="selectedTab.setValue($event)">
+                <mat-tab>
+                    <ng-template mat-tab-label>Game Info</ng-template>
+                    <div class="primary-lines" *ngIf="!isSideMove && currentGame.moves[moveIndex] && currentGame.moves[moveIndex].candidateLines;else showSideMoveAnalysis">
+                        Depth: {{currentGame.moves[moveIndex].candidateLines.depth}}
+                        <app-candidate-lines-viewer [primaryLines]="currentGame.moves[moveIndex].candidateLines"></app-candidate-lines-viewer>
+                    </div>
+                    <ng-template #showSideMoveAnalysis>
+                        <div class="primary-lines" *ngIf="isSideMove && fenAnalysisMap && fenAnalysisMap[engineFen] && fenAnalysisMap[engineFen].candidateLines">
+                            Depth: {{fenAnalysisMap[engineFen].candidateLines.depth}}
+                            <app-candidate-lines-viewer [primaryLines]="fenAnalysisMap[engineFen].candidateLines"></app-candidate-lines-viewer>
+                        </div>
+                    </ng-template>
+                    <div class="analysis-in-progress" *ngIf="analysisRunning">
+                        <div class="row" style="padding:10px;">
+                            <div class="col-12" style="text-align: center;">
+                                <h3>Analysis Running</h3>
+                            </div>
+                            <div class="col-12">
+                                <mat-progress-bar
+                                color="accent"
+                                mode="determinate"
+                                [value]="gameAnalysisProgess"></mat-progress-bar>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="game-details"  style="max-height: 525px;">
+                        <div class="row" style="margin: 0 !important;">
+                            <div class="col-6" style="padding:0 !important;"  (click)="setMoveMode(true)">
+                                <div class="game-mode-button" [ngClass]="{'active-tab': moveMode}" style="border-top-left-radius:10px">
+                                    Moves
+                                </div>
+                            </div>
+            
+                            <div class="col-6" style="padding:0 !important;" (click)="setMoveMode(false)">
+                                <div class="game-mode-button" [ngClass]="{'active-tab': !moveMode}" style="border-top-right-radius:10px">
+                                    Game Details
+                                </div>
+                            </div>                
+                        </div>
+                        
+                        
+                        <div class="moves-container" *ngIf="moveMode; else gameDetails">
+                            <div class="control-box">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="move-control pop" (click)="movePrev(board)" >
+                                            <img src="/assets/images/left.png" />
+                                        </div>                        
+                                    </div>
+                
+                                    <div class="col-sm-6">
+                                        <div class="move-control pop" (click)="moveNext(board)" >
+                                            <img src="/assets/images/right.png" />
+                                        </div>                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="moves-items" style="max-height: 400px;overflow-y: scroll;">
+                                <div class="move-summary odd" [ngClass]="{'even': i % 2 == 0}" *ngFor="let item of movePairs;let i = index">
+                                    <div class="move-label row" >
+                                        <div class="col-2">
+                                            {{i+1}}
+                                        </div>
+                                        <div class="col-4 row" [ngClass]="{activeMove: (moveIndex == (i * 2) + 1)&& moveIndex > 0 }">
+                                            <div class="move-cat" *ngIf="item.white.moveCat">
+                                                <img src="/assets/images/{{item.white.moveCat|movecat}}" alt="{{item.white.moveCat}}" />
+                                            </div>
+                                            <div class="move-white"  (click)="makeMove(item.white, true, board)">
+                                                {{item.white.move}}
+                                            </div>
+                                            <span class="material-symbols-outlined comment" (click)="showWhiteComment(item.white)"  *ngIf="item.white.comment && item.white.comment.trim().length > 0">
+                                                mark_chat_unread
+                                            </span>
+                                        </div>
+                                        <div class="col-4 row" [ngClass]="{activeMove: ((moveIndex) == (i * 2) + 2)&& moveIndex > 0}" *ngIf="item.black">
+                                            <div class="move-cat" *ngIf="item.black.moveCat">
+                                                <img src="/assets/images/{{item.black.moveCat|movecat}}" alt="{{item.black.moveCat}}" />
+                                            </div>
+                                            <div class="move-black" (click)="makeMove(item.black, false, board)" >
+                                                {{item.black.move}}                 
+                                            </div>
+                                            <span class="material-symbols-outlined comment" (click)="showBlackComment(item.black)"   *ngIf="item.black.comment && item.black.comment.trim().length > 0">
+                                                mark_chat_unread
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="white-comment" *ngIf="item.white.comment && showWhiteCommentIndex == item.white.moveNumber">
+                                        <p>
+                                            {{item.white.comment | moveComment}}
+                                        </p>
+                                    </div>
+                    
+                                    <div class="black-comment" *ngIf="item.black && item.black.comment && showBlackCommentIndex == item.black.moveNumber">
+                                        <p>
+                                            {{item.black.comment | moveComment}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+            
+                        <ng-template #gameDetails>
+                            <div class="game-meta container" style="max-height: 650px;overflow-y: scroll;">
+                                <div class="row" *ngIf="game.event">
+                                    <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                                        Event : 
+                                    </div>
+                
+                                    <div class="col-3">
+                                        {{game.event}}
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="game.site">
+                                    <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                                        Site : 
+                                    </div>
+                
+                                    <div class="col-3">
+                                        {{game.site}}
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="game.round">
+                                    <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                                        Round : 
+                                    </div>
+                
+                                    <div class="col-3">
+                                        {{game.round}}
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="game.result">
+                                    <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                                        Result : 
+                                    </div>
+                
+                                    <div class="col-3">
+                                        {{game.result}}
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="game.date">
+                                    <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                                        Date : 
+                                    </div>
+                
+                                    <div class="col-3">
+                                        {{game.date | date}}
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="game.whitePlayer">
+                                    <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                                        White : 
+                                    </div>
+                
+                                    <div class="col-3">
+                                        {{game.whitePlayer.name}}
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="game.blackPlayer">
+                                    <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                                        Black : 
+                                    </div>
+                
+                                    <div class="col-3">
+                                        {{game.blackPlayer.name}}
+                                    </div>
+                                </div>
+                
+                                <div *ngIf="game.otherDetails && game.otherDetails.length > 0">
+                                    <div class="row" *ngFor="let item of game.otherDetails">
+                                        <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                                            {{item[0]}}
+                                        </div>
+                    
+                                        <div class="col-3">
+                                            {{item[1]}}
+                                        </div>
+                                    </div>                        
+                                </div>
+            
+                                <div class="pgn-detail">
+                                    <strong>PGN:</strong>
+                                    <br/>
+                                    <div style="color: #ffffff; white-space: pre-line; margin-top: 15px;;">
+                                        <textarea style="width: 100%; height: 350px; background-color: #2C313F; color:#fff" readonly>
+                                            {{game.pgn | pgn}}
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </ng-template>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>Side Line</ng-template>
+                    <div class="analysis-view">
+                        <div class="best-move-row move-row" *ngIf="fenAnalysisMap[lastFen] && fenAnalysisMap[lastFen].bestMove && fenAnalysisMap[lastFen].bestEval; else bestMoveWithoutEval">
+                            <div class="move-cat">
+                                <img src="/assets/images/best-move.png" alt="Best move" title="Best move in position" />                                
+                            </div>
+                            <div class="move-cat-lbl">
+                                {{fenAnalysisMap[lastFen].bestMove}} ({{fenAnalysisMap[lastFen].bestEval}})
+                            </div>
+                        </div>
+                        <ng-template #bestMoveWithoutEval>
+                            <div class="best-move-row move-row" *ngIf="fenAnalysisMap[lastFen] && fenAnalysisMap[lastFen].bestMove">
+    
+                                <div class="move-cat">
+                                    <img src="/assets/images/best-move.png" alt="Best move" title="Best move in position" />                                
+                                </div>
+                                <div class="move-cat-lbl">
+                                    {{fenAnalysisMap[lastFen].bestMove}}
+                                </div>
+                            </div>
+                        </ng-template>
+                        <div class="played-move-row move-row" *ngIf="fenAnalysisMap[lastFen] && fenAnalysisMap[lastFen].bestMove && fenAnalysisMap[lastFen].bestMove != sideMove && fenAnalysisMap[engineFen].eval; else playedMoveWithoutEval">
+                            <div class="move-cat-lbl">
+                               {{sideMove}} ({{fenAnalysisMap[engineFen].eval}})
+                            </div>
+                        </div>
+                        <ng-template #playedMoveWithoutEval>
+                            <div class="played-move-row move-row" *ngIf="fenAnalysisMap[lastFen] && fenAnalysisMap[lastFen].bestMove && fenAnalysisMap[lastFen].bestMove != sideMove">
+                                <div class="move-cat-lbl">
+                                    {{sideMove}}
+                                </div>
+                                
+                            </div>
+                        </ng-template>
+                        <div class="primary-lines" *ngIf="!isSideMove && currentGame.moves[moveIndex] && currentGame.moves[moveIndex].candidateLines;else showSideMoveAnalysis">
+                            Depth: {{currentGame.moves[moveIndex].candidateLines.depth}}
+                            <app-candidate-lines-viewer [primaryLines]="currentGame.moves[moveIndex].candidateLines"></app-candidate-lines-viewer>
+                        </div>
+                        <ng-template #showSideMoveAnalysis>
+                            <div class="primary-lines" *ngIf="isSideMove && fenAnalysisMap && fenAnalysisMap[engineFen] && fenAnalysisMap[engineFen].candidateLines">
+                                Depth: {{fenAnalysisMap[engineFen].candidateLines.depth}}
+                                <app-candidate-lines-viewer [primaryLines]="fenAnalysisMap[engineFen].candidateLines"></app-candidate-lines-viewer>
+                            </div>
+                        </ng-template>
+                        <div class="played-moves">
+                            <h4>Played Moves:</h4>
+                            <div class="pgn-move-container">
+                                <div style="display: inline-block;" [ngClass]="{'with-side-move': item.sideMoves && item.sideMoves.length > 0}" *ngFor="let item of currentGame.moves;let i = index">
+                                    <app-moves-with-side-move [move]="item" [index]="i"></app-moves-with-side-move>                             
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>Analysis Stats</ng-template>
+                    <div class="row" *ngIf="!engineRunning">                        
+                        <div class="col-12 game-statistic">
+                            <div class="title">
+                                <h3> Analysis and Game Statistics</h3>
+                            </div>
+                            <div class="analysis-content">
+                                <li>
+                                    <div class="move-cat">
+                                        <img src="/assets/images/bot.png" alt="Engine Depth" />                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Engin Depth: {{engineDepth}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="move-cat">
+                                        <img src="/assets/images/clock.png" alt="Time taken in analysis" />                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Time taken: {{timeTaken}}sec
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="move-cat" >
+                                        <img src="/assets/images/book.png" alt="book move" title="Following the opening theories" />                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Book Moves : {{bookMovesCount}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="move-cat">
+                                        <img src="/assets/images/good.png" alt="Good move" title="Good move in given position, could have been better" />                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Good Moves : {{goodMovesCount}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="move-cat">
+                                        <img src="/assets/images/best.png" alt="best move"  title="Best move in given position as per the engine"/>                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Best Moves : {{bestMovesCount}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="move-cat">
+                                        <img src="/assets/images/dubious.png" alt="dubious move" title="A dubious move. It's not a mistake but opponent can capitalize it" />                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Dubious Moves : {{dubiousMovesCount}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="move-cat">
+                                        <img src="/assets/images/mistake.png" alt="mistake move" title="Move is a Mistake in given position. Now opponent has chance to get better position"/>                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Mistakes : {{mistakeMovesCount}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="move-cat">
+                                        <img src="/assets/images/blunder.png" alt="Blunder move"  title="These move can make you lose game" />                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Blunders : {{blunderMovesCount}}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="move-cat">
+                                        <img src="/assets/images/brilliant.png" alt="Brilliant move" />                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Brilliant moves : {{brilliantMoveCount}}
+                                    </div>
+                                </li>
+                                <li *ngIf="deviationFromDb>0">
+                                    <div class="move-cat">
+                                        <img src="/assets/images/idea.png" alt="Brilliant move" />                                
+                                    </div>
+                                    <div class="move-cat-lbl">
+                                        Game becomes new on Move No.: {{deviationFromDb}}
+                                    </div>
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>Move Explorer</ng-template>
+                    <app-fen-db class="col-12" style="margin-top:50px;" [currentFen]="currentFen" [currentMoveIndex]="moveIndex == 0? 1: moveIndex" (onNoMove)="onNoMove()"></app-fen-db>
+                </mat-tab>
+            </mat-tab-group>
+            
+            
+            
+        </div>
+        <div class="board col-sm-12 col-md-1">
+
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="row">
+        <div class="big-button pop big-row-button" (click)="newPgn()" > Enter a new PGN </div>
+    </div>
+</div>
+<ng-template #enterPgn>
+    <h1>Game Analysis</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <app-chess-board [boardId]="boardId"></app-chess-board>
+            </div>
+            <div class="col-sm-12 col-md-6 pop">
+                <div class="engine-info">
+                    <div class="col-12" style="margin-top: 50px;">
+                        <div class="title">
+                            <h3>Engine Setting</h3>
+                        </div>
+                        <li>
+                            Engine Depth : {{engineDepth}}
+                        </li>
+                        <li>
+                            Avg Time Taken: {{avgTimePerDepth}}
+                        </li>
+                        <li>
+                            Avg Engine ELO: {{engineElo}}
+                        </li>
+                        <mat-slider
+                        class="example-margin example-value-label"
+                        thumbLabel
+                        step="1"
+                        min="1"
+                        max="20"
+                        [(ngModel)]="engineDepth"
+                        (ngModelChange)="chanegEnginDepth($event)"
+                        aria-label="units"></mat-slider>
+                        <li>Engine Status: <span style="width:50px; display:inline-block" *ngIf="engineRegistered; else engineLoading">
+                            <img src="/assets/images/ready.png" alt="Online" title="Online" style="width:100%"/>
+                        </span> <ng-template #engineLoading><span style="width:50px; display:inline-block" ><app-loader width="50px"></app-loader></span></ng-template></li>
+                    </div>
+                </div>
+                <mat-form-field class="moves-played-text" style="margin-top:65px" >
+                    <mat-label style="padding-left:15px; padding-top:15px;">Enter PGN</mat-label>
+                    <textarea matInput [ngModel]="gamePgnStr" class="pgn-text-area textbox" (ngModelChange)="onPgnEnter($event)"></textarea>
+                </mat-form-field>
+                <app-loader *ngIf="loadingGame"></app-loader>
+            </div>
+        </div>
+    </div>
+    
+</ng-template>

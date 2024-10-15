@@ -1,0 +1,49 @@
+table {
+    width: 100%;
+}
+
+.mat-table {
+    background: none !important;
+}
+tr.mat-header-row {
+    background-color: #40475A;
+}
+.player-grid {
+    max-height: 720px;
+    overflow-y: scroll;
+}
+.players-container {
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+a {
+    color : #ffffff;
+    font-weight: 600;
+}
+.search-result-container {
+    margin-top:30px;
+    margin-bottom:30px;
+    padding:15px;
+}
+
+.pager {
+    height: 35px;
+    float: right;   
+    margin-top: 15px; 
+}
+.pager-button {
+    font-weight: 500;
+    cursor: pointer;
+    color: #FC7343;
+}
+.search-result-container {
+    max-width:85%;
+}
+
+.games-table {
+    overflow-x: scroll;
+    padding: 10px;
+    border-radius: 5px;;
+}

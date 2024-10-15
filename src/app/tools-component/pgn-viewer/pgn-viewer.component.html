@@ -1,0 +1,210 @@
+<div class="game-container" *ngIf="game; else enterPgn">
+    <h1>PGN Player</h1>
+    <div class="row" >
+        <div class="board col-sm-12 col-md-1">
+
+        </div>
+        <div class="board col-sm-12 col-md-5">
+            <div class="board-wrapper" style="width: 100%;" >
+                <app-chess-board #board [white]="game.whitePlayer.name" [black]="game.blackPlayer.name" [whiteElo]="game.whitePlayer.elo"
+                [blackElo]="game.blackPlayer.elo" [boardId]="boardId"
+                ></app-chess-board>
+                <div class="row">
+                    <mat-form-field class="moves-played-text" *ngIf="currentFen">
+                        <mat-label>Current Fen</mat-label>
+                        <input matInput readonly value="{{currentFen}}">
+                      </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+        <div class="board game-details pop col-sm-12 col-md-4"  style="max-height: 525px;"  >
+            <div class="row" style="margin: 0 !important;">
+                <div class="col-6" style="padding:0 !important;"  (click)="setMoveMode(true)">
+                    <div class="game-mode-button pop" [ngClass]="{'active-tab': moveMode}" style="border-top-left-radius:10px">
+                        Moves
+                    </div>
+                </div>
+
+                <div class="col-6" style="padding:0 !important;" (click)="setMoveMode(false)">
+                    <div class="game-mode-button pop" [ngClass]="{'active-tab': !moveMode}" style="border-top-right-radius:10px">
+                        Game Details
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="moves-container" *ngIf="moveMode; else gameDetails">
+                <div class="control-box">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="move-control pop" (click)="movePrev(board)" >
+                                <img src="/assets/images/left.png" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="move-control pop" (click)="moveNext(board)" >
+                                <img src="/assets/images/right.png" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="moves-items" style="max-height: 400px;overflow-y: scroll;">
+                    <div class="move-summary odd" [ngClass]="{'even': i % 2 == 0}" *ngFor="let item of movePairs;let i = index">
+                        <div class="move-label row" >
+                            <div class="col-2">
+                                {{i+1}}
+                            </div>
+                            <div class="col-3 row" [ngClass]="{activeMove: (moveIndex == (i * 2) + 1)&& moveIndex > 0 }">
+                                <div class="move-white"  (click)="makeMove(item.white, true, board)">
+                                    {{item.white.move}}
+                                </div>
+                                <span class="material-symbols-outlined comment" (click)="showWhiteComment(item.white)"  *ngIf="item.white.comment && item.white.comment.trim().length > 0">
+                                    mark_chat_unread
+                                </span>
+                            </div>
+                            <div class="col-3 row" [ngClass]="{activeMove: ((moveIndex) == (i * 2) + 2)&& moveIndex > 0}" *ngIf="item.black">
+                                <div class="move-black" (click)="makeMove(item.black, false, board)" >
+                                    {{item.black.move}}
+                                </div>
+                                <span class="material-symbols-outlined comment" (click)="showBlackComment(item.black)"   *ngIf="item.black.comment && item.black.comment.trim().length > 0">
+                                    mark_chat_unread
+                                </span>
+                            </div>
+                        </div>
+                        <div class="white-comment" *ngIf="item.white.comment && showWhiteCommentIndex == item.white.moveNumber">
+                            <p>
+                                {{item.white.comment | moveComment}}
+                            </p>
+                        </div>
+
+                        <div class="black-comment" *ngIf="item.black && item.black.comment && showBlackCommentIndex == item.black.moveNumber">
+                            <p>
+                                {{item.black.comment | moveComment}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <ng-template #gameDetails>
+                <div class="game-meta container" style="max-height: 650px;overflow-y: scroll;">
+                    <div class="row" *ngIf="game.event">
+                        <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                            Event :
+                        </div>
+
+                        <div class="col-3">
+                            {{game.event}}
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="game.site">
+                        <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                            Site :
+                        </div>
+
+                        <div class="col-3">
+                            {{game.site}}
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="game.round">
+                        <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                            Round :
+                        </div>
+
+                        <div class="col-3">
+                            {{game.round}}
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="game.result">
+                        <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                            Result :
+                        </div>
+
+                        <div class="col-3">
+                            {{game.result}}
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="game.date">
+                        <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                            Date :
+                        </div>
+
+                        <div class="col-3">
+                            {{game.date | date}}
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="game.whitePlayer">
+                        <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                            White :
+                        </div>
+
+                        <div class="col-3">
+                            {{game.whitePlayer.name}}
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="game.blackPlayer">
+                        <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                            Black :
+                        </div>
+
+                        <div class="col-3">
+                            {{game.blackPlayer.name}}
+                        </div>
+                    </div>
+
+                    <div *ngIf="game.otherDetails && game.otherDetails.length > 0">
+                        <div class="row" *ngFor="let item of game.otherDetails">
+                            <div class="col-3" style="text-align: right;padding-right: 15px;height: 30px;">
+                                {{item[0]}}
+                            </div>
+
+                            <div class="col-3">
+                                {{item[1]}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pgn-detail">
+                        <strong>PGN:</strong>
+                        <br/>
+                        <div style="color: #ffffff; white-space: pre-line; margin-top: 15px;;">
+                            <textarea style="width: 100%; height: 350px; background-color: #2C313F; color:#fff" readonly>
+                                {{game.pgn | pgn}}
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </ng-template>
+
+        </div>
+        <div class="board col-sm-12 col-md-1">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="big-button pop big-row-button" (click)="newPgn()"> Enter a new PGN </div>
+    </div>
+</div>
+<ng-template #enterPgn>
+    <h1>PGN Player</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <app-chess-board ></app-chess-board>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <mat-form-field class="moves-played-text" style="margin-top:65px">
+                    <mat-label style="padding-left:15px; padding-top:15px;">Enter PGN</mat-label>
+                    <textarea matInput [ngModel]="gamePgnStr" class="pgn-text-area" (ngModelChange)="onPgnEnter($event)"></textarea>
+                </mat-form-field>
+                <app-loader *ngIf="loadingGame"></app-loader>
+                <app-square-ads></app-square-ads>
+            </div>
+        </div>
+    </div>
+
+</ng-template>

@@ -1,0 +1,48 @@
+*::-webkit-scrollbar {
+  height: 4px;
+}
+.move-label {
+  padding: 1px;
+  background-color: aliceblue;
+  border-radius: 1px;
+  color: #222;
+  cursor: pointer;
+  text-align: center;
+  margin: 2px;
+}
+.with-side-move {
+  display: block !important;
+}
+.played-move {
+  padding: 5px;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: 600;
+  background: #dbd4d4;
+  margin: 5px;
+  color: #222;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.played-moves {
+  max-height: 250px;
+  overflow-y: scroll;
+}
+.peieces-position {
+  display: inline-block;
+  margin: 5px;
+}
+.piece-icon {
+  width: 32px;
+  display: inline-block;
+}
+.solution-by-user {
+  max-width : 80%;
+  margin: 0 auto;
+  white-space: nowrap;
+}
+.mat-icon {
+  width: 20px;
+  display: block;
+  margin: 0 auto;
+}

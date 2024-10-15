@@ -1,0 +1,375 @@
+<div class="container">
+  <h1>Welcome to Scriptchess Training Program</h1>
+  <div class="clear"></div>
+  <div class="clear"></div>
+  <div class="training-intro" *ngIf="!trainingStarted && !generateInsighPhase">
+    <app-page-section pageSlug="scriptchess-training-program" [buildNavigation]="false"></app-page-section>
+    <div class="big-button big-button-text pop" style="text-align: center;" (click)="startTraining()">Start Training</div>
+  </div>
+
+  <div class="generate-insight" *ngIf="generateInsighPhase">
+    <p *ngIf="!loggedInUser;else showLoggedIn">
+      Start by Checking your <a routerLink="/tools/multiple-chess-games-analyzer"> games insight </a>, and Generate Training from that insight
+    </p>
+    <ng-template #showLoggedIn>
+      <p *ngIf="generateInsighPhase && (fetchingGameInsight || insights.length > 0)">
+        Start by Generating Trainnig from your saved insights
+      </p>
+      <p *ngIf="generateInsighPhase && insights && insights.length == 0">
+        You do not have any saved Insight. Start by Checking your <a routerLink="/tools/multiple-chess-games-analyzer"> games insight </a>, and Generate Training from that insight
+      </p>
+    </ng-template>
+
+    <div class="saved-insights" *ngIf="generateInsighPhase && insights && insights.length > 0 && !fetchingGameInsight && !generatingTraining">
+      <div class="row header-row" style="margin: 0">
+        <div class="col"> Name </div>
+        <div class="col"> Comment </div>
+        <div class="col"> Created On </div>
+        <div class="col">  </div>
+      </div>
+      <div class="row border-row" style="margin: 0; padding:5px" *ngFor="let item of insights">
+        <div class="col"> {{item.insightName}} </div>
+        <div class="col"> {{item.comment}} </div>
+        <div class="col"> {{item.createdOn | date}} </div>
+        <div class="col">
+          <div class="small-button pop" (click)="loadInsight(item.id)">
+            Generate Training
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fetching-game-insights" *ngIf="(fetchingGameInsight && generateInsighPhase) || generatingTraining">
+      <app-loader></app-loader>
+    </div>
+    <p>
+      Based on above insights Scriptchess will generate below tasks.You are expected to complete these tasks in one week.
+    </p>
+    <p>
+      You can choose to complete them all as per the speed you are comfortable with. After completion, Scriptchess will generate new set of such tasks for next week.
+    </p>
+    <p>
+      Compare your performance recorded today after 6-8 weeks. This is a proven method applied by several chess coaches. We are sure that it'll work for you too.
+    </p>
+  </div>
+  <div class="training-schedule" *ngIf="trainingStarted && !trainingProgressReport.completed">
+
+    <div class="warning" *ngIf="!trainingProgressReport.id">
+      <p *ngIf="!loggedInUser; else showSave">
+        <strong>Warning: </strong>Training not saved on server. <a routerLink="/sign-in">Sign in</a> to save this
+      </p>
+      <ng-template #showSave>
+        <div *ngIf="!activeTrainingReportStr; else showActiveTraining">
+          <strong>Warning: </strong>Training not saved on server. <div style="display: inline-block; color: #eee;" class="small-button pop" (click)="saveTraining()" >{{savingTraining ? "Saving Training.." : "Save Training"}}</div>
+        </div>
+        <ng-template #showActiveTraining>
+          <div>
+            You have an active training going on. Do you want to restore your active training?
+            <div class="small-button pop" (click)="restoreTraining()"> Restore </div>
+          </div>
+        </ng-template>
+      </ng-template>
+      <div class="clear"></div>
+      <div class="clear"></div>
+    </div>
+    <div class="rating-picker">
+      <div class="row">
+        <div class="col-md-4 col-sm-12">
+          <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+            <mat-label>Current Rating</mat-label>
+            <input matInput type="text" [(ngModel)]="currentRating" placeholder="Your Name" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+            <mat-label>Target Rating</mat-label>
+            <input matInput type="text" [(ngModel)]="targetRating" placeholder="Your Name" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="small-button pop" style="text-align: center;" (click)="updateRating()">Update Rating</div>
+        </div>
+      </div>
+    </div>
+    <h3  style="margin-top: 50px;" *ngIf="!expired; else restart">
+      Tasks To be completed On or Before {{lastDate | date}}
+    </h3>
+    <ng-template #restart>
+      <p  style="margin-top: 50px;">
+        Your tasks were not completed within given time.  Would you like to <span class="restart-span" (click)="restartTraining()">restart</span>
+      </p>
+    </ng-template>
+    <table style="margin-top: 50px;" *ngIf="!expired;">
+      <tr style="font-weight: 600;">
+        <td>
+          Task name
+        </td>
+        <td>
+          Progress
+        </td>
+        <td>
+          Status
+        </td>
+        <td>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Puzzles
+        </td>
+        <td>
+          {{trainingProgressReport.puzzlesCompleted}}/{{trainingProgressReport.maxPuzzleCount}}
+        </td>
+        <td>
+          {{trainingProgressReport.gameInsightDone ? (trainingProgressReport.puzzlesCompleted == trainingProgressReport.maxPuzzleCount ? "Done" : "In-Progress") : "Waiting for Insights" }}
+        </td>
+
+        <td>
+          <div class="small-button pop" style="display: inline-block; margin: 10px auto;" (click)="startPuzzles()" *ngIf="trainingProgressReport.puzzlesCompleted == 0;else showDisabled">Start</div>
+          <ng-template #showDisabled>
+            <div class="small-button pop" style="display: inline-block; margin: 10px auto;" (click)="startPuzzles()" *ngIf="trainingProgressReport.puzzlesCompleted < trainingProgressReport.maxPuzzleCount;else showCompleted" >Continue</div>
+          </ng-template>
+          <ng-template #showCompleted>
+            <div class="small-button pop" style="display: inline-block; margin: 10px auto;background-color: gray;">Completed</div>
+          </ng-template>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Pozition Quiz
+        </td>
+        <td>
+          {{trainingProgressReport.positionQuizesCompleted}}/{{trainingProgressReport.maxPositionQuizeToComplete}}
+        </td>
+        <td>
+          {{trainingProgressReport.gameInsightDone ? (trainingProgressReport.positionQuizesCompleted == trainingProgressReport.maxPositionQuizeToComplete ? "Done" : "In-Progress") : "Waiting for Insights" }}
+        </td>
+
+        <td>
+          <div class="small-button pop" style="display: inline-block; margin: 10px auto;" *ngIf="trainingProgressReport.positionQuizesCompleted == 0;else showDisabledQuiz" (click)="startPositions()" >Start</div>
+          <ng-template #showDisabledQuiz>
+            <div class="small-button pop" style="display: inline-block; margin: 10px auto;" *ngIf="trainingProgressReport.positionQuizesCompleted < trainingProgressReport.maxPositionQuizeToComplete;else showCompleted"  (click)="startPositions()">Continue</div>
+          </ng-template>
+          <ng-template #showCompleted>
+            <div class="small-button pop" style="display: inline-block; margin: 10px auto;background-color: gray;">Completed</div>
+          </ng-template>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Play againt Bot
+        </td>
+        <td>
+          {{trainingProgressReport.botsGames}}/{{trainingProgressReport.botsGamesToBePlayed}}
+        </td>
+        <td>
+          {{trainingProgressReport.gameInsightDone ? (trainingProgressReport.botsGames == trainingProgressReport.botsGamesToBePlayed ? "Done" : "In-Progress") : "Waiting for Insights" }}
+        </td>
+
+        <td>
+          <div class="small-button pop" style="display: inline-block; margin: 10px auto;" *ngIf="trainingProgressReport.botsGames == 0;else showDisabled1" (click)="playWithBots()">Start</div>
+          <ng-template #showDisabled1>
+            <div class="small-button pop" style="display: inline-block; margin: 10px auto;" *ngIf="trainingProgressReport.botsGames < trainingProgressReport.botsGamesToBePlayed;else showCompleted1"  (click)="playWithBots()">Continue</div>
+          </ng-template>
+          <ng-template #showCompleted1>
+            <div class="small-button pop" style="display: inline-block; margin: 10px auto;background-color: gray;">Completed</div>
+          </ng-template>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Games Review
+        </td>
+        <td>
+          {{trainingProgressReport.gamesReviewCompleted}}/{{trainingProgressReport.gamesReviewsToComplete}}
+        </td>
+        <td>
+          {{trainingProgressReport.gameInsightDone ? (trainingProgressReport.gamesReviewCompleted == trainingProgressReport.gamesReviewsToComplete ? "Done" : "In-Progress") : "Waiting for Insights" }}
+        </td>
+
+        <td>
+          <div class="small-button pop" style="display: inline-block; margin: 10px auto;" *ngIf="trainingProgressReport.gamesReviewCompleted < trainingProgressReport.gamesReviewsToComplete; else showCompleted" (click)="fetchGamesToReview()">Show Games</div>
+
+          <ng-template #showCompleted>
+            <div class="small-button pop" style="display: inline-block; margin: 10px auto;background-color: gray;">Completed</div>
+          </ng-template>
+        </td>
+      </tr>
+    </table>
+
+    <div class="delete-training" *ngIf="!expired">
+      <div class="big-button big-button-text centralize pop" (click)="deleteTraining()"> Delete Training</div>
+
+    </div>
+
+    <div class="games-review-table" *ngIf="trainingProgressReport && trainingProgressReport.reviewFullGames">
+      <div class="show-loader" *ngIf="fetchingGames; else showGames">
+        <app-loader></app-loader>
+      </div>
+      <ng-template #showGames>
+        <div class="review-games" *ngIf="trainingProgressReport.reviewFullGames.length > 0">
+          <div class="clear"></div>
+          <div class="clear"></div>
+          <h2>Games to review</h2>
+          <div class="row" *ngFor="let item of trainingProgressReport.reviewFullGames" style="border: thin ridge gray;">
+            <div class="col-3"  style="border: thin ridge gray;">
+              {{item.whitePlayer}}
+            </div>
+            <div class="col-3" style="border: thin ridge gray;">
+              {{item.blackPlayer}}
+            </div>
+            <div class="col-3" style="border: thin ridge gray;">
+              {{item.result}}
+            </div>
+            <div class="col-3" style="border: thin ridge gray;">
+              <div class="small-button pop" style="display: inline-block; margin: 10px auto;" (click)="reviewGame(item.gameId, item.result)" *ngIf="!item.reviewed; else showReviewed">Review Game</div>
+              <ng-template #showReviewed>
+                <div class="small-button pop" style="display: inline-block; margin: 10px auto;background-color: gray;">Reviewed</div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+
+  </div>
+
+  <div class="training-compled" *ngIf="trainingProgressReport && trainingProgressReport.completed">
+    <h2>Training Report</h2>
+    <strong>Started  on</strong> {{trainingProgressReport.startedOn | date}} <br>
+    <strong>Completed  on</strong> {{trainingProgressReport.completedOn | date}}
+
+    <div class="puzzle-report">
+      <h3>Puzzle Report</h3>
+      <div class="clear"></div>
+      <p>From Your game insight we observed your piece accuracy. And based on that we asked you to solve multiple puzzles. Below is your puzzles report</p>
+      <ul>
+        <li><strong>Puzzles given : </strong> {{trainingProgressReport.maxPuzzleCount}}</li>
+        <li *ngIf="trainingProgressReport.puzzleCompletionReport"><strong>Puzzles Solved  : </strong> {{trainingProgressReport.maxPuzzleCount - trainingProgressReport.puzzleCompletionReport.failedToSolve}}</li>
+        <li><strong>Attempts per puzzle: </strong> {{trainingProgressReport.puzzleCompletionReport.attemptPerAllPuzzles}}</li>
+      </ul>
+      <div class="clear"></div>
+      <div class="rook-report" *ngIf="trainingProgressReport.rookPuzzles">
+        <h4>Rooks Puzzles</h4>
+        <ul>
+          <li><strong>Accuracy (from Game insight):</strong>  {{trainingProgressReport.pieceAccuracies["r"] | decimal}}%</li>
+          <li><strong>Puzzles given: </strong> {{trainingProgressReport.rookPuzzles.length}}</li>
+          <li><strong>Puzzles Accuracy: </strong> {{trainingProgressReport.puzzleCompletionReport.rookPuzzleAccuracy}}</li>
+          <li><strong>Attempt per puzzle: </strong> {{trainingProgressReport.puzzleCompletionReport.attemptPerRookPuzzles}}</li>
+        </ul>
+        <div class="puzzle-container">
+          <div class="puzzles" *ngFor="let item of trainingProgressReport.rookPuzzles">
+            <app-puzzle-attempt-view [puzzle]="item"></app-puzzle-attempt-view>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="clear"></div>
+      <div class="clear"></div>
+
+      <div class="Knight-report" *ngIf="trainingProgressReport.knightPuzzles">
+        <h4>Knights Puzzles</h4>
+        <ul>
+          <li><strong>Accuracy (from Game insight):</strong>  {{trainingProgressReport.pieceAccuracies["n"] | decimal}}%</li>
+          <li><strong>Puzzles given: </strong> {{trainingProgressReport.knightPuzzles.length}}</li>
+          <li><strong>Puzzles Accuracy: </strong> {{trainingProgressReport.puzzleCompletionReport.knightPuzzleAccuracy}}</li>
+          <li><strong>Attempt per puzzle: </strong> {{trainingProgressReport.puzzleCompletionReport.attemptPerKnightPuzzles}}</li>
+        </ul>
+        <div class="puzzle-container">
+          <div class="puzzles" *ngFor="let item of trainingProgressReport.knightPuzzles">
+            <app-puzzle-attempt-view [puzzle]="item"></app-puzzle-attempt-view>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="clear"></div>
+      <div class="Bishop-report" *ngIf="trainingProgressReport.bishopPuzzles">
+        <h4>Bishop Puzzles</h4>
+        <ul>
+          <li><strong>Accuracy (from Game insight):</strong>  {{trainingProgressReport.pieceAccuracies["b"] | decimal}}%</li>
+          <li><strong>Puzzles given: </strong> {{trainingProgressReport.bishopPuzzles.length}}</li>
+          <li><strong>Puzzles Accuracy: </strong> {{trainingProgressReport.puzzleCompletionReport.bishopsPuzzleAccuracy}}</li>
+          <li><strong>Attempt per puzzle: </strong> {{trainingProgressReport.puzzleCompletionReport.attemptPerBishopPuzzles}}</li>
+        </ul>
+        <div class="puzzle-container">
+          <div class="puzzles" *ngFor="let item of trainingProgressReport.bishopPuzzles">
+            <app-puzzle-attempt-view [puzzle]="item"></app-puzzle-attempt-view>
+          </div>
+        </div>
+      </div>
+
+      <div class="clear"></div>
+      <div class="clear"></div>
+      <div class="Bishop-report" *ngIf="trainingProgressReport.queenPuzzles">
+        <h4>Queen Puzzles</h4>
+        <ul>
+          <li><strong>Accuracy (from Game insight):</strong>  {{trainingProgressReport.pieceAccuracies["q"] | decimal}}%</li>
+          <li><strong>Puzzles given: </strong> {{trainingProgressReport.queenPuzzles.length}}</li>
+          <li><strong>Puzzles Accuracy: </strong> {{trainingProgressReport.puzzleCompletionReport.queenPuzzleAccuracy}}</li>
+          <li><strong>Attempt per puzzle: </strong> {{trainingProgressReport.puzzleCompletionReport.attemptPerQueenPuzzles}}</li>
+        </ul>
+        <div class="puzzle-container">
+          <div class="puzzles" *ngFor="let item of trainingProgressReport.queenPuzzles">
+            <app-puzzle-attempt-view [puzzle]="item"></app-puzzle-attempt-view>
+          </div>
+        </div>
+      </div>
+
+      <div class="clear"></div>
+      <div class="clear"></div>
+      <div class="Bishop-report" *ngIf="trainingProgressReport.allPiecesPuzzle">
+        <h4>All pieces Puzzles</h4>
+        <ul>
+          <li><strong>Puzzles given: </strong> {{trainingProgressReport.allPiecesPuzzle.length}}</li>
+          <li><strong>Puzzles Accuracy: </strong> {{trainingProgressReport.puzzleCompletionReport.allPiecePuzzleAccuracy}}</li>
+          <li><strong>Attempt per puzzle: </strong> {{trainingProgressReport.puzzleCompletionReport.attemptPerAllPuzzles}}</li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="clear"></div>
+    <div class="clear"></div>
+    <div class="position-report">
+      <h3>Position Quiz report</h3>
+      <p>To boost your positional understanding, we aksed you to solve positional quizes</p>
+      <ul>
+        <li><strong>Quizes given : </strong> {{trainingProgressReport.maxPositionQuizeToComplete}}</li>
+        <li><strong>Quizes Solved  : </strong> {{trainingProgressReport.positionalQuizSolved}}</li>
+        <li><strong>positional Accuracy: </strong> {{trainingProgressReport.positionAnalysisAccuracies}} %</li>
+      </ul>
+    </div>
+
+    <div class="clear"></div>
+    <div class="clear"></div>
+    <div class="Games-report">
+      <h3>Game review Report</h3>
+      <p>You were loosing games repetedely in few openings, We aksed tou you review few games in those openings</p>
+      <div class="clear"></div>
+      <div class="games-review" *ngFor="let item of trainingProgressReport.reviewedGameByOpening">
+        <ul>
+          <li><strong>Opening: </strong> {{item.name}}</li>
+          <li><strong>Analyzed Game: </strong> {{item.game.whitePlayer}} vs {{item.game.blackPlayer}}</li>
+          <li><strong>Playing as : </strong> {{item.playAs}}</li>
+        </ul>
+
+      </div>
+    </div>
+    <div class="clear"></div>
+    <div class="clear"></div>
+    <h3>What to do from here</h3>
+    <p *ngIf="trainingProgressReport.missedWeaknesses">We recommend, 1 month of training, but Before you restart another training session. We recommend you to follow below resources</p>
+    <div class="row" *ngFor="let item of missedWeaknessesArr">
+      Since you missed {{item[0] | weakness}} {{item[1]}} times, we recomend you to check
+    </div>
+
+    <!--TODO: Improve game insights to find weak concepts-->
+    <div class="big-button  big-button-text pop" style="width: max-content; padding-right: 10px; padding-left: 10px;" (click)="newTrainingSession()"> Archive this and Start New Training </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="game-list-container">    
+    <div class="container" style="max-height: 450px;">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <img src="/assets/images/new-board.png" style="width:100%; margin:0 auto" />
+            </div>
+            <div class="col-sm-12 col-md-6" style="max-height: 450px;overflow-y: scroll;">                
+                <div class="quick-search-form-player" style="padding-top: 15px; margin-bottom: 15px;">
+                    <h3>Search By player</h3>
+                    <mat-form-field appearance="fill" class="selector">
+                        <mat-label style="color:#fff">Choose Player</mat-label>
+                        <mat-select  >
+                        
+                            <mat-option *ngFor="let player of availablePlayers" [value]="player" (onSelectionChange)="selecetedPlayer(player)">{{player.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <hr />
+                <div class="quick-search-form-tournament" style="padding-top: 15px; margin-bottom: 15px;">
+                    <h3>Search By Tournament</h3>
+                    <mat-form-field appearance="fill" class="selector">
+                        <mat-label style="color:#fff">Choose Tournament</mat-label>
+                        <mat-select  >
+                        
+                            <mat-option *ngFor="let tournament of availableTournaments" [value]="tournament" (onSelectionChange)="selecetedTournament(tournament)">{{tournament.name}}, {{tournament.year}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

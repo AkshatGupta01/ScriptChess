@@ -1,0 +1,63 @@
+<div class="puzzle-container">
+    <div class="row" *ngIf="puzzle">
+        <div class="board col-sm-12 col-md-6">
+            <div class="board-wrapper" style="width: 100%;" *ngIf="height;else noHeight">
+                <app-chess-board [fen]="currentFen" [boardId]="boardId" [allowPlay]="allowPlay" [boardWidth]="height" (onMoveEx)="onMove($event)"></app-chess-board>
+            </div>
+            <ng-template #noHeight>
+                <div class="board-wrapper" style="width: 100%;">
+                    <app-chess-board [fen]="currentFen" [boardId]="boardId" [allowPlay]="allowPlay" (onMoveEx)="onMove($event)"></app-chess-board>
+                </div>
+            </ng-template>
+        </div>
+        <div class="board col-sm-12 col-md-6 pop">
+            <div class="puzzle-details" style="margin: 15px; max-width: 98%; overflow-x: scroll;">
+                <table>
+                    <tr>
+                        <td style="font-weight: 500;">Turn: </td> <td>{{whiteOrientated ? "White To Play" : "Black To play"}}</td>
+                    </tr>
+                    <tr *ngIf="puzzle.rating">
+                        <td  style="font-weight: 500;">Rating:</td>
+                        <td> {{puzzle.rating}}</td>
+                    </tr>
+                    <tr *ngIf="puzzle.theme">
+                        <td  style="font-weight: 500;">Theme:</td>
+                        <td> {{puzzle.theme}}</td>
+                    </tr>
+                    <tr *ngIf="puzzle.opening">
+                        <td>Opening:</td>
+                        <td style="text-overflow: ;"> {{puzzle.opening}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="toolbar">
+                <div class="row">
+                    <div class="col-2 col-md-1">
+                        <div class="pop fab" title="Analyze this position" (click)="startEngine()">
+                            <mat-icon color="accent">tune</mat-icon>
+                        </div>
+                    </div>
+                    <div class="col-2 col-md-1">
+                        <div class="pop fab" title="Analyze this position" (click)="playSolution()">
+                            <mat-icon color="accent">emoji_objects</mat-icon>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="pop fab" title="Analyze this position" (click)="onNext()" *ngIf="showNext">
+                            <mat-icon color="accent">skip_next</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="played-moves" style="margin: 15px;">
+                <h3>Played Moves</h3>
+                <div class="played-move" style="display: inline-block;margin: 10px; cursor: pointer;" *ngFor="let item of playedMoves">
+                    <img src="/assets/images/best.png" class="correct-move"  style="display : inline-block; width: 16px; margin-right: 5px;" alt="best move" /> <span style="display : inline-block;" (click)="setPosition(item)" > {{item.move}}</span>
+                </div>
+                <app-square-ads></app-square-ads>
+            </div>
+
+        </div>
+    </div>
+
+</div>

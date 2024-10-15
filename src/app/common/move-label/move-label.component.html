@@ -1,0 +1,24 @@
+<div class="move-label row" class="{{moveClass}}" (click)="moveClicked(move)" *ngIf="showGameCounts;else noGameCount" [ngClass]="{'novalty': novalty}">
+
+    <div class="move-str col-4">{{moveNum}}. {{move}} ({{count}})</div>
+    <div class="winVal  col">
+        <div class="white-win vertical"></div>
+        <div class="per-val">{{whiteWonCount | movePercent : count}}%</div>
+    </div>
+
+    <div class="winVal  col">
+        <div class="draw vertical"></div>
+        <div class="per-val">{{drawCount | movePercent : count}}%</div>
+    </div>
+
+    <div class="winVal   col">
+        <div class="black-win vertical"></div>
+        <div class="per-val">{{blackWonCount | movePercent : count}}%</div>
+    </div>
+</div>
+<ng-template #noGameCount>
+    <div class="move-label row" class="{{moveClass}}" (click)="moveClicked(move)">
+
+        <div class="move-str col-3">{{moveNum}}. {{move}}</div>
+    </div>
+</ng-template>

@@ -1,0 +1,104 @@
+<div class="container game-search-container">
+    <h2>Search Games</h2>
+    <div class="spacer"></div>
+    <div class="row">
+        <div class="col-md-5 col-sm-12" style="margin-left:15px">
+            <div class="row">
+                <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                    <mat-label>White Player</mat-label>
+                    <input matInput type="text" [(ngModel)]="whitePlayerName" (keypress)="searchWhitePlayer($event.target)" [matAutocomplete]="auto">  
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of obsWhitePlayers | async" [value]="option">
+                          {{option}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                    <mat-label>Black Player</mat-label>
+                    <input matInput type="text" [(ngModel)]="blackPlayerName" (keypress)="searchBlackPlayer($event.target)" [matAutocomplete]="auto">  
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of obsBlackPlayers | async" [value]="option">
+                          {{option}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                    <mat-label>Year</mat-label>
+                    <input matInput type="number" [(ngModel)]="year">  
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                    <mat-label>Tournament</mat-label>
+                    <input matInput type="text" [(ngModel)]="tournament">  
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-md-5 col-sm-12" style="margin-left:15px">
+            
+            <div class="row" style="padding-top: 15px; margin-bottom: 15px;">
+                <mat-form-field appearance="fill" class="selector">
+                    <mat-label style="color:#fff">Select Game Type</mat-label>
+                    <mat-select #category >
+                        <mat-option *ngFor="let type of gameTypes"  [value]="type.value" (onSelectionChange)="selectedGameType(type)">{{type.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                
+            </div>
+
+            <div class="row" style="padding-top: 15px; margin-bottom: 15px;">
+                <mat-form-field appearance="fill" class="selector">
+                    <mat-label style="color:#fff">Select Sacrifice</mat-label>
+                    <mat-select  #sacrifice>
+                        <mat-option *ngFor="let type of sacrificeTypes"   [value]="type.value" (onSelectionChange)="selectedSacrificeType(type)">{{type.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                
+            </div>
+            <div class="row" style="padding-top: 15px; margin-bottom: 15px;">
+                <!-- <mat-form-field appearance="fill" class="selector">
+                    <mat-label style="color:#fff">Select ECO</mat-label>
+                    <mat-select  #sacrifice>
+                        <mat-option *ngFor="let eco of ecos"   [value]="eco.eco" (onSelectionChange)="onEcoSelect(eco.eco)">{{eco.ecoModel.name}}({{eco.eco}})</mat-option>
+                    </mat-select>
+                </mat-form-field>    -->
+                <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;" *ngIf="ecos && ecos.length > 0; else loadingLines">
+                    <mat-label>Select Line</mat-label>
+                    <input matInput type="text" [(ngModel)]="selectedEco" placeholder="eg: London System" (keypress)="searchEcos($event,$event.target)" [matAutocomplete]="auto">  
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of obsEcos | async" [value]="option">
+                          {{option}}
+                        </mat-option>
+                    </mat-autocomplete>           
+                </mat-form-field>
+                <ng-template #loadingLines>
+                    <h4>Loading Lines ...</h4>
+                </ng-template>
+                  
+            </div>  
+        </div>        
+    </div>
+    <div class="separator"> Or </div>
+        <div class="row" style="margin-bottom: 15px;">
+            <mat-form-field class="form-field" appearance="fill"  style="width: 98%; margin: 0 auto; display: block;">
+                <mat-label>Enter Fen</mat-label>
+                <input matInput type="text" [ngModel]="selecetdFen" (ngModelChange)="onFenEnter($event)" />        
+                <mat-hint align="start"><strong>Search games from given position</strong> </mat-hint>          
+            </mat-form-field>
+        </div>
+    <div class="row">
+        <div class=" col-12">
+            <div class="small-button pop" (click)="search(category,sacrifice)">
+                Search
+            </div>
+        </div>
+        
+    </div>
+</div>
